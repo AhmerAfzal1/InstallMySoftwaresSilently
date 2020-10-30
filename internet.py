@@ -3,25 +3,25 @@ import constant as const
 import functions as func
 import main
 
-android_studio = "Android Studio 4.1.0 (201.6858069)"
-git = "Git 2.28.0"
-java_jdk = "Java  JDK 8 Update 271"
-notepad_p_p = "Notepad++ 7.8.9"
-python = "Python 3.9.0"
+chrome = "Google Chrome 84.0.4147.89"
+firefox = "Firefox 82.0"
+idm = "Internet Download Manager 6.37.14"
+net_balancer = "NetBalancer 9.12.9"
+net_limiter = "NetLimiter 4.0.67"
 
 
 def main_developer():
-    func.set_console_title(const.heading_developer)
+    func.set_console_title(const.heading_internet)
     while True:
         try:
             func.main_heading()
-            func.sub_heading(const.heading_developer)
+            func.sub_heading(const.heading_internet)
             func.back_heading()
-            func.sub_heading_softwares("02", android_studio)
-            func.sub_heading_softwares("03", java_jdk)
-            func.sub_heading_softwares("04", python)
-            func.sub_heading_softwares("05", git)
-            func.sub_heading_softwares("06", notepad_p_p)
+            func.sub_heading_softwares("02", firefox)
+            func.sub_heading_softwares("03", idm)
+            func.sub_heading_softwares("04", chrome)
+            func.sub_heading_softwares("05", net_balancer)
+            func.sub_heading_softwares("06", net_limiter)
             func.eixt_heading("07")
 
             choice = int(input("\nPlease enter your choice: "))
@@ -37,12 +37,16 @@ def main_developer():
                 main.main()
                 break
 
+            elif choice == 2:
+                func.install_software(firefox, "Setup.exe")
+                break
+
             elif choice == 7:
                 exit()
                 break
 
             else:
-                print("\nThat is not between 1 To 6! Try Again\n")
+                print("\nThat is not between 1 To 7! Try Again\n")
                 input()
                 func.clear_screen()
                 continue

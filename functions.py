@@ -1,4 +1,5 @@
 from colorama import init, Fore, Style
+import constant as const
 import os
 import subprocess
 import tempfile
@@ -10,6 +11,10 @@ temp = tempfile.gettempdir()
 
 def clear_screen():
     os.system("cls")
+
+
+def set_console_title(string):
+    os.system("title " + string)
 
 
 def find_files(file_name, file_path, file_ext=".zip"):
@@ -44,7 +49,29 @@ def install_software(file_name, setup_exe, args=""):
         print(f"{file_name} not found")
 
 
-def my_coloured_str(num, string):
-    print(
-        f"{Fore.GREEN}[{num}]{Style.RESET_ALL} {Fore.YELLOW}Installing{Style.RESET_ALL} "
-        f"{Fore.GREEN}{string}{Style.RESET_ALL} {Fore.YELLOW}Softwares{Style.RESET_ALL}")
+def main_heading():
+    print(Fore.CYAN + const.heading_main_title + Style.RESET_ALL)
+    print("\n")
+
+
+def sub_heading(string):
+    print(Fore.LIGHTGREEN_EX + string + Style.RESET_ALL)
+    print("\n")
+
+
+def back_heading():
+    print(f"{Fore.LIGHTCYAN_EX}[01] BACK TO MAIN{Style.RESET_ALL}")
+
+
+def main_heading_softwares(num, string):
+    print(f"{Fore.LIGHTGREEN_EX}[{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Installing{Style.RESET_ALL} "
+          f"{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Softwares{Style.RESET_ALL}")
+
+
+def sub_heading_softwares(num, string):
+    print(f"{Fore.LIGHTGREEN_EX}[{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Install{Style.RESET_ALL} "
+          f"{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL}")
+
+
+def eixt_heading(num):
+    print(f"{Fore.LIGHTRED_EX}[{num}] EXIT{Style.RESET_ALL}")

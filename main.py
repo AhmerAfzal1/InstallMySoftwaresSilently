@@ -1,22 +1,24 @@
 from colorama import init, Fore, Style
+import constant as const
 import developer
 import functions as func
+import internet
 
 
 def main():
     while True:
         try:
-            print(Fore.CYAN + "Ahmer's Automaticalling And Silently Software Installation Program" + Style.RESET_ALL)
+            print(Fore.CYAN + const.heading_main_title + Style.RESET_ALL)
             print("\n")
-            func.my_coloured_str("01", "All Drivers & Recommended")
-            func.my_coloured_str("02", "Developer")
-            func.my_coloured_str("03", "Internet")
-            func.my_coloured_str("04", "Major")
-            func.my_coloured_str("05", "Mobile")
-            func.my_coloured_str("06", "Multimedia")
-            func.my_coloured_str("07", "PDF")
-            func.my_coloured_str("08", "Utilities")
-            print(Fore.RED + "[09] Eixt".upper() + Style.RESET_ALL)
+            func.main_heading_softwares("01", "All Drivers & Recommended")
+            func.main_heading_softwares("02", "Developer")
+            func.main_heading_softwares("03", "Internet")
+            func.main_heading_softwares("04", "Major")
+            func.main_heading_softwares("05", "Mobile")
+            func.main_heading_softwares("06", "Multimedia")
+            func.main_heading_softwares("07", "PDF")
+            func.main_heading_softwares("08", "Utilities")
+            func.eixt_heading("09")
 
             choice = int(input("\nPlease enter your choice: "))
 
@@ -31,8 +33,13 @@ def main():
                 break
 
             elif choice == 2:
-                developer.main_developer()
                 func.clear_screen()
+                developer.main_developer()
+                break
+
+            elif choice == 3:
+                func.clear_screen()
+                internet.main_developer()
                 break
 
             elif choice == 9:
@@ -53,5 +60,6 @@ def main():
 
 if __name__ == "__main__":
     init()
+    func.set_console_title("Ahmer's Automaticalling And Silently Software Installation Program")
     main()
     # install_software(adobe_acrobat_reader, "Setup.exe")
