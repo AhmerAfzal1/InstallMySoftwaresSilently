@@ -1,4 +1,4 @@
-from colorama import init, Fore, Style
+from colorama import init
 import constant as const
 import functions as func
 import main
@@ -12,6 +12,7 @@ net_limiter = "NetLimiter 4.0.67"
 
 def main_developer():
     func.set_console_title(const.heading_internet)
+    init()
     while True:
         try:
             func.main_heading()
@@ -24,10 +25,10 @@ def main_developer():
             func.sub_heading_softwares("06", net_limiter)
             func.eixt_heading("07")
 
-            choice = int(input("\nPlease enter your choice: "))
+            choice = func.input_heading()
 
             if choice == 0:
-                print("\nValue must be greater than zero")
+                func.exception_heading("Value must be greater than zero")
                 input()
                 func.clear_screen()
                 continue
@@ -38,7 +39,23 @@ def main_developer():
                 break
 
             elif choice == 2:
-                func.install_software(firefox, "Setup.exe")
+                func.install_software(firefox, "Setup.exe -ms")
+                break
+
+            elif choice == 3:
+                func.install_software(idm, "Setup.exe /S /EN")
+                break
+
+            elif choice == 4:
+                func.install_software(chrome, "Setup.exe /S")
+                break
+
+            elif choice == 5:
+                func.install_software(net_balancer, "Setup.exe /SILENT /VERYSILENT /NORESTART")
+                break
+
+            elif choice == 6:
+                func.install_software(net_limiter, "Setup.exe /EXENOUI /EXENOUPDATES")
                 break
 
             elif choice == 7:
@@ -46,17 +63,12 @@ def main_developer():
                 break
 
             else:
-                print("\nThat is not between 1 To 7! Try Again\n")
+                func.exception_range_heading("1", "7")
                 input()
                 func.clear_screen()
                 continue
 
         except ValueError:
-            print("\nPlease input a number")
+            func.exception_heading("Please input a number")
             input()
             func.clear_screen()
-
-
-if __name__ == "__main__":
-    init()
-    main_developer()
