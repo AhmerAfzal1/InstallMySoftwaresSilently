@@ -10,7 +10,7 @@ net_balancer = "NetBalancer 9.12.9"
 net_limiter = "NetLimiter 4.0.67"
 
 
-def main_developer():
+def main_program():
     func.set_console_title(const.heading_internet)
     init()
     while True:

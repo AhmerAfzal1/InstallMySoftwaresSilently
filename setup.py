@@ -13,10 +13,10 @@ except ImportError:
         print('Cannot import py2exe', file=sys.stderr)
         exit(1)
 
-mfc_dir = get_python_lib() + '\\pythonwin\\'
-mfc_files = [os.path.join(mfc_dir, i) for i in
-             ["mfc90.dll", "mfc90u.dll", "mfcm90.dll", "mfcm90u.dll", "Microsoft.VC90.MFC.manifest"]]
-data_files = [("Microsoft.VC90.MFC", mfc_files), ]
+# mfc_dir = get_python_lib() + '\\pythonwin\\'
+# mfc_files = [os.path.join(mfc_dir, i) for i in
+#              ["mfc90.dll", "mfc90u.dll", "mfcm90.dll", "mfcm90u.dll", "Microsoft.VC90.MFC.manifest"]]
+# data_files = [("Microsoft.VC90.MFC", mfc_files), ]
 
 if len(sys.argv) == 1:
     sys.argv.append("py2exe")
@@ -33,7 +33,7 @@ class Target:
 
 
 py2exe_options = {
-    'bundle_files': 1,
+    'bundle_files': 2,
     'compressed': 1,
     'optimize': 2,
     'dist_dir': '.',
@@ -46,8 +46,8 @@ target = Target(
     dest_base=conts.my_product)
 
 setup(
-    options={'py2exe': {'bundle_files': 1, 'compressed': True}},
+    options={'py2exe': py2exe_options},
     zipfile=None,
     console=[target],
-    data_files=data_files
+    # data_files=data_files
 )

@@ -1,12 +1,12 @@
 from colorama import init
 import constant as const
+import ctypes
 import developer
 import enum
 import functions as func
 import internet
 import os
 import sys
-import ctypes
 
 
 class SW(enum.IntEnum):
@@ -40,8 +40,37 @@ class ERROR(enum.IntEnum):
     SHARE = 26
 
 
+def make_font_bigger():
+    lf_facesize = 32
+    std_output_handle = -11
+
+    class Coord(ctypes.Structure):
+        _fields_ = [("X", ctypes.c_short), ("Y", ctypes.c_short)]
+
+    class ConsoleFontInfoex(ctypes.Structure):
+        _fields_ = [("cbSize", ctypes.c_ulong),
+                    ("nFont", ctypes.c_ulong),
+                    ("dwFontSize", Coord),
+                    ("FontFamily", ctypes.c_uint),
+                    ("FontWeight", ctypes.c_uint),
+                    ("FaceName", ctypes.c_wchar * lf_facesize)]
+
+    font = ConsoleFontInfoex()
+    font.cbSize = ctypes.sizeof(ConsoleFontInfoex)
+    font.nFont = 12
+    font.dwFontSize.X = 11
+    font.dwFontSize.Y = 16  # Font size value
+    font.FontFamily = 54
+    font.FontWeight = 400
+    font.FaceName = "Lucida Console"
+
+    handle = ctypes.windll.kernel32.GetStdHandle(std_output_handle)
+    ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
+
+
 def main():
-    os.system("mode 120, 35")
+    make_font_bigger()
+    os.system("mode 110, 33")
     func.set_console_title(const.heading_main_title)
     init()
     if ctypes.windll.shell32.IsUserAnAdmin():
@@ -72,13 +101,19 @@ def main():
 
                 elif choice == 2:
                     func.clear_screen()
-                    developer.main_developer()
+                    developer.main_program()
                     break
 
                 elif choice == 3:
                     func.clear_screen()
-                    internet.main_developer()
+                    internet.main_program()
                     break
+
+                elif choice == 4 or choice == 5 or choice == 6 or choice == 7 or choice == 8:
+                    func.under_progress_heading("This feature is under progress")
+                    input()
+                    func.clear_screen()
+                    continue
 
                 elif choice == 9:
                     exit()
@@ -102,4 +137,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # install_software(adobe_acrobat_reader, "Setup.exe")

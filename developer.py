@@ -5,12 +5,12 @@ import main
 
 android_studio = "Android Studio 4.1.0 (201.6858069)"
 git = "Git 2.28.0"
-java_jdk = "Java  JDK 8 Update 271"
+java_jdk = "Java JDK 8 Update 271"
 notepad_p_p = "Notepad++ 7.9.1"
 python = "Python 3.9.0"
 
 
-def main_developer():
+def main_program():
     func.set_console_title(const.heading_developer)
     init()
     while True:
@@ -40,6 +40,24 @@ def main_developer():
 
             elif choice == 2:
                 func.install_software(android_studio, "Setup.exe /S /Allusers")
+                func.clear_screen()
+                continue
+
+            elif choice == 3:
+                func.install_software(java_jdk, 'Setup.exe /s ADDLOCAL="ToolsFeature,SourceFeature"', is_setx=True)
+                input()
+                func.clear_screen()
+                continue
+
+            elif choice == 4:
+                func.install_software(python, "Setup.exe")
+                func.clear_screen()
+                continue
+
+            elif choice == 5:
+                func.install_software(git, 'Setup.exe /VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
+                                           '/RESTARTAPPLICATIONS /COMPONENTS="icons,ext\reg,'
+                                           'ext\reg\shellhere,ext\reg\guihere,assoc,assoc_sh"')
                 func.clear_screen()
                 continue
 

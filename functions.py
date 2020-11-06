@@ -1,5 +1,6 @@
 from colorama import init, Fore, Style
 import constant as const
+import re
 import os
 import shutil
 import tempfile
@@ -34,7 +35,7 @@ def unzip_file(file_name):
         exception_heading("File is password protected or encounter runtime error")
 
 
-def install_software(file_name, setup_exe_with_arg):
+def install_software(file_name, setup_exe_with_arg, is_setx=False):
     try:
         getting_file = find_files(file_name, "F:\\")
         if not getting_file:
@@ -52,6 +53,17 @@ def install_software(file_name, setup_exe_with_arg):
             log_show(f"Installing {file_name}")
             time.sleep(1)
             os.system(f"{setup_exe_with_arg}")
+            if is_setx:
+                setx = ""
+                output = re.findall(r'[\d\.\d]+', file_name)
+                new_output = re.findall(r'(\d+)', output[0])
+                if new_output[0] == "8":
+                    setx = f'SETX JDK_HOME "{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk1.8.0_{output[1]}"'
+                    log_show(setx)
+                elif new_output[0] == "12":
+                    setx = f'SETX JDK_HOME "{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk-{output[0]}"'
+                    log_show(setx)
+                os.system(setx)
             log_show(f"Please wait for 5 seconds its automatically goto back")
             time.sleep(5)
     except FileNotFoundError:
@@ -98,6 +110,10 @@ def input_heading():
 
 def exception_heading(string):
     print(f"\n{Fore.LIGHTRED_EX}    {string}{Style.RESET_ALL}")
+
+
+def under_progress_heading(string):
+    print(f"\n{Fore.CYAN}  {string}{Style.RESET_ALL}")
 
 
 def exception_range_heading(num1, num2):
