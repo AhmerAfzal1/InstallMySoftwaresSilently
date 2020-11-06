@@ -70,7 +70,7 @@ def main_heading():
 
 
 def sub_heading(string):
-    center_text(Fore.LIGHTGREEN_EX + string + Style.RESET_ALL)
+    center_text(f"{Fore.LIGHTGREEN_EX}Categorized List of {string} Softwares{Style.RESET_ALL}")
     print("\n")
 
 
