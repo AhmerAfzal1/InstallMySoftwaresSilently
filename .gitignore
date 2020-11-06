@@ -14,3 +14,5 @@ __pycache__
 /dist/
 h.spec
 /output/
+/output/*.exe
+/build/*.exe
