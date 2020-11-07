@@ -26,10 +26,10 @@ if len(sys.argv) == 1:
 class Target:
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        self.version = conts.my_version
-        self.company_name = conts.my_company
-        self.copyright = conts.my_copyright
-        self.name = conts.my_product
+        self.version = conts.__version__
+        self.company_name = conts.__company__
+        self.copyright = conts.__copyright__
+        self.name = conts.__product__
 
 
 py2exe_options = {
@@ -43,7 +43,7 @@ py2exe_options = {
 target = Target(
     description=conts.heading_main_title,
     script="main.py",
-    dest_base=conts.my_product)
+    dest_base=conts.__product__)
 
 setup(
     options={'py2exe': py2exe_options},

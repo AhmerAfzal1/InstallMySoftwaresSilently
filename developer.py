@@ -30,53 +30,54 @@ def main_program():
             if choice == 0:
                 func.exception_heading("Value must be greater than zero")
                 input()
-                func.clear_screen()
+                func.clear()
                 continue
 
             elif choice == 1:
-                func.clear_screen()
+                func.clear()
                 main.main()
                 break
 
             elif choice == 2:
                 func.install_software(android_studio, "Setup.exe /S /Allusers")
-                func.clear_screen()
+                func.clear()
                 continue
 
             elif choice == 3:
                 func.install_software(java_jdk, 'Setup.exe /s ADDLOCAL="ToolsFeature,SourceFeature"', is_setx=True)
                 input()
-                func.clear_screen()
+                func.clear()
                 continue
 
             elif choice == 4:
                 func.install_software(python, "Setup.exe")
-                func.clear_screen()
+                func.clear()
                 continue
 
             elif choice == 5:
                 func.install_software(git, 'Setup.exe /VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
                                            '/RESTARTAPPLICATIONS /COMPONENTS="icons,ext\reg,'
                                            'ext\reg\shellhere,ext\reg\guihere,assoc,assoc_sh"')
-                func.clear_screen()
+                func.clear()
                 continue
 
             elif choice == 6:
                 func.install_software(notepad_p_p, "Setup.exe /S")
-                func.clear_screen()
+                func.clear()
                 continue
 
             elif choice == 7:
+                func.remove_temp()
                 exit()
                 break
 
             else:
                 func.exception_range_heading("1", "7")
                 input()
-                func.clear_screen()
+                func.clear()
                 continue
 
         except ValueError:
             func.exception_heading("Please input a number")
             input()
-            func.clear_screen()
+            func.clear()

@@ -1,4 +1,5 @@
 from colorama import init, Fore, Style
+import ctypes
 import constant as const
 import re
 import os
@@ -8,15 +9,33 @@ import time
 import zipfile
 
 init()
-temp = tempfile.gettempdir()
+temp = os.path.join(tempfile.gettempdir(), "InstallMySofts")
+if not os.path.exists(temp):
+    os.makedirs(temp)
 
 
-def clear_screen():
-    os.system("cls")
+def remove_temp():
+    log_show(f"Deleting {temp}")
+    shutil.rmtree(temp)
+    time.sleep(1)
+
+
+def clear():
+    if os.name == "nt":
+        os.system("cls")
 
 
 def set_console_title(string):
-    os.system("title " + string)
+    ctypes.windll.kernel32.SetConsoleTitleW(string)
+
+
+def countdown(t):
+    while t >= 0:
+        mins, secs = divmod(t, 60)
+        timeformat = '{:02d}:{:02d}'.format(mins, secs)
+        log_show(f"Please wait for {timeformat} seconds its automatically goto back", end="\r")
+        time.sleep(1)
+        t -= 1
 
 
 def find_files(file_name, file_path, file_ext=".zip"):
@@ -55,17 +74,31 @@ def install_software(file_name, setup_exe_with_arg, is_setx=False):
             os.system(f"{setup_exe_with_arg}")
             if is_setx:
                 setx = ""
-                output = re.findall(r'[\d\.\d]+', file_name)
-                new_output = re.findall(r'(\d+)', output[0])
-                if new_output[0] == "8":
-                    setx = f'SETX JDK_HOME "{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk1.8.0_{output[1]}"'
+                output = re.findall(r'[\d.]+', file_name)
+                new_output = re.findall(r'[\d]+', output[0])
+                java_home = "JAVA_HOME"
+                setx_jdk_8 = f"{os.environ['ProgramFiles']}{os.sep}Java{os.sep}jdk1.8.0_{output[1]}"
+                setx_jdk_12 = f"{os.environ['ProgramFiles']}{os.sep}Java{os.sep}jdk-{output[0]}"
+                if os.environ.get(java_home) is not None:
+                    log_show(f"Already existed JAVA_HOME {os.environ['JAVA_HOME']}")
+                    if new_output[0] == "8":
+                        setx = setx_jdk_8
+                        os.environ[java_home] = setx
+                    elif new_output[0] == "12":
+                        setx = setx_jdk_12
+                        os.environ[java_home] = setx
                     log_show(setx)
-                elif new_output[0] == "12":
-                    setx = f'SETX JDK_HOME "{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk-{output[0]}"'
+                    log_show(f"Now updated to {setx}")
+                else:
+                    if new_output[0] == "8":
+                        setx = setx_jdk_8
+                        os.environ[java_home] = setx
+                    elif new_output[0] == "12":
+                        setx = setx_jdk_12
+                        os.environ[java_home] = setx
+                    time.sleep(1)
                     log_show(setx)
-                os.system(setx)
-            log_show(f"Please wait for 5 seconds its automatically goto back")
-            time.sleep(5)
+            countdown(4)
     except FileNotFoundError:
         exception_heading(f"{file_name} not found")
 
@@ -122,5 +155,5 @@ def exception_range_heading(num1, num2):
         f"Please try again with valid options{Style.RESET_ALL}")
 
 
-def log_show(string):
-    print(f"\n{Fore.LIGHTYELLOW_EX}    {string}{Style.RESET_ALL}")
+def log_show(string, end=""):
+    print(f"\n{Fore.LIGHTYELLOW_EX}    {string}{Style.RESET_ALL}", end=end)

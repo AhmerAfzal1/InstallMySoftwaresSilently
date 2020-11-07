@@ -92,7 +92,7 @@ def main():
                 if choice == 0:
                     func.exception_heading("Value must be greater than zero")
                     input()
-                    func.clear_screen()
+                    func.clear()
                     continue
 
                 elif choice == 1:
@@ -100,35 +100,36 @@ def main():
                     break
 
                 elif choice == 2:
-                    func.clear_screen()
+                    func.clear()
                     developer.main_program()
                     break
 
                 elif choice == 3:
-                    func.clear_screen()
+                    func.clear()
                     internet.main_program()
                     break
 
                 elif choice == 4 or choice == 5 or choice == 6 or choice == 7 or choice == 8:
                     func.under_progress_heading("This feature is under progress")
                     input()
-                    func.clear_screen()
+                    func.clear()
                     continue
 
                 elif choice == 9:
+                    func.remove_temp()
                     exit()
                     break
 
                 else:
                     func.exception_range_heading("1", "9")
                     input()
-                    func.clear_screen()
+                    func.clear()
                     continue
 
             except ValueError:
                 func.exception_heading("Please input a number")
                 input()
-                func.clear_screen()
+                func.clear()
     else:
         hinstance = ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, sys.argv[0], None, SW.SHOWNORMAL)
         if hinstance <= 32:

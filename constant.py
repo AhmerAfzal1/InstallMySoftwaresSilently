@@ -2,7 +2,7 @@ heading_main_title = "Ahmer's Automaticalling And Silently Software Installation
 heading_developer = "Developer"
 heading_internet = "Internet"
 
-my_company = "Rose Corporation"
-my_copyright = "Copyright (c) 2016 - 2020, " + my_company
-my_product = "Ahmer's Auto Silently Installation Program"
-my_version = "1.0.0"
+__company__ = "Rose Corporation"
+__copyright__ = "Copyright (c) 2016 - 2020, " + __company__
+__product__ = "Ahmer's Auto Silently Installation Program"
+__version__ = "1.0.0"

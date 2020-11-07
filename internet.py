@@ -30,11 +30,11 @@ def main_program():
             if choice == 0:
                 func.exception_heading("Value must be greater than zero")
                 input()
-                func.clear_screen()
+                func.clear()
                 continue
 
             elif choice == 1:
-                func.clear_screen()
+                func.clear()
                 main.main()
                 break
 
@@ -59,16 +59,17 @@ def main_program():
                 break
 
             elif choice == 7:
+                func.remove_temp()
                 exit()
                 break
 
             else:
                 func.exception_range_heading("1", "7")
                 input()
-                func.clear_screen()
+                func.clear()
                 continue
 
         except ValueError:
             func.exception_heading("Please input a number")
             input()
-            func.clear_screen()
+            func.clear()
