@@ -77,7 +77,8 @@ def main_program():
                 func.clear()
                 continue
 
-        except ValueError:
-            func.exception_heading("Please input a number")
+        except Exception as err:
+            func.exception_heading(f"Please input a number")
+            func.exception_heading(f"Error: {err}")
             input()
             func.clear()

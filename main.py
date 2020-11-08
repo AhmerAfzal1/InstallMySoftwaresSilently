@@ -96,8 +96,10 @@ def main():
                     continue
 
                 elif choice == 1:
-                    print("Please wait")
-                    break
+                    func.under_progress_heading("This feature is under progress")
+                    input()
+                    func.clear()
+                    continue
 
                 elif choice == 2:
                     func.clear()
@@ -126,8 +128,9 @@ def main():
                     func.clear()
                     continue
 
-            except ValueError:
-                func.exception_heading("Please input a number")
+            except Exception as err:
+                func.exception_heading(f"Please input a number")
+                func.exception_heading(f"Error: {err}")
                 input()
                 func.clear()
     else:
