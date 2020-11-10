@@ -46,7 +46,6 @@ def main_program():
 
             elif choice == 3:
                 func.install_software(java_jdk, 'Setup.exe /s ADDLOCAL="ToolsFeature,SourceFeature"', is_setx=True)
-                input()
                 func.clear()
                 continue
 

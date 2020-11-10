@@ -41,23 +41,28 @@ def main_program():
 
             elif choice == 2:
                 func.install_software(firefox, "Setup.exe -ms")
-                break
+                func.clear()
+                continue
 
             elif choice == 3:
                 func.install_software(idm, "Setup.exe /S /EN")
-                break
+                func.clear()
+                continue
 
             elif choice == 4:
                 func.install_software(chrome, "Setup.exe /S")
-                break
+                func.clear()
+                continue
 
             elif choice == 5:
                 func.install_software(net_balancer, "Setup.exe /SILENT /VERYSILENT /NORESTART")
-                break
+                func.clear()
+                continue
 
             elif choice == 6:
                 func.install_software(net_limiter, "Setup.exe /EXENOUI /EXENOUPDATES")
-                break
+                func.clear()
+                continue
 
             elif choice == 7:
                 func.remove_temp()
