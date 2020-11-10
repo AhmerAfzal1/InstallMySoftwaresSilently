@@ -2,6 +2,7 @@ from colorama import init
 import constant as const
 import functions as func
 import main
+import sys
 
 android_studio = "Android Studio 4.1.0 (201.6858069)"
 git = "Git 2.28.0"
@@ -68,8 +69,7 @@ def main_program():
 
             elif choice == 7:
                 func.remove_temp()
-                exit()
-                break
+                sys.exit()
 
             else:
                 func.exception_range_heading("1", "7")

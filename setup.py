@@ -1,7 +1,5 @@
 from distutils.core import setup
-from distutils.sysconfig import get_python_lib
 import constant as conts
-import os
 import sys
 
 try:
@@ -9,45 +7,71 @@ try:
     # Redistributable Package
     import py2exe
 except ImportError:
-    if len(sys.argv) >= 2 and sys.argv[1] == 'py2exe':
-        print('Cannot import py2exe', file=sys.stderr)
+    if len(sys.argv) >= 2 and sys.argv[1] == "py2exe":
+        print("Cannot import py2exe", file=sys.stderr)
         exit(1)
-
-# mfc_dir = get_python_lib() + '\\pythonwin\\'
-# mfc_files = [os.path.join(mfc_dir, i) for i in
-#              ["mfc90.dll", "mfc90u.dll", "mfcm90.dll", "mfcm90u.dll", "Microsoft.VC90.MFC.manifest"]]
-# data_files = [("Microsoft.VC90.MFC", mfc_files), ]
 
 if len(sys.argv) == 1:
     sys.argv.append("py2exe")
     sys.argv.append("-q")
 
-
-class Target:
-    def __init__(self, **kw):
-        self.__dict__.update(kw)
-        self.version = conts.__version__
-        self.company_name = conts.__company__
-        self.copyright = conts.__copyright__
-        self.name = conts.__product__
-
+py2exe_console = [{
+    "comments": conts.heading_main_title,
+    "copyright": conts.__copyright__,
+    "description": conts.__desription__,
+    "dest_base": conts.__product__,
+    "icon_resources": [(0, "setup.ico")],
+    "product_name": conts.__product__,
+    "product_version": conts.__version__,
+    "script": "main.py",
+    "version": conts.__version__,
+}]
 
 py2exe_options = {
-    'bundle_files': 2,
-    'compressed': 1,
-    'optimize': 2,
-    'dist_dir': '.',
-    'dll_excludes': ['w9xpopen.exe', 'crypt32.dll'],
+    "bundle_files": 3,
+    "compressed": True,
+    "dist_dir": "dist",
+    "dll_excludes": [],
+    "excludes": ["tkinter"],
+    "optimize": 2,
 }
 
-target = Target(
-    description=conts.heading_main_title,
-    script="main.py",
-    dest_base=conts.__product__)
-
 setup(
-    options={'py2exe': py2exe_options},
+    options={"py2exe": py2exe_options},
     zipfile=None,
-    console=[target],
-    # data_files=data_files
+    console=py2exe_console,
+    name=conts.__product__,
+    version=conts.__version__,
+    description=conts.__desription__,
+    long_description=conts.heading_main_title,
+    author=conts.__author__,
+    author_email=conts.__email__,
+    maintainer=conts.__author__,
+    maintainer_email=conts.__email__,
+    license="Unlicense",
+
+    classifiers=[
+        "Topic :: Desktop Environment :: File Managers",
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "License :: Public Domain",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: Implementation",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: IronPython",
+        "Programming Language :: Python :: Implementation :: Jython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+    ],
 )

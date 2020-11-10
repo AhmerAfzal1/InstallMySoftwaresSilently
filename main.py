@@ -119,8 +119,7 @@ def main():
 
                 elif choice == 9:
                     func.remove_temp()
-                    exit()
-                    break
+                    sys.exit()
 
                 else:
                     func.exception_range_heading("1", "9")

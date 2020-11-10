@@ -2,6 +2,7 @@ from colorama import init
 import constant as const
 import functions as func
 import main
+import sys
 
 chrome = "Google Chrome 84.0.4147.89"
 firefox = "Firefox 82.0"
@@ -60,8 +61,7 @@ def main_program():
 
             elif choice == 7:
                 func.remove_temp()
-                exit()
-                break
+                sys.exit()
 
             else:
                 func.exception_range_heading("1", "7")

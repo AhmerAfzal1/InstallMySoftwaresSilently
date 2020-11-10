@@ -8,7 +8,7 @@ import time
 import zipfile
 
 init()
-temp = os.path.join(tempfile.gettempdir(), "InstallMySofts")
+temp = os.path.join(tempfile.gettempdir(), const.__product__)
 if not os.path.exists(temp):
     os.makedirs(temp)
 

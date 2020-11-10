@@ -1,2 +1,2 @@
-colorama~=0.4.4
-py2exe~=0.10.0.2
+colorama
+py2exe
