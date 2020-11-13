@@ -40,29 +40,31 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(android_studio, "Setup.exe /S /Allusers")
+                func.install_software(file_name=android_studio, setup_with_arg="Setup.exe /S /Allusers")
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(java_jdk, 'Setup.exe /s ADDLOCAL="ToolsFeature,SourceFeature"', is_setx=True)
+                func.install_software(file_name=java_jdk,
+                                      setup_with_arg='Setup.exe /s ADDLOCAL="ToolsFeature,SourceFeature"', is_setx=True)
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.install_software(python, "Setup.exe")
+                func.install_software(file_name=python, setup_with_arg="Setup.exe")
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.install_software(git, 'Setup.exe /VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
-                                           '/RESTARTAPPLICATIONS /COMPONENTS="icons,ext\reg,'
-                                           'ext\reg\shellhere,ext\reg\guihere,assoc,assoc_sh"')
+                func.install_software(file_name=git,
+                                      setup_with_arg='/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
+                                                     '/RESTARTAPPLICATIONS /COMPONENTS=\"icons,icons\\desktop,ext\\reg,'
+                                                     'ext\\reg\\shellhere,assoc,assoc_sh,consolefont\"')
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.install_software(notepad_p_p, "Setup.exe /S")
+                func.install_software(file_name=notepad_p_p, setup_with_arg="Setup.exe /S")
                 func.clear()
                 continue
 

@@ -5,8 +5,13 @@ import developer
 import enum
 import functions as func
 import internet
+import major
+import mobile
+import multimedia
 import os
+import pdf
 import sys
+import utilities
 
 
 class SW(enum.IntEnum):
@@ -111,10 +116,29 @@ def main():
                     internet.main_program()
                     break
 
-                elif choice == 4 or choice == 5 or choice == 6 or choice == 7 or choice == 8:
-                    func.under_progress_heading("This feature is under progress")
-                    input()
+                elif choice == 4:
                     func.clear()
+                    major.main_program()
+                    continue
+
+                elif choice == 5:
+                    func.clear()
+                    mobile.main_program()
+                    continue
+
+                elif choice == 6:
+                    func.clear()
+                    multimedia.main_program()
+                    continue
+
+                elif choice == 7:
+                    func.clear()
+                    pdf.main_program()
+                    continue
+
+                elif choice == 8:
+                    func.clear()
+                    utilities.main_program()
                     continue
 
                 elif choice == 9:
@@ -133,10 +157,6 @@ def main():
                 input()
                 func.clear()
     else:
-        hinstance = ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, sys.argv[0], None, SW.SHOWNORMAL)
+        hinstance = ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, sys.argv[0], None, SW.SHOWNORMAL)
         if hinstance <= 32:
             raise RuntimeError(ERROR(hinstance))
-
-
-if __name__ == "__main__":
-    main()
