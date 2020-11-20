@@ -46,22 +46,22 @@ def find_files(drive_path, is_dir_find=False, dir_name=None, file_name=None, fil
 def find_files_from_drive(is_dir_find=False, dir_name=None, file_name=None, file_ext=None):
     try:
         if is_dir_find:
+            log_show(f"Finding directory {dir_name}")
             find_dir = find_files("F:\\", is_dir_find=is_dir_find, dir_name=dir_name)
             if not find_dir:
                 find_dir = find_files("D:\\", is_dir_find=is_dir_find, dir_name=dir_name)
             if not find_dir:
                 exception_heading("Directory not found")
             else:
-                log_show(find_dir)
                 return find_dir
         else:
+            log_show(f"Finding file {file_name}")
             find_file = find_files("F:\\", is_dir_find=is_dir_find, file_name=file_name, file_ext=file_ext)
             if not find_file:
                 find_file = find_files("D:\\", is_dir_find=is_dir_find, file_name=file_name, file_ext=file_ext)
             if not find_file:
                 exception_heading("File not found")
             else:
-                log_show(find_file)
                 time.sleep(1)
                 log_show("Unzipping to " + get_temp_path_by_file(file_name))
                 unzip_file(find_file)

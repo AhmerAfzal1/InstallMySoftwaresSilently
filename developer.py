@@ -5,7 +5,7 @@ import main
 import sys
 
 android_studio = "Android Studio 4.1.0 (201.6858069)"
-git = "Git 2.28.0"
+git = "Git 2.29.2.2"
 java_jdk = "Java JDK 8 Update 271"
 notepad_p_p = "Notepad++ 7.9.1"
 python = "Python 3.9.0"
@@ -57,9 +57,10 @@ def main_program():
 
             elif choice == 5:
                 func.install_software(file_name=git,
-                                      setup_with_arg='/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
-                                                     '/RESTARTAPPLICATIONS /COMPONENTS=\"icons,icons\\desktop,ext\\reg,'
-                                                     'ext\\reg\\shellhere,assoc,assoc_sh,consolefont\"')
+                                      setup_with_arg='Setup.exe /VERYSILENT /NORESTART /NOCANCEL /SP- '
+                                                     '/CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /COMPONENTS=\"icons,'
+                                                     'icons\\desktop,ext\\reg, ext\\reg\\shellhere,assoc,assoc_sh,'
+                                                     'consolefont\"')
                 func.clear()
                 continue
 
