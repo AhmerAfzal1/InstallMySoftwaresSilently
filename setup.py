@@ -1,6 +1,7 @@
-from distutils.core import setup
-import constant as conts
 import sys
+from distutils.core import setup
+
+import constant as conts
 
 try:
     # This will create an exe that needs Microsoft Visual C++ 2008

@@ -1,8 +1,10 @@
+import sys
+
 from colorama import init
+
 import constant as const
 import functions as func
 import main
-import sys
 
 k_lite = "K-Lite Mega Codec Pack 15.8.0"
 mp3_tag = "Mp3Tag 2.96"

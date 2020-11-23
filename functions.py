@@ -1,5 +1,3 @@
-from colorama import init, Fore, Style
-import constant as const
 import enum
 import os
 import re
@@ -8,6 +6,10 @@ import sys
 import tempfile
 import time
 import zipfile
+
+from colorama import init, Fore, Style
+
+import constant as const
 
 init()
 temp = os.path.join(tempfile.gettempdir(), const.__product__)

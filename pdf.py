@@ -1,8 +1,10 @@
+import sys
+
 from colorama import init
+
 import constant as const
 import functions as func
 import main
-import sys
 
 foxit_adv_pdf_editor = "Foxit Advanced PDF Editor 3.10"
 infix_pdf_editor = "Infix PDF Editor Pro 7.4.0"

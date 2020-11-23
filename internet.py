@@ -1,8 +1,10 @@
+import sys
+
 from colorama import init
+
 import constant as const
 import functions as func
 import main
-import sys
 
 chrome = "Google Chrome 84.0.4147.89"
 firefox = "Firefox 82.0"

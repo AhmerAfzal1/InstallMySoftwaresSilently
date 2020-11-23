@@ -1,16 +1,18 @@
-from colorama import init
-import constant as const
 import ctypes
-import developer
 import enum
+import os
+import sys
+
+from colorama import init
+
+import constant as const
+import developer
 import functions as func
 import internet
 import major
 import mobile
 import multimedia
-import os
 import pdf
-import sys
 import utilities
 
 

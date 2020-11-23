@@ -1,9 +1,11 @@
+import sys
+import time
+
 from colorama import init
+
 import constant as const
 import functions as func
 import main
-import sys
-import time
 
 aomei_partition = "AOMEI Partition Assistant 8.10.0"
 better_rename = "Better File Rename 6.18"

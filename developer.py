@@ -1,8 +1,10 @@
+import sys
+
 from colorama import init
+
 import constant as const
 import functions as func
 import main
-import sys
 
 android_studio = "Android Studio 4.1.0 (201.6858069)"
 git = "Git 2.29.2.2"

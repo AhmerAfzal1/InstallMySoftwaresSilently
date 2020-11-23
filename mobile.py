@@ -1,8 +1,10 @@
+import sys
+
 from colorama import init
+
 import constant as const
 import functions as func
 import main
-import sys
 
 i_tunes = "iTunes 12.9.5.7"
 samsung_usb = "Samsung USB Drivers 1.7.35.0"

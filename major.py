@@ -1,8 +1,10 @@
+import sys
+
 from colorama import init
+
 import constant as const
 import functions as func
 import main
-import sys
 
 adobe_acrobat_pro = "Adobe Acrobat Pro DC 2020.009.20067"
 adobe_acrobat_reader = "Adobe Acrobat Reader DC 2020.009.20067"
@@ -42,7 +44,7 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=ms_office,  setup_with_arg="AUTORUN.exe")
+                func.install_software(file_name=ms_office, setup_with_arg="AUTORUN.exe")
                 func.clear()
                 continue
 
