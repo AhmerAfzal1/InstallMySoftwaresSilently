@@ -1,5 +1,6 @@
 from colorama import init, Fore, Style
 import constant as const
+import enum
 import os
 import re
 import shutil
@@ -14,6 +15,15 @@ if not os.path.exists(temp):
     os.makedirs(temp)
 
 
+class SetX(enum.Enum):
+    JAVA = "java"
+
+
+class JavaVersion(enum.IntEnum):
+    JAVA_8 = 8
+    JAVA_12 = 12
+
+
 def center_text(string):
     print(string.center(shutil.get_terminal_size().columns))
 
@@ -24,12 +34,16 @@ def clear():
 
 
 def countdown(t):
-    while t >= 0:
-        mins, secs = divmod(t, 60)
-        timeformat = '{:02d}:{:02d}'.format(mins, secs)
-        log_show(f"Please wait for {timeformat} seconds its automatically goto back", end="\r")
-        time.sleep(1)
-        t -= 1
+    mins, secs = divmod(t, 60)
+    timeformat = '{:02d}:{:02d}'.format(mins, secs)
+    log_show(f"Please wait for {timeformat} seconds its automatically goto back")
+    time.sleep(t)
+    # while t >= 0:
+    #     mins, secs = divmod(t, 60)
+    #     timeformat = '{:02d}:{:02d}'.format(mins, secs)
+    #     log_show(f"Please wait for {timeformat} seconds its automatically goto back", end="\r")
+    #     time.sleep(1)
+    #     t -= 1
 
 
 def find_files(drive_path, is_dir_find=False, dir_name=None, file_name=None, file_ext=None):
@@ -74,7 +88,8 @@ def get_temp_path_by_file(file_name):
     return f"{temp}{os.sep}{file_name}{os.sep}"
 
 
-def install_software(is_dir_find=False, dir_name=None, file_name=None, setup_with_arg=None, is_setx=False, ext=".zip"):
+def install_software(is_dir_find=False, dir_name=None, file_name=None, setup_with_arg=None, registry=None,
+                     set_environ=None, ext=".zip"):
     try:
         if is_dir_find:
             found_dir = find_files_from_drive(is_dir_find=is_dir_find, dir_name=dir_name)
@@ -91,33 +106,17 @@ def install_software(is_dir_find=False, dir_name=None, file_name=None, setup_wit
             os.chdir(get_temp_path_by_file(file_name))
             time.sleep(1)
             os.system(f"{setup_with_arg}")
-            if is_setx:
-                setx = ""
-                output = re.findall(r"[\d.]+", file_name)
-                new_output = re.findall(r"[\d]+", output[0])
-                java_home = "JAVA_HOME"
-                setx_jdk_8 = f"{os.environ['ProgramFiles']}{os.sep}Java{os.sep}jdk1.8.0_{output[1]}"
-                setx_jdk_12 = f"{os.environ['ProgramFiles']}{os.sep}Java{os.sep}jdk-{output[0]}"
-                if os.environ.get(java_home) is not None:
-                    log_show(f"Already existed JAVA_HOME {os.environ[java_home]}")
-                    if new_output[0] == "8":
-                        setx = setx_jdk_8
-                        os.environ[java_home] = setx
-                    elif new_output[0] == "12":
-                        setx = setx_jdk_12
-                        os.environ[java_home] = setx
-                    log_show(setx)
-                    log_show(f"Now updated to {setx}")
-                else:
-                    if new_output[0] == "8":
-                        setx = setx_jdk_8
-                        os.environ[java_home] = setx
-                    elif new_output[0] == "12":
-                        setx = setx_jdk_12
-                        os.environ[java_home] = setx
+            if registry is not None:
+                if os.path.isfile(get_temp_path_by_file(file_name) + os.sep + registry):
+                    log_show(f"Installing registry {registry}")
                     time.sleep(1)
-                    log_show(setx)
-            countdown(4)
+                    # os.chdir(get_temp_path_by_file(file_name))
+                    os.system(f"{registry}")
+                else:
+                    exception_heading(f"File {registry} not found")
+            if set_environ.value is not None:
+                set_x(file_name=file_name, setx_enum=SetX.JAVA)
+            countdown(3)
     except Exception as err:
         exception_heading(f"Error: {err}")
 
@@ -161,6 +160,37 @@ def remove_temp():
 def set_console_title(string):
     if os.name == "nt":
         os.system("title " + string)
+
+
+def set_x(file_name, setx_enum):
+    if setx_enum.value == SetX.JAVA.value:
+        setx = ""
+        java_home = "JAVA_HOME"
+        output = re.findall(r"[\d.]+", file_name)
+        new_output = re.findall(r"[\d]+", output[0])
+        setx_jdk_8 = f"{os.environ['ProgramFiles']}{os.sep}Java{os.sep}jdk1.8.0_{output[1]}"
+        setx_jdk_12 = f"{os.environ['ProgramFiles']}{os.sep}Java{os.sep}jdk-{output[0]}"
+        if os.environ.get(java_home) is not None:
+            log_show(f"Already existed JAVA_HOME {os.environ[java_home]}")
+            if new_output[0] == JavaVersion.JAVA_8.value:
+                setx = setx_jdk_8
+                os.environ[java_home] = setx
+            elif new_output[0] == JavaVersion.JAVA_12.value:
+                setx = setx_jdk_12
+                os.environ[java_home] = setx
+            log_show(setx)
+            log_show(f"Now updated to {setx}")
+        else:
+            if new_output[0] == JavaVersion.JAVA_8.value:
+                setx = setx_jdk_8
+                os.environ[java_home] = setx
+            elif new_output[0] == JavaVersion.JAVA_12.value:
+                setx = setx_jdk_12
+                os.environ[java_home] = setx
+            time.sleep(1)
+            log_show(setx)
+    else:
+        exception_heading(f"Invalid environ {setx_enum} type")
 
 
 def unzip_file(file_name):

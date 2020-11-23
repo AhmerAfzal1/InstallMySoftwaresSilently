@@ -46,7 +46,8 @@ def main_program():
 
             elif choice == 3:
                 func.install_software(file_name=java_jdk,
-                                      setup_with_arg='Setup.exe /s ADDLOCAL="ToolsFeature,SourceFeature"', is_setx=True)
+                                      setup_with_arg='Setup.exe /s ADDLOCAL="ToolsFeature,SourceFeature"',
+                                      set_environ=func.SetX.JAVA)
                 func.clear()
                 continue
 
@@ -57,10 +58,10 @@ def main_program():
 
             elif choice == 5:
                 func.install_software(file_name=git,
-                                      setup_with_arg='Setup.exe /VERYSILENT /NORESTART /NOCANCEL /SP- '
-                                                     '/CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /COMPONENTS=\"icons,'
-                                                     'icons\\desktop,ext\\reg, ext\\reg\\shellhere,assoc,assoc_sh,'
-                                                     'consolefont\"')
+                                      setup_with_arg='Setup.exe /VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATION'
+                                                     'S /RESTARTAPPLICATIONS /COMPONENTS="icons,icons\\desktop,ext,'
+                                                     'ext\\reg,ext\\reg\\shellhere,assoc,assoc_sh,consolefont"',
+                                      registry="reg.reg")
                 func.clear()
                 continue
 
