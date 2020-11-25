@@ -52,15 +52,15 @@ def make_font_bigger():
     std_output_handle = -11
 
     class Coord(ctypes.Structure):
-        _fields_ = [("X", ctypes.c_short), ("Y", ctypes.c_short)]
+        _fields_ = [('X', ctypes.c_short), ('Y', ctypes.c_short)]
 
     class ConsoleFontInfoex(ctypes.Structure):
-        _fields_ = [("cbSize", ctypes.c_ulong),
-                    ("nFont", ctypes.c_ulong),
-                    ("dwFontSize", Coord),
-                    ("FontFamily", ctypes.c_uint),
-                    ("FontWeight", ctypes.c_uint),
-                    ("FaceName", ctypes.c_wchar * lf_facesize)]
+        _fields_ = [('cbSize', ctypes.c_ulong),
+                    ('nFont', ctypes.c_ulong),
+                    ('dwFontSize', Coord),
+                    ('FontFamily', ctypes.c_uint),
+                    ('FontWeight', ctypes.c_uint),
+                    ('FaceName', ctypes.c_wchar * lf_facesize)]
 
     font = ConsoleFontInfoex()
     font.cbSize = ctypes.sizeof(ConsoleFontInfoex)
@@ -69,7 +69,7 @@ def make_font_bigger():
     font.dwFontSize.Y = 16  # Font size value
     font.FontFamily = 54
     font.FontWeight = 400
-    font.FaceName = "Lucida Console"
+    font.FaceName = 'Lucida Console'
 
     handle = ctypes.windll.kernel32.GetStdHandle(std_output_handle)
     ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
@@ -77,33 +77,33 @@ def make_font_bigger():
 
 def main():
     make_font_bigger()
-    os.system("mode 110, 33")
+    os.system('mode 110, 33')
     func.set_console_title(const.heading_main_title)
     init()
     if ctypes.windll.shell32.IsUserAnAdmin():
         while True:
             try:
                 func.main_heading()
-                func.main_heading_softwares("01", "All Drivers & Recommended")
-                func.main_heading_softwares("02", "Developer")
-                func.main_heading_softwares("03", "Internet")
-                func.main_heading_softwares("04", "Major")
-                func.main_heading_softwares("05", "Mobile")
-                func.main_heading_softwares("06", "Multimedia")
-                func.main_heading_softwares("07", "PDF")
-                func.main_heading_softwares("08", "Utilities")
-                func.eixt_heading("09")
+                func.main_heading_softwares('01', 'All Drivers & Recommended')
+                func.main_heading_softwares('02', 'Developer')
+                func.main_heading_softwares('03', 'Internet')
+                func.main_heading_softwares('04', 'Major')
+                func.main_heading_softwares('05', 'Mobile')
+                func.main_heading_softwares('06', 'Multimedia')
+                func.main_heading_softwares('07', 'PDF')
+                func.main_heading_softwares('08', 'Utilities')
+                func.eixt_heading('09')
 
                 choice = func.input_heading()
 
                 if choice == 0:
-                    func.exception_heading("Value must be greater than zero")
+                    func.exception_heading(const.heading_zero)
                     input()
                     func.clear()
                     continue
 
                 elif choice == 1:
-                    func.under_progress_heading("This feature is under progress")
+                    func.under_progress_heading('This feature is under progress')
                     input()
                     func.clear()
                     continue
@@ -148,17 +148,17 @@ def main():
                     sys.exit()
 
                 else:
-                    func.exception_range_heading("1", "9")
+                    func.exception_range_heading('1', '9')
                     input()
                     func.clear()
                     continue
 
             except Exception as err:
-                func.exception_heading(f"Please input a number")
-                func.exception_heading(f"Error: {err}")
+                func.exception_heading(f'Please input a number')
+                func.exception_heading(f'Error: {err}')
                 input()
                 func.clear()
     else:
-        hinstance = ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, sys.argv[0], None, SW.SHOWNORMAL)
+        hinstance = ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, sys.argv[0], None, SW.SHOWNORMAL)
         if hinstance <= 32:
             raise RuntimeError(ERROR(hinstance))

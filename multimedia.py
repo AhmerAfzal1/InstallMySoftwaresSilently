@@ -6,8 +6,8 @@ import constant as const
 import functions as func
 import main
 
-k_lite = "K-Lite Mega Codec Pack 15.8.0"
-mp3_tag = "Mp3Tag 2.96"
+k_lite = 'K-Lite Mega Codec Pack 15.8.0'
+mp3_tag = 'Mp3Tag 2.96'
 
 
 def main_program():
@@ -18,14 +18,14 @@ def main_program():
             func.main_heading()
             func.sub_heading(const.heading_multimedia)
             func.back_heading()
-            func.sub_heading_softwares("02", k_lite)
-            func.sub_heading_softwares("03", mp3_tag)
-            func.eixt_heading("04")
+            func.sub_heading_softwares('02', k_lite)
+            func.sub_heading_softwares('03', mp3_tag)
+            func.eixt_heading('04')
 
             choice = func.input_heading()
 
             if choice == 0:
-                func.exception_heading("Value must be greater than zero")
+                func.exception_heading(const.heading_zero)
                 input()
                 func.clear()
                 continue
@@ -36,12 +36,12 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=k_lite, setup_with_arg="Setup.exe /verysilent")
+                func.install_software(file_name=k_lite, setup_with_arg='Setup.exe /verysilent')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=mp3_tag, setup_with_arg="Setup.exe /S")
+                func.install_software(file_name=mp3_tag, setup_with_arg='Setup.exe /S')
                 func.clear()
                 continue
 
@@ -50,13 +50,13 @@ def main_program():
                 sys.exit()
 
             else:
-                func.exception_range_heading("1", "4")
+                func.exception_range_heading('1', '4')
                 input()
                 func.clear()
                 continue
 
         except Exception as err:
-            func.exception_heading(f"Please input a number")
-            func.exception_heading(f"Error: {err}")
+            func.exception_heading(f'Please input a number')
+            func.exception_heading(f'Error: {err}')
             input()
             func.clear()
