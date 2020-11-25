@@ -57,7 +57,7 @@ def main_program():
                 sys.exit()
 
             else:
-                func.exception_range_heading('1', '5')
+                func.exception_range_heading(1, 5)
                 input()
                 func.clear()
                 continue

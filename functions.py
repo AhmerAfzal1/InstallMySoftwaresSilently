@@ -294,7 +294,7 @@ def exception_heading(string):
 
 def exception_range_heading(num1, num2):
     print(
-        f'\n{Fore.LIGHTRED_EX}    Value is not between {num1} to {num2}! '
+        f'\n{Fore.LIGHTRED_EX}    Value is not between {int(num1)} to {int(num2)}! '
         f'Please try again with valid options{Style.RESET_ALL}')
 
 

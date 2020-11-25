@@ -79,7 +79,7 @@ def main_program():
                 sys.exit()
 
             else:
-                func.exception_range_heading('1', '7')
+                func.exception_range_heading(1, 7)
                 input()
                 func.clear()
                 continue

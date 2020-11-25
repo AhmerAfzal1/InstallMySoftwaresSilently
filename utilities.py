@@ -130,7 +130,7 @@ def main_program():
                 sys.exit()
 
             else:
-                func.exception_range_heading('1', '15')
+                func.exception_range_heading(1, 15)
                 input()
                 func.clear()
                 continue

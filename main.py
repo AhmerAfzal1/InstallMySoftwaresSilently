@@ -148,7 +148,7 @@ def main():
                     sys.exit()
 
                 else:
-                    func.exception_range_heading('1', '9')
+                    func.exception_range_heading(1, 9)
                     input()
                     func.clear()
                     continue

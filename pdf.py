@@ -80,7 +80,7 @@ def main_program():
                 sys.exit()
 
             else:
-                func.exception_range_heading('1', '8')
+                func.exception_range_heading(1, 8)
                 input()
                 func.clear()
                 continue
