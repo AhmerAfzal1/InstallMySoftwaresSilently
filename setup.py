@@ -12,9 +12,10 @@ except ImportError:
         print('Cannot import py2exe', file=sys.stderr)
         exit(1)
 
-if len(sys.argv) == 1:
-    sys.argv.append('py2exe')
-    sys.argv.append('-q')
+# python setup.py install
+# python setup.py py2exe
+
+sys.argv.append('py2exe')
 
 py2exe_console = [{
     'comments': conts.heading_main_title,
@@ -24,7 +25,8 @@ py2exe_console = [{
     'icon_resources': [(0, 'setup.ico')],
     'product_name': conts.__product__,
     'product_version': conts.__version__,
-    'script': 'main.py',
+    'script': '__main__.py',
+    'uac_info': 'requireAdministrator',
     'version': conts.__version__,
 }]
 
@@ -38,18 +40,19 @@ py2exe_options = {
 }
 
 setup(
-    options={'py2exe': py2exe_options},
-    zipfile=None,
-    console=py2exe_console,
-    name=conts.__product__,
-    version=conts.__version__,
-    description=conts.__desription__,
-    long_description=conts.heading_main_title,
-    author=conts.__author__,
     author_email=conts.__email__,
-    maintainer=conts.__author__,
-    maintainer_email=conts.__email__,
+    author=conts.__author__,
+    console=py2exe_console,
+    description=conts.__desription__,
     license='Unlicense',
+    long_description=conts.heading_main_title,
+    maintainer_email=conts.__email__,
+    maintainer=conts.__author__,
+    name=conts.__product__,
+    options={'py2exe': py2exe_options},  # Optionally 'py2exe' replaced to 'build_exe'
+    platforms='Windows',
+    version=conts.__version__,
+    zipfile=None,
 
     classifiers=[
         'Topic :: Desktop Environment :: File Managers',
