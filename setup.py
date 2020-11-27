@@ -49,7 +49,7 @@ setup(
     maintainer_email=conts.__email__,
     maintainer=conts.__author__,
     name=conts.__product__,
-    options={'py2exe': py2exe_options},  # Optionally 'py2exe' replaced to 'build_exe'
+    options={'py2exe': py2exe_options},  # Optionally 'py2exe' can replaced to 'build_exe'
     platforms='Windows',
     version=conts.__version__,
     zipfile=None,
@@ -60,9 +60,6 @@ setup(
         'Environment :: Console',
         'License :: Public Domain',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',

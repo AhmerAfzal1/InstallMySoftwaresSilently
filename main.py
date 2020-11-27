@@ -103,8 +103,27 @@ def main():
                     continue
 
                 elif choice == 1:
-                    func.under_progress_heading('This feature is under progress')
-                    input()
+                    func.install_software(file_name='Drivers', driver_dir='Audio', setup_with_arg='Setup.exe /S')
+                    func.install_software(file_name='Drivers', driver_dir='Chipset',
+                                          sub_dri_dir='Intel Active Management Technology',
+                                          setup_with_arg='Setup.exe -L 0409 -S')
+                    func.install_software(file_name='Drivers', driver_dir='Chipset', sub_dri_dir='Intel Chipset Device',
+                                          setup_with_arg='Setup.exe -L 0409 -S')
+                    func.install_software(file_name='Drivers', driver_dir='Graphics',
+                                          setup_with_arg='igxpin.exe -L enu -S')
+                    func.install_software(file_name='Drivers', driver_dir='Network',
+                                          sub_dri_dir='APPS\\PROSETDX\\Winx64\\',
+                                          setup_with_arg='DxSetup.exe /quiet /norestart')
+                    developer.git()
+                    developer.java_jdk()
+                    developer.notepad_p_p()
+                    developer.android_studio()
+                    internet.firefox()
+                    mobile.samsung_usb()
+                    multimedia.k_lite()
+                    utilities.c_cleaner()
+                    utilities.fonts()
+                    utilities.winrar()
                     func.clear()
                     continue
 

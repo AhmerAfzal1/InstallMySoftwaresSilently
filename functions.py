@@ -40,22 +40,9 @@ def clear():
         os.system('cls')
 
 
-def countdown(t):
-    mins, secs = divmod(t, 60)
-    timeformat = '{:02d}:{:02d}'.format(mins, secs)
-    log_show(f'Please wait for {timeformat} seconds its automatically goto back')
-    time.sleep(t)
-    # while t >= 0:
-    #     mins, secs = divmod(t, 60)
-    #     timeformat = '{:02d}:{:02d}'.format(mins, secs)
-    #     log_show(f'Please wait for {timeformat} seconds its automatically goto back', end='\r')
-    #     time.sleep(1)
-    #     t -= 1
-
-
-def find_files(drive_path, is_dir_find=False, dir_name=None, file_name=None, file_ext=None):
+def find_files(drive_path, dir_name=None, file_name=None, file_ext=None):
     for root, dirs, files in os.walk(drive_path):
-        if is_dir_find:
+        if dir_name is not None:
             if dir_name in dirs:
                 return os.path.join(root, dir_name)
         else:
@@ -64,25 +51,25 @@ def find_files(drive_path, is_dir_find=False, dir_name=None, file_name=None, fil
                 return os.path.join(root, new_file_with_ext)
 
 
-def find_files_from_drive(is_dir_find=False, dir_name=None, file_name=None, file_ext=None):
+def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
     try:
         if not file_ext.endswith('.zip'):
             exception_heading(f'{file_name + file_ext} is not unsupported format, please use zip')
         else:
-            if is_dir_find:
+            if dir_name is not None:
                 log_show(f'Finding directory {dir_name}')
-                find_dir = find_files('F:\\', is_dir_find=is_dir_find, dir_name=dir_name)
+                find_dir = find_files('F:\\', dir_name=dir_name)
                 if not find_dir:
-                    find_dir = find_files('D:\\', is_dir_find=is_dir_find, dir_name=dir_name)
+                    find_dir = find_files('D:\\', dir_name=dir_name)
                 if not find_dir:
                     exception_heading('Directory not found')
                 else:
                     return find_dir
             else:
                 log_show(f'Finding file {file_name}')
-                find_file = find_files('F:\\', is_dir_find=is_dir_find, file_name=file_name, file_ext=file_ext)
+                find_file = find_files('F:\\', dir_name=None, file_name=file_name, file_ext=file_ext)
                 if not find_file:
-                    find_file = find_files('D:\\', is_dir_find=is_dir_find, file_name=file_name, file_ext=file_ext)
+                    find_file = find_files('D:\\', dir_name=None, file_name=file_name, file_ext=file_ext)
                 if not find_file:
                     exception_heading('File not found')
                 else:
@@ -94,15 +81,22 @@ def find_files_from_drive(is_dir_find=False, dir_name=None, file_name=None, file
         exception_heading(f'Error: {err}')
 
 
+def get_temp_drivers_path_by_file(file_name, drivers_dir, sub_drivers_dir=None):
+    if sub_drivers_dir is not None:
+        return f'{get_temp_path_by_file(file_name)}{drivers_dir}{os.sep}{sub_drivers_dir}{os.sep}'
+    else:
+        return f'{get_temp_path_by_file(file_name)}{drivers_dir}{os.sep}'
+
+
 def get_temp_path_by_file(file_name):
     return f'{temp}{os.sep}{file_name}{os.sep}'
 
 
-def install_software(is_dir_find=False, dir_name=None, file_name=None, setup_with_arg=None, registry=None,
-                     set_environ=None, another_task=None, ext='.zip'):
+def install_software(dir_name=None, file_name=None, setup_with_arg=None, registry=None, set_environ=None,
+                     another_task=None, driver_dir=None, sub_dri_dir=None, ext='.zip'):
     try:
-        if is_dir_find:
-            found_dir = find_files_from_drive(is_dir_find=is_dir_find, dir_name=dir_name)
+        if dir_name is not None:  # To find directory
+            found_dir = find_files_from_drive(dir_name=dir_name, file_ext=ext)
             if len(os.listdir(found_dir)):
                 log_show(f'Installing from directory {found_dir}')
                 os.chdir(found_dir)
@@ -111,24 +105,38 @@ def install_software(is_dir_find=False, dir_name=None, file_name=None, setup_wit
             else:
                 log_show(f'{found_dir} is empty')
         else:
-            find_files_from_drive(is_dir_find=is_dir_find, file_name=file_name, file_ext=ext)
-            log_show(f'Installing {file_name}')
-            os.chdir(get_temp_path_by_file(file_name))
-            time.sleep(1)
-            os.system(f'{setup_with_arg}')
-            if registry is not None:
-                if os.path.isfile(get_temp_path_by_file(file_name) + os.sep + registry):
-                    log_show(f'Installing registry {registry}')
-                    time.sleep(1)
-                    # os.chdir(get_temp_path_by_file(file_name))
-                    os.system(f'{registry}')
+            if driver_dir is not None:
+                if not os.path.exists(get_temp_drivers_path_by_file(file_name, driver_dir, sub_dri_dir)):
+                    find_files_from_drive(dir_name=None, file_name=file_name, file_ext=ext)
+                os.chdir(get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir))
+                if sub_dri_dir is not None:
+                    if sub_dri_dir == 'APPS\\PROSETDX\\Winx64\\':
+                        log_show(f'Installing {driver_dir} Drivers')
+                    else:
+                        log_show(f'Installing {sub_dri_dir} Drivers')
                 else:
-                    exception_heading(f'File {registry} not found')
-            if set_environ.value is not None:
-                set_x(file_name=file_name, setx_enum=set_environ.value)
-            if another_task.value is not None:
-                perform_another_task(task=another_task.value)
-            countdown(3)
+                    log_show(f'Installing {driver_dir} Drivers')
+                time.sleep(1)
+                os.system(f'{setup_with_arg}')
+            else:
+                find_files_from_drive(dir_name=None, file_name=file_name, file_ext=ext)
+                log_show(f'Installing {file_name}')
+                os.chdir(get_temp_path_by_file(file_name))
+                time.sleep(1)
+                os.system(f'{setup_with_arg}')
+                if registry is not None:
+                    if os.path.isfile(get_temp_path_by_file(file_name) + os.sep + registry):
+                        log_show(f'Installing registry {registry}')
+                        time.sleep(1)
+                        # os.chdir(get_temp_path_by_file(file_name))
+                        os.system(f'{registry}')
+                    else:
+                        exception_heading(f'File {registry} not found')
+                if set_environ.value is not None:
+                    set_x(file_name=file_name, setx_enum=set_environ.value)
+                if another_task.value is not None:
+                    perform_another_task(task=another_task.value)
+            time.sleep(3)
     except Exception as err:
         exception_heading(f'Error: {err}')
 
@@ -136,33 +144,34 @@ def install_software(is_dir_find=False, dir_name=None, file_name=None, setup_wit
 def perform_another_task(task):
     if task.value == AnOtherTask.REG_GIT.value:
         log_show(f'Installing registry')
-        w_root = reg.HKEY_CLASSES_ROOT
-        w_sub_dir = r'Directory\shell\bash'  # Shell for directories
-        w_sub_ins_dir = r'Directory\Background\shell\bash'  # Shell for inside directories
-        w_sub_file = r'*\shell\Git Bash Here'  # Shell for files
-        w_name = 'Icon'
-        w_value_type = reg.REG_SZ
-        w_default = ''  # Like (Default)
-        w_value = r'C:\Program Files\Git\git-bash.exe'
-        w_value_key = 'Git Bash Here'
+        root = reg.HKEY_CLASSES_ROOT
+        sub_dir = r'Directory\shell\bash'  # Shell for directories
+        sub_ins_dir = r'Directory\Background\shell\bash'  # Shell for inside directories
+        sub_file = r'*\shell\Git Bash Here'  # Shell for files
+        name = 'Icon'
+        value_type = reg.REG_SZ
+        default = ''  # Like (Default)
+        value = r'C:\Program Files\Git\git-bash.exe'
+        value_key = 'Git Bash Here'
+
         # This will make it appear when you right click on a folder
-        set_reg(root_key=w_root, sub_key=w_sub_dir, name_key=w_default, value_type=w_value_type, value_key=w_value_key)
-        set_reg(root_key=w_root, sub_key=w_sub_dir, name_key=w_name, value_type=w_value_type, value_key=w_value)
-        set_reg(root_key=w_root, sub_key=w_sub_dir + r'\command', value_type=w_value_type, name_key=w_default,
-                value_key=f'"{w_value}" "--cd=%1"')
+        set_reg(root_key=root, sub_key=sub_dir, name_key=default, value_type=value_type, value_key=value_key)
+        set_reg(root_key=root, sub_key=sub_dir, name_key=name, value_type=value_type, value_key=value)
+        set_reg(root_key=root, sub_key=sub_dir + r'\command', value_type=value_type, name_key=default,
+                value_key=f'"{value}" "--cd=%1"')
 
         # This will make it appear when you right click inside a folder
-        set_reg(root_key=w_root, sub_key=w_sub_ins_dir, name_key=w_default, value_type=w_value_type,
-                value_key=w_value_key)
-        set_reg(root_key=w_root, sub_key=w_sub_ins_dir, name_key=w_name, value_type=w_value_type, value_key=w_value)
-        set_reg(root_key=w_root, sub_key=w_sub_ins_dir + r'\command', value_type=w_value_type, name_key=w_default,
-                value_key=f'"{w_value}" "--cd=%v."')
+        set_reg(root_key=root, sub_key=sub_ins_dir, name_key=default, value_type=value_type,
+                value_key=value_key)
+        set_reg(root_key=root, sub_key=sub_ins_dir, name_key=name, value_type=value_type, value_key=value)
+        set_reg(root_key=root, sub_key=sub_ins_dir + r'\command', value_type=value_type, name_key=default,
+                value_key=f'"{value}" "--cd=%v."')
 
-        # This will make it appear when you right click a file
-        set_reg(root_key=w_root, sub_key=w_sub_file, name_key=w_default, value_type=w_value_type, value_key=w_value_key)
-        set_reg(root_key=w_root, sub_key=w_sub_file, name_key=w_name, value_type=w_value_type, value_key=w_value)
-        set_reg(root_key=w_root, sub_key=w_sub_file + r'\command', value_type=w_value_type, name_key=w_default,
-                value_key=f'"{w_value}" "--cd=%1"')
+        # # This will make it appear when you right click a file
+        # set_reg(root_key=root, sub_key=sub_file, name_key=default, value_type=value_type, value_key=value_key)
+        # set_reg(root_key=root, sub_key=sub_file, name_key=name, value_type=value_type, value_key=value)
+        # set_reg(root_key=root, sub_key=sub_file + r'\command', value_type=value_type, name_key=default,
+        #         value_key=f'"{value}" "--cd=%1"')
     else:
         exception_heading(f'Invalid AnOtherTask type')
         pass
@@ -209,7 +218,9 @@ def read_reg(computer_name=None, root_key=None, sub_key=None, name_key=None):
 def remove_temp():
     try:
         if not len(os.listdir(temp)) == 0:
-            log_show(f'Deleting {temp}')
+            t = 10
+            log_show(f'Wait for {t} seconds deleting {temp}')
+            time.sleep(t)
             shutil.rmtree(temp)
             time.sleep(1)
     except PermissionError as err:

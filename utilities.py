@@ -74,7 +74,7 @@ def main_program():
                 continue
 
             elif choice == 5:
-                func.install_software(is_dir_find=True, dir_name=winrar, setup_with_arg='Setup.exe /S')
+                func.install_software(dir_name=winrar, setup_with_arg='Setup.exe /S')
                 func.clear()
                 continue
 
