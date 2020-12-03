@@ -16,6 +16,7 @@ init()
 temp = os.path.join(tempfile.gettempdir(), const.__product__)
 if not os.path.exists(temp):
     os.makedirs(temp)
+time_in_seconds = 0.5
 
 
 class AnOtherTask(enum.Enum):
@@ -53,6 +54,7 @@ def find_files(drive_path, dir_name=None, file_name=None, file_ext=None):
 
 def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
     try:
+        start = time.time()
         if not file_ext.endswith('.zip'):
             exception_heading(f'{file_name + file_ext} is not unsupported format, please use zip')
         else:
@@ -64,6 +66,8 @@ def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
                 if not find_dir:
                     exception_heading('Directory not found')
                 else:
+                    end = time.time()
+                    log_show(f'Found directory {dir_name} in ', f'{get_time_in_secs_mins(start, end)}')
                     return find_dir
             else:
                 log_show(f'Finding file {file_name}')
@@ -73,10 +77,12 @@ def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
                 if not find_file:
                     exception_heading('File not found')
                 else:
-                    time.sleep(1)
+                    end = time.time()
+                    log_show(f'Found file {file_name} in ', f'{get_time_in_secs_mins(start, end)}')
+                    time.sleep(time_in_seconds)
                     log_show('Unzipping to ' + get_temp_path_by_file(file_name))
                     unzip_file(find_file)
-                    time.sleep(1)
+                    time.sleep(time_in_seconds)
     except Exception as err:
         exception_heading(f'Error: {err}')
 
@@ -92,16 +98,29 @@ def get_temp_path_by_file(file_name):
     return f'{temp}{os.sep}{file_name}{os.sep}'
 
 
-def install_software(dir_name=None, file_name=None, setup_with_arg=None, registry=None, set_environ=None,
+def get_time_in_secs_mins(start, end):
+    t = end - start
+    mins, secs = divmod(t, 60)
+    if secs <= 1 and mins <= 0:
+        return f'{secs:0.2f} Second'
+    elif secs >= 2 and mins <= 0:
+        return f'{secs:0.2f} Seconds'
+    elif mins <= 1 and secs <= 1:
+        return f'{mins:0.2f} Minute and {secs:0.2f} Second'
+    else:
+        return f'{mins:0.2f} Minutes and {secs:0.2f} Seconds'
+
+
+def install_software(dir_name=None, file_name=None, setup=None, args=None, registry=None, set_environ=None,
                      another_task=None, driver_dir=None, sub_dri_dir=None, ext='.zip'):
     try:
-        if dir_name is not None:  # To find directory
+        if dir_name is not None:  # For find directory
             found_dir = find_files_from_drive(dir_name=dir_name, file_ext=ext)
             if len(os.listdir(found_dir)):
                 log_show(f'Installing from directory {found_dir}')
                 os.chdir(found_dir)
-                time.sleep(1)
-                os.system(f'{setup_with_arg}')
+                time.sleep(time_in_seconds)
+                os.system(f'{setup} {args}')
             else:
                 log_show(f'{found_dir} is empty')
         else:
@@ -116,18 +135,18 @@ def install_software(dir_name=None, file_name=None, setup_with_arg=None, registr
                         log_show(f'Installing {sub_dri_dir} Drivers')
                 else:
                     log_show(f'Installing {driver_dir} Drivers')
-                time.sleep(1)
-                os.system(f'{setup_with_arg}')
+                time.sleep(time_in_seconds)
+                os.system(f'{setup} {args}')
             else:
                 find_files_from_drive(dir_name=None, file_name=file_name, file_ext=ext)
                 log_show(f'Installing {file_name}')
                 os.chdir(get_temp_path_by_file(file_name))
-                time.sleep(1)
-                os.system(f'{setup_with_arg}')
+                time.sleep(time_in_seconds)
+                os.system(f'{setup} {args}')
                 if registry is not None:
                     if os.path.isfile(get_temp_path_by_file(file_name) + os.sep + registry):
                         log_show(f'Installing registry {registry}')
-                        time.sleep(1)
+                        time.sleep(time_in_seconds)
                         # os.chdir(get_temp_path_by_file(file_name))
                         os.system(f'{registry}')
                     else:
@@ -182,20 +201,20 @@ def portable_crack_patch(file_name, setup_with_arg, file_ext='.zip'):
         if len(os.listdir(get_temp_path_by_file(file_name))) > 0:
             log_show(f'Opening from existing {file_name}')
             os.chdir(get_temp_path_by_file(file_name))
-            time.sleep(1)
+            time.sleep(time_in_seconds)
             os.system(setup_with_arg)
         else:
             find_files_from_drive(file_name=file_name, file_ext=file_ext)
             log_show(f'Opening {file_name}')
             os.chdir(get_temp_path_by_file(file_name))
-            time.sleep(1)
+            time.sleep(time_in_seconds)
             os.system(setup_with_arg)
             # os.startfile(path, setup_exe_with_arg)
     else:
         find_files_from_drive(file_name=file_name, file_ext=file_ext)
         log_show(f'Opening {file_name}')
         os.chdir(get_temp_path_by_file(file_name))
-        time.sleep(1)
+        time.sleep(time_in_seconds)
         os.system(setup_with_arg)
         # os.startfile(path, setup_exe_with_arg)
 
@@ -222,7 +241,7 @@ def remove_temp():
             log_show(f'Wait for {t} seconds deleting {temp}')
             time.sleep(t)
             shutil.rmtree(temp)
-            time.sleep(1)
+            time.sleep(time_in_seconds)
     except PermissionError as err:
         exception_heading('Some files are still running and working in background')
         exception_heading(err)
@@ -275,7 +294,7 @@ def set_x(file_name, setx_enum):
             elif new_output[0] == JavaVersion.JAVA_12.value:
                 setx = setx_jdk_12
                 os.environ[java_home] = setx
-            time.sleep(1)
+            time.sleep(time_in_seconds)
             log_show(setx)
     else:
         exception_heading(f'Invalid environ {setx_enum} type')
@@ -313,8 +332,9 @@ def input_heading():
     return int(input(f'\n{Fore.LIGHTWHITE_EX}  Please enter your choice: {Style.RESET_ALL}'))
 
 
-def log_show(string, end=None):
-    print(f'\n{Fore.LIGHTYELLOW_EX}    {string}{Style.RESET_ALL}', end=end)
+def log_show(string, string_time=""):
+    print(f'\n{Fore.LIGHTYELLOW_EX}    {string}{Style.RESET_ALL}' +
+          f'{Fore.LIGHTRED_EX}{string_time}{Style.RESET_ALL}')
 
 
 def main_heading():

@@ -59,22 +59,22 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=c_cleaner, setup_with_arg='Setup.exe /S /IB /TM')
+                func.install_software(file_name=c_cleaner, setup='Setup.exe', args='/S /IB /TM')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=power_iso, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=power_iso, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.install_software(file_name=fonts, setup_with_arg='Setup.exe')
+                func.install_software(file_name=fonts, setup='Setup.exe')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.install_software(dir_name=winrar, setup_with_arg='Setup.exe /S')
+                func.install_software(dir_name=winrar, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
@@ -84,7 +84,7 @@ def main_program():
                 continue
 
             elif choice == 7:
-                func.install_software(file_name=eng_to_urdu_dic, setup_with_arg='Setup.exe /exenoui')
+                func.install_software(file_name=eng_to_urdu_dic, setup='Setup.exe', args='/exenoui')
                 func.clear()
                 continue
 
@@ -99,7 +99,7 @@ def main_program():
                 continue
 
             elif choice == 10:
-                func.install_software(file_name=aomei_partition, setup_with_arg='Setup.exe /S /Q')
+                func.install_software(file_name=aomei_partition, setup='Setup.exe', args='/S /Q')
                 func.clear()
                 continue
 
@@ -109,17 +109,17 @@ def main_program():
                 continue
 
             elif choice == 12:
-                func.install_software(file_name=seven_zip, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=seven_zip, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 13:
-                func.install_software(file_name=vs_redistributable, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=vs_redistributable, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 14:
-                func.install_software(file_name=better_rename, setup_with_arg='Setup.exe /VERYSILENT /NORESTART')
+                func.install_software(file_name=better_rename, setup='Setup.exe', args='/VERYSILENT /NORESTART')
                 time.sleep(1)
                 func.portable_crack_patch(file_name=better_rename, setup_with_arg='Serial.txt')
                 func.clear()

@@ -44,34 +44,33 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=foxit_adv_pdf_editor, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=foxit_adv_pdf_editor, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=infix_pdf_editor, setup_with_arg='Setup.exe /S /EN')
+                func.install_software(file_name=infix_pdf_editor, setup='Setup.exe', args='/S /EN')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.install_software(file_name=infix_pdf_editor,
-                                      setup_with_arg='Setup.exe /SILENT /NORESTART '
-                                                     '/NOCLOSEAPPLICATIONS /NORESTARTAPPLICATIONS')
+                func.install_software(file_name=infix_pdf_editor, setup='Setup.exe',
+                                      args='/SILENT /NORESTART /NOCLOSEAPPLICATIONS /NORESTARTAPPLICATIONS')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.install_software(file_name=pdf_shaper, setup_with_arg='Setup.exe /silent')
+                func.install_software(file_name=pdf_shaper, setup='Setup.exe', args='/silent')
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.install_software(file_name=pdf_to_jpg, setup_with_arg='Setup.exe /silent')
+                func.install_software(file_name=pdf_to_jpg, setup='Setup.exe', args='/silent')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.install_software(file_name=pdf_to_jpg_converter, setup_with_arg='Setup.exe /silent')
+                func.install_software(file_name=pdf_to_jpg_converter, setup='Setup.exe', args='/silent')
                 func.clear()
                 continue
 

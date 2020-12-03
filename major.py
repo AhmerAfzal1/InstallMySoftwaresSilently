@@ -44,32 +44,32 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=ms_office, setup_with_arg='AUTORUN.exe')
+                func.install_software(file_name=ms_office, setup='AUTORUN.exe')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=adobe_acrobat_reader, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=adobe_acrobat_reader, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.install_software(file_name=adobe_acrobat_pro, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=adobe_acrobat_pro, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.install_software(file_name=adobe_photoshop, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=adobe_photoshop, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.install_software(file_name=adobe_xd, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=adobe_xd, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.install_software(file_name=corel_draw, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=corel_draw, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 

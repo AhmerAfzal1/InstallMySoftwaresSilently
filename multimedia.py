@@ -6,8 +6,8 @@ import constant as const
 import functions as func
 import main
 
-k_lite = 'K-Lite Mega Codec Pack 15.8.0'
-mp3_tag = 'Mp3Tag 2.96'
+k_lite = 'K-Lite Mega Codec Pack 15.9.0'
+mp3_tag = 'Mp3Tag 3.04A'
 
 
 def main_program():
@@ -36,12 +36,12 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=k_lite, setup_with_arg='Setup.exe /verysilent')
+                func.install_software(file_name=k_lite, setup='Setup.exe', args='/verysilent')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=mp3_tag, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=mp3_tag, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 

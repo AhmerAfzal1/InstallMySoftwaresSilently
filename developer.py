@@ -10,6 +10,7 @@ android_studio = 'Android Studio 4.1.0 (201.6858069)'
 git = 'Git 2.29.2.2'
 java_jdk = 'Java JDK 8 Update 271'
 notepad_p_p = 'Notepad++ 7.9.1'
+pycharm = 'PyCharm Community 2020.3'
 python = 'Python 3.9.0'
 
 
@@ -26,7 +27,8 @@ def main_program():
             func.sub_heading_softwares('04', python)
             func.sub_heading_softwares('05', git)
             func.sub_heading_softwares('06', notepad_p_p)
-            func.eixt_heading('07')
+            func.sub_heading_softwares('07', pycharm)
+            func.eixt_heading('08')
 
             choice = func.input_heading()
 
@@ -42,44 +44,47 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=android_studio, setup_with_arg='Setup.exe /S /Allusers')
+                func.install_software(file_name=android_studio, setup='Setup.exe', args='/S /Allusers')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=java_jdk,
-                                      setup_with_arg='Setup.exe /s ADDLOCAL="ToolsFeature,SourceFeature"',
-                                      set_environ=func.SetX.JAVA)
+                func.install_software(file_name=java_jdk, setup='Setup.exe',
+                                      args='/s ADDLOCAL="ToolsFeature,SourceFeature"', set_environ=func.SetX.JAVA)
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.install_software(file_name=python, setup_with_arg='Setup.exe')
+                func.install_software(file_name=python, setup='Setup.exe')
                 func.clear()
                 continue
 
             elif choice == 5:
                 # If not provide *.reg file in variable registry='reg.reg' than other option to use winreg for it
-                func.install_software(file_name=git,
-                                      setup_with_arg='Setup.exe /VERYSILENT /NORESTART /NOCANCEL /SP- '
-                                                     '/CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /COMPONENTS="icons,'
-                                                     'icons\\desktop,ext,ext\\reg,ext\\reg\\shellhere,assoc,assoc_sh,'
-                                                     'consolefont"',
+                func.install_software(file_name=git, setup='Setup.exe',
+                                      args='/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
+                                           '/RESTARTAPPLICATIONS /COMPONENTS="icons,icons\\desktop,ext,ext\\reg,'
+                                           'ext\\reg\\shellhere,assoc,assoc_sh,consolefont"',
                                       another_task=func.AnOtherTask.REG_GIT)
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.install_software(file_name=notepad_p_p, setup_with_arg='Setup.exe /S')
+                func.install_software(file_name=notepad_p_p, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 7:
+                func.install_software(file_name=pycharm, setup='Setup.exe', args='/S')
+                func.clear()
+                continue
+
+            elif choice == 8:
                 func.remove_temp()
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 7)
+                func.exception_range_heading(1, 8)
                 input()
                 func.clear()
                 continue

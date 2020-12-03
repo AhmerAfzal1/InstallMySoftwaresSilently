@@ -103,17 +103,18 @@ def main():
                     continue
 
                 elif choice == 1:
-                    func.install_software(file_name='Drivers', driver_dir='Audio', setup_with_arg='Setup.exe /S')
-                    func.install_software(file_name='Drivers', driver_dir='Chipset',
-                                          sub_dri_dir='Intel Active Management Technology',
-                                          setup_with_arg='Setup.exe -L 0409 -S')
-                    func.install_software(file_name='Drivers', driver_dir='Chipset', sub_dri_dir='Intel Chipset Device',
-                                          setup_with_arg='Setup.exe -L 0409 -S')
-                    func.install_software(file_name='Drivers', driver_dir='Graphics',
-                                          setup_with_arg='igxpin.exe -L enu -S')
-                    func.install_software(file_name='Drivers', driver_dir='Network',
-                                          sub_dri_dir='APPS\\PROSETDX\\Winx64\\',
-                                          setup_with_arg='DxSetup.exe /quiet /norestart')
+                    drivers = 'Drivers'
+                    func.install_software(file_name=drivers, driver_dir='Audio', setup='Setup.exe', args='/S')
+                    func.install_software(file_name=drivers, driver_dir='Chipset',
+                                          sub_dri_dir='Intel Active Management Technology', setup='Setup.exe',
+                                          args='-L 0409 -S')
+                    func.install_software(file_name=drivers, driver_dir='Chipset', sub_dri_dir='Intel Chipset Device',
+                                          setup='Setup.exe', args='-L 0409 -S')
+                    func.install_software(file_name=drivers, driver_dir='Graphics', setup='igxpin.exe',
+                                          args='-L enu -S')
+                    func.install_software(file_name=drivers, driver_dir='Network',
+                                          sub_dri_dir='APPS\\PROSETDX\\Winx64\\', setup='DxSetup.exe',
+                                          args='/quiet /norestart')
                     developer.git()
                     developer.java_jdk()
                     developer.notepad_p_p()
