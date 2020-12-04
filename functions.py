@@ -67,7 +67,7 @@ def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
                     exception_heading('Directory not found')
                 else:
                     end = time.time()
-                    log_show(f'Found directory {dir_name} in ', f'{get_time_in_secs_mins(start, end)}')
+                    log_show(f'\rFound directory {find_dir} in ', f'{get_time_in_secs_mins(start, end)}')
                     return find_dir
             else:
                 log_show(f'Finding file {file_name}')
@@ -78,7 +78,7 @@ def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
                     exception_heading('File not found')
                 else:
                     end = time.time()
-                    log_show(f'Found file {file_name} in ', f'{get_time_in_secs_mins(start, end)}')
+                    log_show(f'Found file {find_file} in ', f'{get_time_in_secs_mins(start, end)}')
                     time.sleep(time_in_seconds)
                     log_show('Unzipping to ' + get_temp_path_by_file(file_name))
                     unzip_file(find_file)
@@ -114,6 +114,7 @@ def get_time_in_secs_mins(start, end):
 def install_software(dir_name=None, file_name=None, setup=None, args=None, registry=None, set_environ=None,
                      another_task=None, driver_dir=None, sub_dri_dir=None, ext='.zip'):
     try:
+        start = time.time()
         if dir_name is not None:  # For find directory
             found_dir = find_files_from_drive(dir_name=dir_name, file_ext=ext)
             if len(os.listdir(found_dir)):
@@ -121,6 +122,8 @@ def install_software(dir_name=None, file_name=None, setup=None, args=None, regis
                 os.chdir(found_dir)
                 time.sleep(time_in_seconds)
                 os.system(f'{setup} {args}')
+                end = time.time()
+                log_show(f'Installed {dir_name} successfully in ', f'{get_time_in_secs_mins(start, end)}')
             else:
                 log_show(f'{found_dir} is empty')
         else:
@@ -137,12 +140,16 @@ def install_software(dir_name=None, file_name=None, setup=None, args=None, regis
                     log_show(f'Installing {driver_dir} Drivers')
                 time.sleep(time_in_seconds)
                 os.system(f'{setup} {args}')
+                end = time.time()
+                log_show(f'Installed {driver_dir} successfully in ', f'{get_time_in_secs_mins(start, end)}')
             else:
                 find_files_from_drive(dir_name=None, file_name=file_name, file_ext=ext)
                 log_show(f'Installing {file_name}')
                 os.chdir(get_temp_path_by_file(file_name))
                 time.sleep(time_in_seconds)
                 os.system(f'{setup} {args}')
+                end = time.time()
+                log_show(f'Installed {file_name} successfully in ', f'{get_time_in_secs_mins(start, end)}')
                 if registry is not None:
                     if os.path.isfile(get_temp_path_by_file(file_name) + os.sep + registry):
                         log_show(f'Installing registry {registry}')
@@ -151,9 +158,9 @@ def install_software(dir_name=None, file_name=None, setup=None, args=None, regis
                         os.system(f'{registry}')
                     else:
                         exception_heading(f'File {registry} not found')
-                if set_environ.value is not None:
+                if set_environ is not None:
                     set_x(file_name=file_name, setx_enum=set_environ.value)
-                if another_task.value is not None:
+                if another_task is not None:
                     perform_another_task(task=another_task.value)
             time.sleep(3)
     except Exception as err:

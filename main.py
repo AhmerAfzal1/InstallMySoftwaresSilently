@@ -77,7 +77,7 @@ def make_font_bigger():
 
 def main():
     make_font_bigger()
-    os.system('mode 110, 33')
+    os.system('mode 120, 45')
     func.set_console_title(const.heading_main_title)
     init()
     if ctypes.windll.shell32.IsUserAnAdmin():
