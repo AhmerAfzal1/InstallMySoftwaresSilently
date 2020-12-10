@@ -20,16 +20,17 @@ time_in_seconds = 0.5
 
 
 class AnOtherTask(enum.Enum):
+    AOMEI_PRO = 'pro'
+    AOMEI_SERVER = 'server'
+    AOMEI_TECHNICIAN = 'technician'
+    AOMEI_UNLIMITED = 'unlimited'
+    JAVA = 'java'
     REG_GIT = 'gitbash'
 
 
 class JavaVersion(enum.IntEnum):
     JAVA_8 = 8
     JAVA_12 = 12
-
-
-class SetX(enum.Enum):
-    JAVA = 'java'
 
 
 def center_text(string):
@@ -39,6 +40,11 @@ def center_text(string):
 def clear():
     if os.name == 'nt':
         os.system('cls')
+
+
+def copying_files(src, dst):
+    if os.path.isfile(src) and os.path.exists(dst):
+        shutil.copy(src=src, dst=dst)
 
 
 def find_files(drive_path, dir_name=None, file_name=None, file_ext=None):
@@ -111,8 +117,8 @@ def get_time_in_secs_mins(start, end):
         return f'{mins:0.2f} Minutes and {secs:0.2f} Seconds'
 
 
-def install_software(dir_name=None, file_name=None, setup=None, args=None, registry=None, set_environ=None,
-                     another_task=None, driver_dir=None, sub_dri_dir=None, ext='.zip'):
+def install_software(dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
+                     driver_dir=None, sub_dri_dir=None, ext='.zip'):
     try:
         start = time.time()
         if dir_name is not None:  # For find directory
@@ -158,16 +164,18 @@ def install_software(dir_name=None, file_name=None, setup=None, args=None, regis
                         os.system(f'{registry}')
                     else:
                         exception_heading(f'File {registry} not found')
-                if set_environ is not None:
-                    set_x(file_name=file_name, setx_enum=set_environ.value)
                 if another_task is not None:
-                    perform_another_task(task=another_task.value)
+                    if str(file_name).split()[0].lower() == 'java':
+                        perform_another_task(task=another_task, file_name=file_name)
+                    else:
+                        perform_another_task(task=another_task)
             time.sleep(3)
     except Exception as err:
         exception_heading(f'Error: {err}')
 
 
-def perform_another_task(task):
+def perform_another_task(task, file_name=None):
+    dst = os.path.join(*[os.environ['ProgramFiles'], "CCleaner"])
     if task.value == AnOtherTask.REG_GIT.value:
         log_show(f'Installing registry')
         root = reg.HKEY_CLASSES_ROOT
@@ -198,8 +206,55 @@ def perform_another_task(task):
         # set_reg(root_key=root, sub_key=sub_file, name_key=name, value_type=value_type, value_key=value)
         # set_reg(root_key=root, sub_key=sub_file + r'\command', value_type=value_type, name_key=default,
         #         value_key=f'"{value}" "--cd=%1"')
+    elif task.value == AnOtherTask.JAVA.value:
+        setx = ''
+        java_home = 'JAVA_HOME'
+        output = re.findall(r'[\d.]+', file_name)
+        new_output = re.findall(r'[\d]+', output[0])
+        setx_jdk_8 = f'{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk1.8.0_{output[1]}'
+        setx_jdk_12 = f'{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk-{output[0]}'
+        if os.environ.get(java_home) is not None:
+            log_show(f'Already existed JAVA_HOME {os.environ[java_home]}')
+            if new_output[0] == JavaVersion.JAVA_8.value:
+                setx = setx_jdk_8
+                os.environ[java_home] = setx
+            elif new_output[0] == JavaVersion.JAVA_12.value:
+                setx = setx_jdk_12
+                os.environ[java_home] = setx
+            log_show(setx)
+            log_show(f'Now updated to {setx}')
+        else:
+            if new_output[0] == JavaVersion.JAVA_8.value:
+                setx = setx_jdk_8
+                os.environ[java_home] = setx
+            elif new_output[0] == JavaVersion.JAVA_12.value:
+                setx = setx_jdk_12
+                os.environ[java_home] = setx
+            time.sleep(time_in_seconds)
+            log_show(setx)
+    elif task.value == AnOtherTask.AOMEI_PRO.value:
+        src = os.path.join(*[temp, "Crack", "Pro", "cfg.ini"])
+        copying_files(src=src, dst=dst)
+        time.sleep(time_in_seconds)
+        log_show(f'Copied crack file to {dst}')
+    elif task.value == AnOtherTask.AOMEI_SERVER.value:
+        src = os.path.join(*[temp, "Crack", "Server", "cfg.ini"])
+        copying_files(src=src, dst=dst)
+        time.sleep(time_in_seconds)
+        log_show(f'Copied crack file to {dst}')
+    elif task.value == AnOtherTask.AOMEI_TECHNICIAN.value:
+        src = os.path.join(*[temp, "Crack", "Technician", "cfg.ini"])
+        copying_files(src=src, dst=dst)
+        time.sleep(time_in_seconds)
+        log_show(f'Copied crack file to {dst}')
+    elif task.value == AnOtherTask.AOMEI_UNLIMITED.value:
+        src = os.path.join(*[temp, "Crack", "Unlimited", "cfg.ini"])
+        copying_files(src=src, dst=dst)
+        time.sleep(time_in_seconds)
+        log_show(f'Copied crack file to {dst}')
     else:
         exception_heading(f'Invalid AnOtherTask type')
+        time.sleep(time_in_seconds)
         pass
 
 
@@ -274,38 +329,6 @@ def set_reg(root_key, sub_key, name_key, value_type, value_key):
         return f'Permission denied: {permission}'
     except OSError:
         return False
-
-
-def set_x(file_name, setx_enum):
-    if setx_enum.value == SetX.JAVA.value:
-        setx = ''
-        java_home = 'JAVA_HOME'
-        output = re.findall(r'[\d.]+', file_name)
-        new_output = re.findall(r'[\d]+', output[0])
-        setx_jdk_8 = f'{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk1.8.0_{output[1]}'
-        setx_jdk_12 = f'{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk-{output[0]}'
-        if os.environ.get(java_home) is not None:
-            log_show(f'Already existed JAVA_HOME {os.environ[java_home]}')
-            if new_output[0] == JavaVersion.JAVA_8.value:
-                setx = setx_jdk_8
-                os.environ[java_home] = setx
-            elif new_output[0] == JavaVersion.JAVA_12.value:
-                setx = setx_jdk_12
-                os.environ[java_home] = setx
-            log_show(setx)
-            log_show(f'Now updated to {setx}')
-        else:
-            if new_output[0] == JavaVersion.JAVA_8.value:
-                setx = setx_jdk_8
-                os.environ[java_home] = setx
-            elif new_output[0] == JavaVersion.JAVA_12.value:
-                setx = setx_jdk_12
-                os.environ[java_home] = setx
-            time.sleep(time_in_seconds)
-            log_show(setx)
-    else:
-        exception_heading(f'Invalid environ {setx_enum} type')
-        pass
 
 
 def unzip_file(file_name):

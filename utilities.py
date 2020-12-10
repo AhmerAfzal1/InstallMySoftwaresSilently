@@ -7,19 +7,19 @@ import constant as const
 import functions as func
 import main
 
-aomei_partition = 'AOMEI Partition Assistant 8.10.0'
+aomei_partition = 'AOMEI Partition Assistant 9.0'
 better_rename = 'Better File Rename 6.18'
-c_cleaner = 'CCleaner 5.73.8130'
-cpu_z = 'CPU-Z 1.92'
-dism_p_p = 'Dism++10.1.1000.100'
+c_cleaner = 'CCleaner 5.75.8238'
+cpu_z = 'CPU-Z 1.94.8'
+dism_p_p = 'Dism++ 10.1.1001.10'
 eng_to_urdu_dic = 'Cleantouch English to Urdu Dictionary 7.0'
 fonts = 'Fonts'
-hw_info = 'HWiNFO 6.27 Build 4160'
+hw_info = 'HWiNFO 6.40 Build 4330'
 power_iso = 'PowerISO 7.8'
-rufus = 'Rufus 3.10'
+rufus = 'Rufus 3.13'
 seven_zip = '7-Zip 19.00'
-vs_redistributable = 'Microsoft Visual C++15.09.2020'
-winrar = 'WinRAR 5.91'
+vs_redistributable = 'Microsoft Visual C++ 2015-2019 14.28.29617'
+winrar = 'WinRAR 6.00'
 
 
 def main_program():
@@ -99,7 +99,7 @@ def main_program():
                 continue
 
             elif choice == 10:
-                func.install_software(file_name=aomei_partition, setup='Setup.exe', args='/S /Q')
+                func.install_software(file_name=aomei_partition, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
@@ -114,7 +114,8 @@ def main_program():
                 continue
 
             elif choice == 13:
-                func.install_software(file_name=vs_redistributable, setup='Setup.exe', args='/S')
+                func.install_software(file_name=vs_redistributable, setup='Setup.exe',
+                                      args='/INSTALL /QUIET /NORESTART')
                 func.clear()
                 continue
 

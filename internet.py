@@ -8,7 +8,7 @@ import main
 
 chrome = 'Google Chrome 84.0.4147.89'
 firefox = 'Firefox 82.0'
-idm = 'Internet Download Manager 6.37.14'
+idm = 'Internet Download Manager 6.38 Build 15'
 net_balancer = 'NetBalancer 9.12.9'
 net_limiter = 'NetLimiter 4.0.67'
 

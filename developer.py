@@ -50,7 +50,8 @@ def main_program():
 
             elif choice == 3:
                 func.install_software(file_name=java_jdk, setup='Setup.exe',
-                                      args='/s ADDLOCAL="ToolsFeature,SourceFeature"', set_environ=func.SetX.JAVA)
+                                      args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
+                                      another_task=func.AnOtherTask.JAVA)
                 func.clear()
                 continue
 
