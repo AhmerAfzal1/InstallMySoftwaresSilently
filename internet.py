@@ -47,7 +47,8 @@ def main_program():
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=idm, setup='Setup.exe', args='/S /EN')
+                func.install_software(file_name=idm, setup='Setup.exe', args='/skipdlgs', wait=10,
+                                      another_task=func.AnOtherTask.IDM)
                 func.clear()
                 continue
 
@@ -67,7 +68,7 @@ def main_program():
                 continue
 
             elif choice == 7:
-                func.remove_temp()
+                func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:

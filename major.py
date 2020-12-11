@@ -74,7 +74,7 @@ def main_program():
                 continue
 
             elif choice == 8:
-                func.remove_temp()
+                func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:

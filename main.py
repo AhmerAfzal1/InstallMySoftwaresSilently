@@ -113,8 +113,8 @@ def main():
                     func.install_software(file_name=drivers, driver_dir='Graphics', setup='igxpin.exe',
                                           args='-L enu -S')
                     func.install_software(file_name=drivers, driver_dir='Network',
-                                          sub_dri_dir='APPS\\PROSETDX\\Winx64\\', setup='DxSetup.exe',
-                                          args='/quiet /norestart')
+                                          sub_dri_dir=os.path.join(*['APPS', 'PROSETDX', 'Winx64']),
+                                          setup='DxSetup.exe', args='/QUIET /NORESTART')
                     developer.git()
                     developer.java_jdk()
                     developer.notepad_p_p()
@@ -164,7 +164,7 @@ def main():
                     continue
 
                 elif choice == 9:
-                    func.remove_temp()
+                    func.remove_temp(is_wait=True)
                     sys.exit()
 
                 else:

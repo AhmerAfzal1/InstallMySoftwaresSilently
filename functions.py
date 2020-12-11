@@ -2,7 +2,7 @@ import enum
 import os
 import re
 import shutil
-import sys
+import subprocess
 import tempfile
 import time
 import winreg as reg
@@ -16,7 +16,8 @@ init()
 temp = os.path.join(tempfile.gettempdir(), const.__product__)
 if not os.path.exists(temp):
     os.makedirs(temp)
-time_in_seconds = 0.5
+wait_short = 0.5
+wait_long = 5
 
 
 class AnOtherTask(enum.Enum):
@@ -24,8 +25,10 @@ class AnOtherTask(enum.Enum):
     AOMEI_SERVER = 'server'
     AOMEI_TECHNICIAN = 'technician'
     AOMEI_UNLIMITED = 'unlimited'
-    JAVA = 'java'
+    IDM = 'idm'
     REG_GIT = 'gitbash'
+    JAVA = 'java'
+    WINRAR_KEY = 'rar'
 
 
 class JavaVersion(enum.IntEnum):
@@ -43,8 +46,15 @@ def clear():
 
 
 def copying_files(src, dst):
-    if os.path.isfile(src) and os.path.exists(dst):
-        shutil.copy(src=src, dst=dst)
+    try:
+        if os.path.isfile(src) and os.path.exists(dst):
+            d = shutil.copy(src=src, dst=dst)
+            if os.path.isfile(d):
+                return True
+            else:
+                return False
+    except PermissionError as err:
+        exception_heading(f'You haven\'t permission: {err}')
 
 
 def find_files(drive_path, dir_name=None, file_name=None, file_ext=None):
@@ -73,7 +83,7 @@ def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
                     exception_heading('Directory not found')
                 else:
                     end = time.time()
-                    log_show(f'\rFound directory {find_dir} in ', f'{get_time_in_secs_mins(start, end)}')
+                    log_show(f'Found directory {find_dir} in ', f'{get_time_in_secs_mins(start, end)}')
                     return find_dir
             else:
                 log_show(f'Finding file {file_name}')
@@ -85,23 +95,23 @@ def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
                 else:
                     end = time.time()
                     log_show(f'Found file {find_file} in ', f'{get_time_in_secs_mins(start, end)}')
-                    time.sleep(time_in_seconds)
+                    time.sleep(wait_short)
                     log_show('Unzipping to ' + get_temp_path_by_file(file_name))
                     unzip_file(find_file)
-                    time.sleep(time_in_seconds)
+                    time.sleep(wait_short)
     except Exception as err:
         exception_heading(f'Error: {err}')
 
 
 def get_temp_drivers_path_by_file(file_name, drivers_dir, sub_drivers_dir=None):
     if sub_drivers_dir is not None:
-        return f'{get_temp_path_by_file(file_name)}{drivers_dir}{os.sep}{sub_drivers_dir}{os.sep}'
+        return os.path.join(*[get_temp_path_by_file(file_name), drivers_dir, sub_drivers_dir])
     else:
-        return f'{get_temp_path_by_file(file_name)}{drivers_dir}{os.sep}'
+        return os.path.join(*[get_temp_path_by_file(file_name), drivers_dir])
 
 
 def get_temp_path_by_file(file_name):
-    return f'{temp}{os.sep}{file_name}{os.sep}'
+    return os.path.join(temp, file_name)
 
 
 def get_time_in_secs_mins(start, end):
@@ -118,18 +128,24 @@ def get_time_in_secs_mins(start, end):
 
 
 def install_software(dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
-                     driver_dir=None, sub_dri_dir=None, ext='.zip'):
+                     driver_dir=None, sub_dri_dir=None, ext='.zip', wait=0, wait_input=False):
     try:
         start = time.time()
+        wait_for = int(wait)
+        wait_msg = f'Wait for {wait_long} seconds to go back automatically'
         if dir_name is not None:  # For find directory
             found_dir = find_files_from_drive(dir_name=dir_name, file_ext=ext)
             if len(os.listdir(found_dir)):
                 log_show(f'Installing from directory {found_dir}')
                 os.chdir(found_dir)
-                time.sleep(time_in_seconds)
+                time.sleep(wait_short)
                 os.system(f'{setup} {args}')
+                if another_task is not None:
+                    perform_another_task(task=another_task, dir_name=found_dir)
                 end = time.time()
                 log_show(f'Installed {dir_name} successfully in ', f'{get_time_in_secs_mins(start, end)}')
+                log_show(wait_msg)
+                time.sleep(wait_long)
             else:
                 log_show(f'{found_dir} is empty')
         else:
@@ -138,50 +154,51 @@ def install_software(dir_name=None, file_name=None, setup=None, args=None, regis
                     find_files_from_drive(dir_name=None, file_name=file_name, file_ext=ext)
                 os.chdir(get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir))
                 if sub_dri_dir is not None:
-                    if sub_dri_dir == 'APPS\\PROSETDX\\Winx64\\':
+                    if sub_dri_dir == os.path.join(*['APPS', 'PROSETDX', 'Winx64']):
                         log_show(f'Installing {driver_dir} Drivers')
                     else:
                         log_show(f'Installing {sub_dri_dir} Drivers')
                 else:
                     log_show(f'Installing {driver_dir} Drivers')
-                time.sleep(time_in_seconds)
+                time.sleep(wait_short)
                 os.system(f'{setup} {args}')
                 end = time.time()
                 log_show(f'Installed {driver_dir} successfully in ', f'{get_time_in_secs_mins(start, end)}')
             else:
                 find_files_from_drive(dir_name=None, file_name=file_name, file_ext=ext)
                 log_show(f'Installing {file_name}')
-                os.chdir(get_temp_path_by_file(file_name))
-                time.sleep(time_in_seconds)
-                os.system(f'{setup} {args}')
+                subprocess.run([os.path.join(get_temp_path_by_file(file_name), setup), args], shell=True,
+                               stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                time.sleep(wait_short)
+                if wait_for >= 1:
+                    time.sleep(wait_for)
                 end = time.time()
                 log_show(f'Installed {file_name} successfully in ', f'{get_time_in_secs_mins(start, end)}')
                 if registry is not None:
-                    if os.path.isfile(get_temp_path_by_file(file_name) + os.sep + registry):
+                    if os.path.isfile(os.path.join(*[get_temp_path_by_file(file_name), registry])):
                         log_show(f'Installing registry {registry}')
-                        time.sleep(time_in_seconds)
+                        time.sleep(wait_short)
                         # os.chdir(get_temp_path_by_file(file_name))
                         os.system(f'{registry}')
                     else:
                         exception_heading(f'File {registry} not found')
                 if another_task is not None:
-                    if str(file_name).split()[0].lower() == 'java':
-                        perform_another_task(task=another_task, file_name=file_name)
-                    else:
-                        perform_another_task(task=another_task)
-            time.sleep(3)
+                    perform_another_task(task=another_task, file_name=file_name)
+            log_show(wait_msg)
+            time.sleep(wait_long)
+            if wait_input:
+                input('Please press Enter to exit')
     except Exception as err:
         exception_heading(f'Error: {err}')
 
 
-def perform_another_task(task, file_name=None):
-    dst = os.path.join(*[os.environ['ProgramFiles'], "CCleaner"])
+def perform_another_task(task, file_name=None, dir_name=None):
+    dst_aomei = os.path.join(*[os.environ['ProgramFiles(x86)'], 'AOMEI Partition Assistant'])
     if task.value == AnOtherTask.REG_GIT.value:
         log_show(f'Installing registry')
         root = reg.HKEY_CLASSES_ROOT
         sub_dir = r'Directory\shell\bash'  # Shell for directories
         sub_ins_dir = r'Directory\Background\shell\bash'  # Shell for inside directories
-        sub_file = r'*\shell\Git Bash Here'  # Shell for files
         name = 'Icon'
         value_type = reg.REG_SZ
         default = ''  # Like (Default)
@@ -202,17 +219,19 @@ def perform_another_task(task, file_name=None):
                 value_key=f'"{value}" "--cd=%v."')
 
         # # This will make it appear when you right click a file
+        # sub_file = r'*\shell\Git Bash Here'  # Shell for files
         # set_reg(root_key=root, sub_key=sub_file, name_key=default, value_type=value_type, value_key=value_key)
         # set_reg(root_key=root, sub_key=sub_file, name_key=name, value_type=value_type, value_key=value)
         # set_reg(root_key=root, sub_key=sub_file + r'\command', value_type=value_type, name_key=default,
         #         value_key=f'"{value}" "--cd=%1"')
     elif task.value == AnOtherTask.JAVA.value:
+        log_show(f'Setting up Java Environments')
         setx = ''
         java_home = 'JAVA_HOME'
         output = re.findall(r'[\d.]+', file_name)
         new_output = re.findall(r'[\d]+', output[0])
-        setx_jdk_8 = f'{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk1.8.0_{output[1]}'
-        setx_jdk_12 = f'{os.environ["ProgramFiles"]}{os.sep}Java{os.sep}jdk-{output[0]}'
+        setx_jdk_8 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk1.8.0_{output[1]}'])
+        setx_jdk_12 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk-{output[0]}'])
         if os.environ.get(java_home) is not None:
             log_show(f'Already existed JAVA_HOME {os.environ[java_home]}')
             if new_output[0] == JavaVersion.JAVA_8.value:
@@ -230,31 +249,53 @@ def perform_another_task(task, file_name=None):
             elif new_output[0] == JavaVersion.JAVA_12.value:
                 setx = setx_jdk_12
                 os.environ[java_home] = setx
-            time.sleep(time_in_seconds)
+            time.sleep(wait_short)
             log_show(setx)
     elif task.value == AnOtherTask.AOMEI_PRO.value:
-        src = os.path.join(*[temp, "Crack", "Pro", "cfg.ini"])
-        copying_files(src=src, dst=dst)
-        time.sleep(time_in_seconds)
-        log_show(f'Copied crack file to {dst}')
+        log_show(f'Cracking {file_name}')
+        src = os.path.join(*[temp, file_name, 'Crack', 'Pro', 'cfg.ini'])
+        is_copied = copying_files(src=src, dst=dst_aomei)
+        time.sleep(wait_short)
+        if is_copied:
+            log_show(f'Copied crack file to {dst_aomei}')
     elif task.value == AnOtherTask.AOMEI_SERVER.value:
-        src = os.path.join(*[temp, "Crack", "Server", "cfg.ini"])
-        copying_files(src=src, dst=dst)
-        time.sleep(time_in_seconds)
-        log_show(f'Copied crack file to {dst}')
+        log_show(f'Cracking {file_name}')
+        src = os.path.join(*[temp, file_name, 'Crack', 'Server', 'cfg.ini'])
+        is_copied = copying_files(src=src, dst=dst_aomei)
+        time.sleep(wait_short)
+        if is_copied:
+            log_show(f'Copied crack file to {dst_aomei}')
     elif task.value == AnOtherTask.AOMEI_TECHNICIAN.value:
-        src = os.path.join(*[temp, "Crack", "Technician", "cfg.ini"])
-        copying_files(src=src, dst=dst)
-        time.sleep(time_in_seconds)
-        log_show(f'Copied crack file to {dst}')
+        log_show(f'Cracking {file_name}')
+        src = os.path.join(*[temp, file_name, 'Crack', 'Technician', 'cfg.ini'])
+        is_copied = copying_files(src=src, dst=dst_aomei)
+        time.sleep(wait_short)
+        if is_copied:
+            log_show(f'Copied crack file to {dst_aomei}')
     elif task.value == AnOtherTask.AOMEI_UNLIMITED.value:
-        src = os.path.join(*[temp, "Crack", "Unlimited", "cfg.ini"])
-        copying_files(src=src, dst=dst)
-        time.sleep(time_in_seconds)
-        log_show(f'Copied crack file to {dst}')
+        log_show(f'Cracking {file_name}')
+        src = os.path.join(*[temp, file_name, 'Crack', 'Unlimited', 'cfg.ini'])
+        is_copied = copying_files(src=src, dst=dst_aomei)
+        time.sleep(wait_short)
+        if is_copied:
+            log_show(f'Copied crack file to {dst_aomei}')
+    elif task.value == AnOtherTask.WINRAR_KEY.value:
+        log_show(f'Registering {dir_name}')
+        src_winrar = os.path.join(*[dir_name, 'rarreg.key'])
+        dst_winrar = os.path.join(*[os.environ['ProgramFiles'], 'WinRAR'])
+        is_copied = copying_files(src=src_winrar, dst=dst_winrar)
+        time.sleep(wait_short)
+        if is_copied:
+            log_show(f'Copied Rarreg.key to {dst_winrar}')
+    elif task.value == AnOtherTask.IDM.value:
+        log_show(f'Patching {file_name}')
+        patcher_dir = os.path.join(*[os.environ['ProgramFiles(x86)'], 'Internet Download Manager'])
+        os.chdir(get_temp_path_by_file(file_name))
+        os.system(f'Patch.exe /silent /overwrite /backup /startupworkdir {patcher_dir}')
+        time.sleep(wait_short)
     else:
         exception_heading(f'Invalid AnOtherTask type')
-        time.sleep(time_in_seconds)
+        time.sleep(wait_short)
         pass
 
 
@@ -263,20 +304,20 @@ def portable_crack_patch(file_name, setup_with_arg, file_ext='.zip'):
         if len(os.listdir(get_temp_path_by_file(file_name))) > 0:
             log_show(f'Opening from existing {file_name}')
             os.chdir(get_temp_path_by_file(file_name))
-            time.sleep(time_in_seconds)
+            time.sleep(wait_short)
             os.system(setup_with_arg)
         else:
             find_files_from_drive(file_name=file_name, file_ext=file_ext)
             log_show(f'Opening {file_name}')
             os.chdir(get_temp_path_by_file(file_name))
-            time.sleep(time_in_seconds)
+            time.sleep(wait_short)
             os.system(setup_with_arg)
             # os.startfile(path, setup_exe_with_arg)
     else:
         find_files_from_drive(file_name=file_name, file_ext=file_ext)
         log_show(f'Opening {file_name}')
         os.chdir(get_temp_path_by_file(file_name))
-        time.sleep(time_in_seconds)
+        time.sleep(wait_short)
         os.system(setup_with_arg)
         # os.startfile(path, setup_exe_with_arg)
 
@@ -296,19 +337,16 @@ def read_reg(computer_name=None, root_key=None, sub_key=None, name_key=None):
         return None
 
 
-def remove_temp():
-    try:
-        if not len(os.listdir(temp)) == 0:
-            t = 10
-            log_show(f'Wait for {t} seconds deleting {temp}')
-            time.sleep(t)
-            shutil.rmtree(temp)
-            time.sleep(time_in_seconds)
-    except PermissionError as err:
-        exception_heading('Some files are still running and working in background')
-        exception_heading(err)
-        time.sleep(2)
-        sys.exit()
+def remove_temp(is_wait):
+    if not len(os.listdir(temp)) == 0:
+        if is_wait:
+            log_show(f'Wait for {wait_long - 2} seconds deleting {temp}')
+            time.sleep(wait_long - 2)
+            shutil.rmtree(temp, ignore_errors=True)
+            time.sleep(wait_short)
+        else:
+            shutil.rmtree(temp, ignore_errors=True)
+            time.sleep(wait_short)
 
 
 def set_console_title(string):
@@ -362,7 +400,7 @@ def input_heading():
     return int(input(f'\n{Fore.LIGHTWHITE_EX}  Please enter your choice: {Style.RESET_ALL}'))
 
 
-def log_show(string, string_time=""):
+def log_show(string, string_time=''):
     print(f'\n{Fore.LIGHTYELLOW_EX}    {string}{Style.RESET_ALL}' +
           f'{Fore.LIGHTRED_EX}{string_time}{Style.RESET_ALL}')
 

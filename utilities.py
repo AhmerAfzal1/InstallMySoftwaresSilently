@@ -74,7 +74,8 @@ def main_program():
                 continue
 
             elif choice == 5:
-                func.install_software(dir_name=winrar, setup='Setup.exe', args='/S')
+                func.install_software(dir_name=winrar, setup='Setup.exe', args='/S /IEN',
+                                      another_task=func.AnOtherTask.WINRAR_KEY)
                 func.clear()
                 continue
 
@@ -99,7 +100,8 @@ def main_program():
                 continue
 
             elif choice == 10:
-                func.install_software(file_name=aomei_partition, setup='Setup.exe', args='/S')
+                func.install_software(file_name=aomei_partition, setup='Setup.exe', args='/SILENT',
+                                      another_task=func.AnOtherTask.AOMEI_PRO)
                 func.clear()
                 continue
 
@@ -127,7 +129,7 @@ def main_program():
                 continue
 
             elif choice == 15:
-                func.remove_temp()
+                func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
