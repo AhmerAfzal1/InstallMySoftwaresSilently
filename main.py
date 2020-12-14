@@ -82,7 +82,7 @@ def main():
                                       sub_dri_dir=os.path.join(*['APPS', 'PROSETDX', 'Winx64']), setup='DxSetup.exe',
                                       args='/QUIET /NORESTART')
                 developer.git()
-                developer.java_jdk()
+                developer.java_jdk_08()
                 developer.notepad_p_p()
                 developer.android_studio()
                 internet.firefox()
@@ -91,6 +91,7 @@ def main():
                 utilities.c_cleaner()
                 utilities.fonts()
                 utilities.winrar()
+                developer.python()
                 func.clear()
                 continue
 

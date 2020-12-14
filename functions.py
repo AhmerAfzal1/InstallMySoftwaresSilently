@@ -35,7 +35,7 @@ class AnOtherTask(enum.Enum):
 
 class JavaVersion(enum.IntEnum):
     JAVA_8 = 8
-    JAVA_12 = 12
+    JAVA_15 = 15
 
 
 def center_text(string):
@@ -232,24 +232,24 @@ def perform_another_task(task, file_name=None, dir_name=None):
         java_home = 'JAVA_HOME'
         output = re.findall(r'[\d.]+', file_name)
         new_output = re.findall(r'[\d]+', output[0])
-        setx_jdk_8 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk1.8.0_{output[1]}'])
-        setx_jdk_12 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk-{output[0]}'])
+        setx_jdk_08 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk1.8.0_{output[1]}'])
+        setx_jdk_15 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk-{output[0]}'])
         if os.environ.get(java_home) is not None:
             log_show(f'Already existed JAVA_HOME {os.environ[java_home]}')
             if new_output[0] == JavaVersion.JAVA_8.value:
-                setx = setx_jdk_8
+                setx = setx_jdk_08
                 os.environ[java_home] = setx
-            elif new_output[0] == JavaVersion.JAVA_12.value:
-                setx = setx_jdk_12
+            elif new_output[0] == JavaVersion.JAVA_15.value:
+                setx = setx_jdk_15
                 os.environ[java_home] = setx
             log_show(setx)
             log_show(f'Now updated to {setx}')
         else:
             if new_output[0] == JavaVersion.JAVA_8.value:
-                setx = setx_jdk_8
+                setx = setx_jdk_08
                 os.environ[java_home] = setx
-            elif new_output[0] == JavaVersion.JAVA_12.value:
-                setx = setx_jdk_12
+            elif new_output[0] == JavaVersion.JAVA_15.value:
+                setx = setx_jdk_15
                 os.environ[java_home] = setx
             time.sleep(wait_short)
             log_show(setx)

@@ -8,10 +8,11 @@ import main
 
 android_studio = 'Android Studio 4.1.0 (201.6858069)'
 git = 'Git 2.29.2.2'
-java_jdk = 'Java JDK 8 Update 271'
+java_jdk_08 = 'Java JDK 8 Update 271'
+java_jdk_15 = 'Java JDK 15.0.1'
 notepad_p_p = 'Notepad++ 7.9.1'
 pycharm = 'PyCharm Community 2020.3'
-python = 'Python 3.9.0'
+python = 'Python 3.9.1'
 
 
 def main_program():
@@ -23,12 +24,13 @@ def main_program():
             func.sub_heading(const.heading_developer)
             func.back_heading()
             func.sub_heading_softwares('02', android_studio)
-            func.sub_heading_softwares('03', java_jdk)
+            func.sub_heading_softwares('03', java_jdk_08)
             func.sub_heading_softwares('04', python)
             func.sub_heading_softwares('05', git)
             func.sub_heading_softwares('06', notepad_p_p)
             func.sub_heading_softwares('07', pycharm)
-            func.eixt_heading('08')
+            func.sub_heading_softwares('08', java_jdk_15)
+            func.eixt_heading('09')
 
             choice = func.input_heading()
 
@@ -49,7 +51,7 @@ def main_program():
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=java_jdk, setup='Setup.exe',
+                func.install_software(file_name=java_jdk_08, setup='Setup.exe',
                                       args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
                                       another_task=func.AnOtherTask.JAVA)
                 func.clear()
@@ -81,6 +83,13 @@ def main_program():
                 continue
 
             elif choice == 8:
+                func.install_software(file_name=java_jdk_15, setup='Setup.exe',
+                                      args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
+                                      another_task=func.AnOtherTask.JAVA)
+                func.clear()
+                continue
+
+            elif choice == 9:
                 func.remove_temp(is_wait=True)
                 sys.exit()
 

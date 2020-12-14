@@ -6,6 +6,7 @@ import constant as const
 import functions as func
 import main
 
+doro_pdf_writer = 'Doro PDF Writer 2.15.0'
 foxit_adv_pdf_editor = 'Foxit Advanced PDF Editor 3.10'
 infix_pdf_editor = 'Infix PDF Editor Pro 7.4.0'
 pdf_creator = 'PDFCreator 3.4.1'
@@ -28,7 +29,8 @@ def main_program():
             func.sub_heading_softwares('05', pdf_shaper)
             func.sub_heading_softwares('06', pdf_to_jpg)
             func.sub_heading_softwares('07', pdf_to_jpg_converter)
-            func.eixt_heading('08')
+            func.sub_heading_softwares('08', doro_pdf_writer)
+            func.eixt_heading('09')
 
             choice = func.input_heading()
 
@@ -75,6 +77,11 @@ def main_program():
                 continue
 
             elif choice == 8:
+                func.install_software(file_name=doro_pdf_writer, setup='Setup.exe', args='/silent')
+                func.clear()
+                continue
+
+            elif choice == 9:
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
