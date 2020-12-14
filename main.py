@@ -1,5 +1,4 @@
 import ctypes
-import enum
 import os
 import sys
 
@@ -14,37 +13,6 @@ import mobile
 import multimedia
 import pdf
 import utilities
-
-
-class SW(enum.IntEnum):
-    HIDE = 0
-    MAXIMIZE = 3
-    MINIMIZE = 6
-    RESTORE = 9
-    SHOW = 5
-    SHOWDEFAULT = 10
-    SHOWMAXIMIZED = 3
-    SHOWMINIMIZED = 2
-    SHOWMINNOACTIVE = 7
-    SHOWNA = 8
-    SHOWNOACTIVATE = 4
-    SHOWNORMAL = 1
-
-
-class ERROR(enum.IntEnum):
-    ZERO = 0
-    FILE_NOT_FOUND = 2
-    PATH_NOT_FOUND = 3
-    BAD_FORMAT = 11
-    ACCESS_DENIED = 5
-    ASSOC_INCOMPLETE = 27
-    DDE_BUSY = 30
-    DDE_FAIL = 29
-    DDE_TIMEOUT = 28
-    DLL_NOT_FOUND = 32
-    NO_ASSOC = 31
-    OOM = 8
-    SHARE = 26
 
 
 def make_font_bigger():
@@ -80,105 +48,99 @@ def main():
     os.system('mode 120, 45')
     func.set_console_title(const.heading_main_title)
     init()
-    if ctypes.windll.shell32.IsUserAnAdmin():
-        while True:
-            try:
-                func.main_heading()
-                func.main_heading_softwares('01', 'All Drivers & Recommended')
-                func.main_heading_softwares('02', 'Developer')
-                func.main_heading_softwares('03', 'Internet')
-                func.main_heading_softwares('04', 'Major')
-                func.main_heading_softwares('05', 'Mobile')
-                func.main_heading_softwares('06', 'Multimedia')
-                func.main_heading_softwares('07', 'PDF')
-                func.main_heading_softwares('08', 'Utilities')
-                func.eixt_heading('09')
+    while True:
+        try:
+            func.main_heading()
+            func.main_heading_softwares('01', 'All Drivers & Recommended')
+            func.main_heading_softwares('02', 'Developer')
+            func.main_heading_softwares('03', 'Internet')
+            func.main_heading_softwares('04', 'Major')
+            func.main_heading_softwares('05', 'Mobile')
+            func.main_heading_softwares('06', 'Multimedia')
+            func.main_heading_softwares('07', 'PDF')
+            func.main_heading_softwares('08', 'Utilities')
+            func.eixt_heading('09')
 
-                choice = func.input_heading()
+            choice = func.input_heading()
 
-                if choice == 0:
-                    func.exception_heading(const.heading_zero)
-                    input()
-                    func.clear()
-                    continue
-
-                elif choice == 1:
-                    drivers = 'Drivers'
-                    func.install_software(file_name=drivers, driver_dir='Audio', setup='Setup.exe', args='/S')
-                    func.install_software(file_name=drivers, driver_dir='Chipset',
-                                          sub_dri_dir='Intel Active Management Technology', setup='Setup.exe',
-                                          args='-L 0409 -S')
-                    func.install_software(file_name=drivers, driver_dir='Chipset', sub_dri_dir='Intel Chipset Device',
-                                          setup='Setup.exe', args='-L 0409 -S')
-                    func.install_software(file_name=drivers, driver_dir='Graphics', setup='igxpin.exe',
-                                          args='-L enu -S')
-                    func.install_software(file_name=drivers, driver_dir='Network',
-                                          sub_dri_dir=os.path.join(*['APPS', 'PROSETDX', 'Winx64']),
-                                          setup='DxSetup.exe', args='/QUIET /NORESTART')
-                    developer.git()
-                    developer.java_jdk()
-                    developer.notepad_p_p()
-                    developer.android_studio()
-                    internet.firefox()
-                    mobile.samsung_usb()
-                    multimedia.k_lite()
-                    utilities.c_cleaner()
-                    utilities.fonts()
-                    utilities.winrar()
-                    func.clear()
-                    continue
-
-                elif choice == 2:
-                    func.clear()
-                    developer.main_program()
-                    break
-
-                elif choice == 3:
-                    func.clear()
-                    internet.main_program()
-                    break
-
-                elif choice == 4:
-                    func.clear()
-                    major.main_program()
-                    continue
-
-                elif choice == 5:
-                    func.clear()
-                    mobile.main_program()
-                    continue
-
-                elif choice == 6:
-                    func.clear()
-                    multimedia.main_program()
-                    continue
-
-                elif choice == 7:
-                    func.clear()
-                    pdf.main_program()
-                    continue
-
-                elif choice == 8:
-                    func.clear()
-                    utilities.main_program()
-                    continue
-
-                elif choice == 9:
-                    func.remove_temp(is_wait=True)
-                    sys.exit()
-
-                else:
-                    func.exception_range_heading(1, 9)
-                    input()
-                    func.clear()
-                    continue
-
-            except Exception as err:
-                func.exception_heading(f'Please input a number')
-                func.exception_heading(f'Error: {err}')
+            if choice == 0:
+                func.exception_heading(const.heading_zero)
                 input()
                 func.clear()
-    else:
-        hinstance = ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, sys.argv[0], None, SW.SHOWNORMAL)
-        if hinstance <= 32:
-            raise RuntimeError(ERROR(hinstance))
+                continue
+
+            elif choice == 1:
+                drivers = 'Drivers'
+                func.install_software(file_name=drivers, driver_dir='Audio', setup='Setup.exe', args='/S')
+                func.install_software(file_name=drivers, driver_dir='Chipset',
+                                      sub_dri_dir='Intel Active Management Technology', setup='Setup.exe',
+                                      args='-L 0409 -S')
+                func.install_software(file_name=drivers, driver_dir='Chipset', sub_dri_dir='Intel Chipset Device',
+                                      setup='Setup.exe', args='-L 0409 -S')
+                func.install_software(file_name=drivers, driver_dir='Graphics', setup='igxpin.exe', args='-L enu -S')
+                func.install_software(file_name=drivers, driver_dir='Network',
+                                      sub_dri_dir=os.path.join(*['APPS', 'PROSETDX', 'Winx64']), setup='DxSetup.exe',
+                                      args='/QUIET /NORESTART')
+                developer.git()
+                developer.java_jdk()
+                developer.notepad_p_p()
+                developer.android_studio()
+                internet.firefox()
+                mobile.samsung_usb()
+                multimedia.k_lite()
+                utilities.c_cleaner()
+                utilities.fonts()
+                utilities.winrar()
+                func.clear()
+                continue
+
+            elif choice == 2:
+                func.clear()
+                developer.main_program()
+                break
+
+            elif choice == 3:
+                func.clear()
+                internet.main_program()
+                break
+
+            elif choice == 4:
+                func.clear()
+                major.main_program()
+                continue
+
+            elif choice == 5:
+                func.clear()
+                mobile.main_program()
+                continue
+
+            elif choice == 6:
+                func.clear()
+                multimedia.main_program()
+                continue
+
+            elif choice == 7:
+                func.clear()
+                pdf.main_program()
+                continue
+
+            elif choice == 8:
+                func.clear()
+                utilities.main_program()
+                continue
+
+            elif choice == 9:
+                func.remove_temp(is_wait=True)
+                sys.exit()
+
+            else:
+                func.exception_range_heading(1, 9)
+                input()
+                func.clear()
+                continue
+
+        except Exception as err:
+            func.exception_heading(f'Please input a number')
+            func.exception_heading(f'Error: {err}')
+            input()
+            func.clear()

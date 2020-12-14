@@ -1,4 +1,5 @@
 import enum
+import inspect
 import os
 import re
 import shutil
@@ -16,8 +17,9 @@ init()
 temp = os.path.join(tempfile.gettempdir(), const.__product__)
 if not os.path.exists(temp):
     os.makedirs(temp)
-wait_short = 0.5
 wait_long = 5
+wait_msg = f'Wait for {wait_long} seconds to go back automatically'
+wait_short = 0.5
 
 
 class AnOtherTask(enum.Enum):
@@ -57,50 +59,39 @@ def copying_files(src, dst):
         exception_heading(f'You haven\'t permission: {err}')
 
 
-def find_files(drive_path, dir_name=None, file_name=None, file_ext=None):
-    for root, dirs, files in os.walk(drive_path):
-        if dir_name is not None:
-            if dir_name in dirs:
-                return os.path.join(root, dir_name)
-        else:
-            new_file_with_ext = file_name.replace(file_name, file_name + file_ext)
-            if new_file_with_ext in files:
-                return os.path.join(root, new_file_with_ext)
-
-
-def find_files_from_drive(dir_name=None, file_name=None, file_ext=None):
+def find_files(dir_name=None, file_name=None, file_ext=None):
     try:
         start = time.time()
-        if not file_ext.endswith('.zip'):
-            exception_heading(f'{file_name + file_ext} is not unsupported format, please use zip')
+        get_file_path = inspect.stack()[1].filename
+        get_file_name = os.path.splitext(os.path.basename(get_file_path))[0]
+        if get_file_name.lower() == 'Developer'.lower():
+            drives = ['D:\\', 'F:\\']
         else:
-            if dir_name is not None:
-                log_show(f'Finding directory {dir_name}')
-                find_dir = find_files('F:\\', dir_name=dir_name)
-                if not find_dir:
-                    find_dir = find_files('D:\\', dir_name=dir_name)
-                if not find_dir:
-                    exception_heading('Directory not found')
-                else:
-                    end = time.time()
-                    log_show(f'Found directory {find_dir} in ', f'{get_time_in_secs_mins(start, end)}')
-                    return find_dir
-            else:
-                log_show(f'Finding file {file_name}')
-                find_file = find_files('F:\\', dir_name=None, file_name=file_name, file_ext=file_ext)
-                if not find_file:
-                    find_file = find_files('D:\\', dir_name=None, file_name=file_name, file_ext=file_ext)
-                if not find_file:
-                    exception_heading('File not found')
-                else:
-                    end = time.time()
-                    log_show(f'Found file {find_file} in ', f'{get_time_in_secs_mins(start, end)}')
-                    time.sleep(wait_short)
-                    log_show('Unzipping to ' + get_temp_path_by_file(file_name))
-                    unzip_file(find_file)
-                    time.sleep(wait_short)
+            drives = ['F:\\', 'D:\\']
+        if file_ext.endswith('.zip'):
+            for drive in drives:
+                for root, dirs, files in os.walk(drive):
+                    if dir_name is not None:
+                        if dir_name in dirs:
+                            return os.path.join(root, dir_name)
+                    else:
+                        file_with_ext = file_name.replace(file_name, file_name + file_ext)
+                        if file_with_ext in files:
+                            end = time.time()
+                            log_show(f'Found file {file_with_ext} in ', f'{get_time(start, end)}')
+                            time.sleep(wait_short)
+                            start_unzip = time.time()
+                            log_show('Unzipping to ' + get_temp_path_by_file(file_name))
+                            zip_file = zipfile.ZipFile(os.path.join(root, file_with_ext), 'r')
+                            zip_file.extractall(path=temp)
+                            zip_file.close()
+                            end_unzip = time.time()
+                            log_show(f'Unzipped {file_with_ext} in ', f'{get_time(start_unzip, end_unzip)}')
+                            time.sleep(wait_short)
+        else:
+            exception_heading(f'Extension for {file_name + file_ext} is unsupported format, please use zip archive')
     except Exception as err:
-        exception_heading(f'Error: {err}')
+        exception_heading(err)
 
 
 def get_temp_drivers_path_by_file(file_name, drivers_dir, sub_drivers_dir=None):
@@ -114,7 +105,7 @@ def get_temp_path_by_file(file_name):
     return os.path.join(temp, file_name)
 
 
-def get_time_in_secs_mins(start, end):
+def get_time(start, end):
     t = end - start
     mins, secs = divmod(t, 60)
     if secs <= 1 and mins <= 0:
@@ -122,37 +113,46 @@ def get_time_in_secs_mins(start, end):
     elif secs >= 2 and mins <= 0:
         return f'{secs:0.2f} Seconds'
     elif mins <= 1 and secs <= 1:
-        return f'{mins:0.2f} Minute and {secs:0.2f} Second'
+        return f'{mins:0.0f} Minute and {secs:0.2f} Second'
+    elif mins <= 1 and secs <= 59:
+        return f'{mins:0.0f} Minute and {secs:0.2f} Seconds'
     else:
-        return f'{mins:0.2f} Minutes and {secs:0.2f} Seconds'
+        return f'{mins:0.0f} Minutes and {secs:0.2f} Seconds'
 
 
 def install_software(dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
                      driver_dir=None, sub_dri_dir=None, ext='.zip', wait=0, wait_input=False):
     try:
         start = time.time()
+        if args is None or args == '':
+            split_args = ''
+        else:
+            split_args = str(args).split()[1:-1]
         wait_for = int(wait)
-        wait_msg = f'Wait for {wait_long} seconds to go back automatically'
         if dir_name is not None:  # For find directory
-            found_dir = find_files_from_drive(dir_name=dir_name, file_ext=ext)
+            log_show(f'Searching directory {dir_name}')
+            found_dir = find_files(dir_name=dir_name, file_ext=ext)
+            end = time.time()
+            log_show(f'Found directory {dir_name} in ', f'{get_time(start, end)}')
+            time.sleep(wait_short)
             if len(os.listdir(found_dir)):
                 log_show(f'Installing from directory {found_dir}')
-                os.chdir(found_dir)
                 time.sleep(wait_short)
-                os.system(f'{setup} {args}')
+                # subprocess.run([os.path.join(found_dir, setup), split_args], shell=True, stdin=subprocess.PIPE,
+                #                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 if another_task is not None:
                     perform_another_task(task=another_task, dir_name=found_dir)
                 end = time.time()
-                log_show(f'Installed {dir_name} successfully in ', f'{get_time_in_secs_mins(start, end)}')
+                log_show(f'Installed {dir_name} successfully in ', f'{get_time(start, end)}')
                 log_show(wait_msg)
                 time.sleep(wait_long)
             else:
                 log_show(f'{found_dir} is empty')
         else:
             if driver_dir is not None:
+                log_show(f'Searching {file_name}')
                 if not os.path.exists(get_temp_drivers_path_by_file(file_name, driver_dir, sub_dri_dir)):
-                    find_files_from_drive(dir_name=None, file_name=file_name, file_ext=ext)
-                os.chdir(get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir))
+                    find_files(dir_name=None, file_name=file_name, file_ext=ext)
                 if sub_dri_dir is not None:
                     if sub_dri_dir == os.path.join(*['APPS', 'PROSETDX', 'Winx64']):
                         log_show(f'Installing {driver_dir} Drivers')
@@ -161,25 +161,27 @@ def install_software(dir_name=None, file_name=None, setup=None, args=None, regis
                 else:
                     log_show(f'Installing {driver_dir} Drivers')
                 time.sleep(wait_short)
-                os.system(f'{setup} {args}')
+                subprocess.run([os.path.join(
+                    get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir), setup),
+                    split_args], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 end = time.time()
-                log_show(f'Installed {driver_dir} successfully in ', f'{get_time_in_secs_mins(start, end)}')
+                log_show(f'Installed {driver_dir} successfully in ', f'{get_time(start, end)}')
             else:
-                find_files_from_drive(dir_name=None, file_name=file_name, file_ext=ext)
+                log_show(f'Searching file {file_name}')
+                find_files(dir_name=None, file_name=file_name, file_ext=ext)
                 log_show(f'Installing {file_name}')
-                subprocess.run([os.path.join(get_temp_path_by_file(file_name), setup), args], shell=True,
+                subprocess.run([os.path.join(get_temp_path_by_file(file_name), setup), split_args], shell=True,
                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 time.sleep(wait_short)
                 if wait_for >= 1:
                     time.sleep(wait_for)
                 end = time.time()
-                log_show(f'Installed {file_name} successfully in ', f'{get_time_in_secs_mins(start, end)}')
+                log_show(f'Installed {file_name} successfully in ', f'{get_time(start, end)}')
                 if registry is not None:
                     if os.path.isfile(os.path.join(*[get_temp_path_by_file(file_name), registry])):
                         log_show(f'Installing registry {registry}')
                         time.sleep(wait_short)
-                        # os.chdir(get_temp_path_by_file(file_name))
-                        os.system(f'{registry}')
+                        os.startfile(get_temp_path_by_file(file_name), setup)
                     else:
                         exception_heading(f'File {registry} not found')
                 if another_task is not None:
@@ -187,7 +189,7 @@ def install_software(dir_name=None, file_name=None, setup=None, args=None, regis
             log_show(wait_msg)
             time.sleep(wait_long)
             if wait_input:
-                input('Please press Enter to exit')
+                input('Please press Enter to continue')
     except Exception as err:
         exception_heading(f'Error: {err}')
 
@@ -289,9 +291,10 @@ def perform_another_task(task, file_name=None, dir_name=None):
             log_show(f'Copied Rarreg.key to {dst_winrar}')
     elif task.value == AnOtherTask.IDM.value:
         log_show(f'Patching {file_name}')
-        patcher_dir = os.path.join(*[os.environ['ProgramFiles(x86)'], 'Internet Download Manager'])
-        os.chdir(get_temp_path_by_file(file_name))
-        os.system(f'Patch.exe /silent /overwrite /backup /startupworkdir {patcher_dir}')
+        patcher_dir = os.path.join(*[os.environ['ProgramFiles(x86)'], file_name])
+        subprocess.run([os.path.join(get_temp_path_by_file(file_name), 'Patch.exe'), '/silent', '/overwrite', '/backup',
+                        f'/startupworkdir {patcher_dir}'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                       stderr=subprocess.PIPE)
         time.sleep(wait_short)
     else:
         exception_heading(f'Invalid AnOtherTask type')
@@ -303,23 +306,18 @@ def portable_crack_patch(file_name, setup_with_arg, file_ext='.zip'):
     if os.path.exists(get_temp_path_by_file(file_name)):
         if len(os.listdir(get_temp_path_by_file(file_name))) > 0:
             log_show(f'Opening from existing {file_name}')
-            os.chdir(get_temp_path_by_file(file_name))
+            os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
             time.sleep(wait_short)
-            os.system(setup_with_arg)
         else:
-            find_files_from_drive(file_name=file_name, file_ext=file_ext)
+            find_files(file_name=file_name, file_ext=file_ext)
             log_show(f'Opening {file_name}')
-            os.chdir(get_temp_path_by_file(file_name))
+            os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
             time.sleep(wait_short)
-            os.system(setup_with_arg)
-            # os.startfile(path, setup_exe_with_arg)
     else:
-        find_files_from_drive(file_name=file_name, file_ext=file_ext)
+        find_files(file_name=file_name, file_ext=file_ext)
         log_show(f'Opening {file_name}')
-        os.chdir(get_temp_path_by_file(file_name))
+        os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
         time.sleep(wait_short)
-        os.system(setup_with_arg)
-        # os.startfile(path, setup_exe_with_arg)
 
 
 def read_reg(computer_name=None, root_key=None, sub_key=None, name_key=None):
@@ -367,15 +365,6 @@ def set_reg(root_key, sub_key, name_key, value_type, value_key):
         return f'Permission denied: {permission}'
     except OSError:
         return False
-
-
-def unzip_file(file_name):
-    try:
-        zip_file = zipfile.ZipFile(file_name, 'r')
-        zip_file.extractall(path=temp)
-        zip_file.close()
-    except Exception as err:
-        exception_heading(f'Error: {err}')
 
 
 def back_heading():
