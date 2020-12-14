@@ -138,8 +138,8 @@ def install_software(dir_name=None, file_name=None, setup=None, args=None, regis
             if len(os.listdir(found_dir)):
                 log_show(f'Installing from directory {found_dir}')
                 time.sleep(wait_short)
-                # subprocess.run([os.path.join(found_dir, setup), split_args], shell=True, stdin=subprocess.PIPE,
-                #                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run([os.path.join(found_dir, setup), split_args], shell=True, stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 if another_task is not None:
                     perform_another_task(task=another_task, dir_name=found_dir)
                 end = time.time()
