@@ -36,12 +36,12 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=k_lite, setup='Setup.exe', args='/verysilent')
+                func.InstallSoftware(file_name=k_lite, setup='Setup.exe', args='/verysilent')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=mp3_tag, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=mp3_tag, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 

@@ -59,72 +59,72 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=c_cleaner, setup='Setup.exe', args='/S /IB /TM')
+                func.InstallSoftware(file_name=c_cleaner, setup='Setup.exe', args='/S /IB /TM')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=power_iso, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=power_iso, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.install_software(file_name=fonts, setup='Setup.exe')
+                func.InstallSoftware(file_name=fonts, setup='Setup.exe')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.install_software(dir_name=winrar, setup='Setup.exe', args='/S /IEN',
-                                      another_task=func.AnOtherTask.WINRAR_KEY)
+                func.InstallSoftware(dir_name=winrar, setup='Setup.exe', args='/S /IEN',
+                                     another_task=func.AnOtherTask.WINRAR_KEY)
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.portable_crack_patch(file_name=dism_p_p, setup_with_arg='Dism++x64.exe')
+                func.Portable(file_name=dism_p_p, setup_with_arg='Dism++x64.exe')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.install_software(file_name=eng_to_urdu_dic, setup='Setup.exe', args='/exenoui')
+                func.InstallSoftware(file_name=eng_to_urdu_dic, setup='Setup.exe', args='/exenoui')
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.portable_crack_patch(file_name=cpu_z, setup_with_arg='cpuz_x64.exe')
+                func.Portable(file_name=cpu_z, setup_with_arg='cpuz_x64.exe')
                 func.clear()
                 continue
 
             elif choice == 9:
-                func.portable_crack_patch(file_name=hw_info, setup_with_arg='HWiNFO64.exe')
+                func.Portable(file_name=hw_info, setup_with_arg='HWiNFO64.exe')
                 func.clear()
                 continue
 
             elif choice == 10:
-                func.install_software(file_name=aomei_partition, setup='Setup.exe', args='/SILENT',
-                                      another_task=func.AnOtherTask.AOMEI_PRO)
+                func.InstallSoftware(file_name=aomei_partition, setup='Setup.exe', args='/SILENT',
+                                     another_task=func.AnOtherTask.AOMEI_PRO)
                 func.clear()
                 continue
 
             elif choice == 11:
-                func.portable_crack_patch(file_name=rufus, setup_with_arg='Rufus.exe')
+                func.Portable(file_name=rufus, setup_with_arg='Rufus.exe')
                 func.clear()
                 continue
 
             elif choice == 12:
-                func.install_software(file_name=seven_zip, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=seven_zip, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 13:
-                func.install_software(file_name=vs_redistributable, setup='Setup.exe',
-                                      args='/INSTALL /QUIET /NORESTART')
+                func.InstallSoftware(file_name=vs_redistributable, setup='Setup.exe',
+                                     args='/INSTALL /QUIET /NORESTART')
                 func.clear()
                 continue
 
             elif choice == 14:
-                func.install_software(file_name=better_rename, setup='Setup.exe', args='/VERYSILENT /NORESTART')
+                func.InstallSoftware(file_name=better_rename, setup='Setup.exe', args='/VERYSILENT /NORESTART')
                 time.sleep(1)
-                func.portable_crack_patch(file_name=better_rename, setup_with_arg='Serial.txt')
+                func.Portable(file_name=better_rename, setup_with_arg='Serial.txt')
                 func.clear()
                 continue
 

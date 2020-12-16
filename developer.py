@@ -46,46 +46,46 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.install_software(file_name=android_studio, setup='Setup.exe', args='/S /Allusers')
+                func.InstallSoftware(file_name=android_studio, setup='Setup.exe', args='/S /Allusers')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.install_software(file_name=java_jdk_08, setup='Setup.exe',
-                                      args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
-                                      another_task=func.AnOtherTask.JAVA)
+                func.InstallSoftware(file_name=java_jdk_08, setup='Setup.exe',
+                                     args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
+                                     another_task=func.AnOtherTask.JAVA)
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.install_software(file_name=python, setup='Setup.exe')
+                func.InstallSoftware(file_name=python, setup='Setup.exe')
                 func.clear()
                 continue
 
             elif choice == 5:
                 # If not provide *.reg file in variable registry='reg.reg' than other option to use winreg for it
-                func.install_software(file_name=git, setup='Setup.exe',
-                                      args='/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
-                                           '/RESTARTAPPLICATIONS /COMPONENTS="icons,icons\\desktop,ext,ext\\reg,'
-                                           'ext\\reg\\shellhere,assoc,assoc_sh,consolefont"',
-                                      another_task=func.AnOtherTask.REG_GIT)
+                func.InstallSoftware(file_name=git, setup='Setup.exe',
+                                     args='/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
+                                          '/RESTARTAPPLICATIONS /COMPONENTS="icons,icons\\desktop,ext,ext\\reg,'
+                                          'ext\\reg\\shellhere,assoc,assoc_sh,consolefont"',
+                                     another_task=func.AnOtherTask.REG_GIT)
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.install_software(file_name=notepad_p_p, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=notepad_p_p, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.install_software(file_name=pycharm, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=pycharm, setup='Setup.exe', args='/S')
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.install_software(file_name=java_jdk_15, setup='Setup.exe',
-                                      args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
-                                      another_task=func.AnOtherTask.JAVA)
+                func.InstallSoftware(file_name=java_jdk_15, setup='Setup.exe',
+                                     args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
+                                     another_task=func.AnOtherTask.JAVA)
                 func.clear()
                 continue
 
