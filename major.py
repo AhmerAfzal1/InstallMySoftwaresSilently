@@ -49,27 +49,27 @@ def main_program():
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=adobe_acrobat_reader, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=adobe_acrobat_reader, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=adobe_acrobat_pro, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=adobe_acrobat_pro, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(file_name=adobe_photoshop, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=adobe_photoshop, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=adobe_xd, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=adobe_xd, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=corel_draw, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=corel_draw, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 

@@ -46,38 +46,38 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=foxit_adv_pdf_editor, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=foxit_adv_pdf_editor, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=infix_pdf_editor, setup='Setup.exe', args='/S /EN')
+                func.InstallSoftware(file_name=infix_pdf_editor, setup='Setup.exe', args=r'/S /EN')
                 func.clear()
                 continue
 
             elif choice == 4:
                 func.InstallSoftware(file_name=infix_pdf_editor, setup='Setup.exe',
-                                     args='/SILENT /NORESTART /NOCLOSEAPPLICATIONS /NORESTARTAPPLICATIONS')
+                                     args=r'/SILENT /NORESTART /NOCLOSEAPPLICATIONS /NORESTARTAPPLICATIONS')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(file_name=pdf_shaper, setup='Setup.exe', args='/silent')
+                func.InstallSoftware(file_name=pdf_shaper, setup='Setup.exe', args=r'/silent')
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=pdf_to_jpg, setup='Setup.exe', args='/silent')
+                func.InstallSoftware(file_name=pdf_to_jpg, setup='Setup.exe', args=r'/silent')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=pdf_to_jpg_converter, setup='Setup.exe', args='/silent')
+                func.InstallSoftware(file_name=pdf_to_jpg_converter, setup='Setup.exe', args=r'/silent')
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.InstallSoftware(file_name=doro_pdf_writer, setup='Setup.exe', args='/silent')
+                func.InstallSoftware(file_name=doro_pdf_writer, setup='Setup.exe', args=r'/silent')
                 func.clear()
                 continue
 

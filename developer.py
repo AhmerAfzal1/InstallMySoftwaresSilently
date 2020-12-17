@@ -7,7 +7,7 @@ import functions as func
 import main
 
 android_studio = 'Android Studio 4.1.0 (201.6858069)'
-git = 'Git 2.29.2.2'
+git = 'Git 2.29.2.3'
 java_jdk_08 = 'Java JDK 8 Update 271'
 java_jdk_15 = 'Java JDK 15.0.1'
 notepad_p_p = 'Notepad++ 7.9.1'
@@ -46,13 +46,13 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=android_studio, setup='Setup.exe', args='/S /Allusers')
+                func.InstallSoftware(file_name=android_studio, setup='Setup.exe', args=r'/S /Allusers')
                 func.clear()
                 continue
 
             elif choice == 3:
                 func.InstallSoftware(file_name=java_jdk_08, setup='Setup.exe',
-                                     args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
+                                     args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"',
                                      another_task=func.AnOtherTask.JAVA)
                 func.clear()
                 continue
@@ -65,26 +65,26 @@ def main_program():
             elif choice == 5:
                 # If not provide *.reg file in variable registry='reg.reg' than other option to use winreg for it
                 func.InstallSoftware(file_name=git, setup='Setup.exe',
-                                     args='/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
-                                          '/RESTARTAPPLICATIONS /COMPONENTS="icons,icons\\desktop,ext,ext\\reg,'
-                                          'ext\\reg\\shellhere,assoc,assoc_sh,consolefont"',
+                                     args=r'/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
+                                          r'/RESTARTAPPLICATIONS /COMPONENTS="icons,icons\desktop,ext,ext\reg,'
+                                          r'ext\reg\shellhere,assoc,assoc_sh,consolefont"',
                                      another_task=func.AnOtherTask.REG_GIT)
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=notepad_p_p, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=notepad_p_p, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=pycharm, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=pycharm, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 8:
                 func.InstallSoftware(file_name=java_jdk_15, setup='Setup.exe',
-                                     args='/s ADDLOCAL="ToolsFeature,SourceFeature"',
+                                     args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"',
                                      another_task=func.AnOtherTask.JAVA)
                 func.clear()
                 continue

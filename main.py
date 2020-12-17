@@ -71,16 +71,16 @@ def main():
 
             elif choice == 1:
                 drivers = 'Drivers'
-                func.InstallSoftware(file_name=drivers, driver_dir='Audio', setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=drivers, driver_dir='Audio', setup='Setup.exe', args=r'/S')
                 func.InstallSoftware(file_name=drivers, driver_dir='Chipset',
                                      sub_dri_dir='Intel Active Management Technology', setup='Setup.exe',
-                                     args='-L 0409 -S')
+                                     args=r'-L 0409 -S')
                 func.InstallSoftware(file_name=drivers, driver_dir='Chipset', sub_dri_dir='Intel Chipset Device',
-                                     setup='Setup.exe', args='-L 0409 -S')
-                func.InstallSoftware(file_name=drivers, driver_dir='Graphics', setup='igxpin.exe', args='-L enu -S')
+                                     setup='Setup.exe', args=r'-L 0409 -S')
+                func.InstallSoftware(file_name=drivers, driver_dir='Graphics', setup='igxpin.exe', args=r'-L enu -S')
                 func.InstallSoftware(file_name=drivers, driver_dir='Network',
                                      sub_dri_dir=os.path.join(*['APPS', 'PROSETDX', 'Winx64']), setup='DxSetup.exe',
-                                     args='/QUIET /NORESTART')
+                                     args=r'/QUIET /NORESTART')
                 developer.git()
                 developer.java_jdk_08()
                 developer.notepad_p_p()

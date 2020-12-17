@@ -42,28 +42,28 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=firefox, setup='Setup.exe', args='-ms')
+                func.InstallSoftware(file_name=firefox, setup='Setup.exe', args=r'-ms')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=idm, setup='Setup.exe', args='/skipdlgs', wait=10,
+                func.InstallSoftware(file_name=idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
                                      another_task=func.AnOtherTask.IDM)
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=chrome, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=chrome, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(file_name=net_balancer, setup='Setup.exe', args='/SILENT /VERYSILENT /NORESTART')
+                func.InstallSoftware(file_name=net_balancer, setup='Setup.exe', args=r'/SILENT /VERYSILENT /NORESTART')
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=net_limiter, setup='Setup.exe', args='/EXENOUI /EXENOUPDATES')
+                func.InstallSoftware(file_name=net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES')
                 func.clear()
                 continue
 

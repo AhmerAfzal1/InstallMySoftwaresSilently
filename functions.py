@@ -2,6 +2,7 @@ import enum
 import inspect
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import tempfile
@@ -14,11 +15,13 @@ from colorama import init, Fore, Style
 import constant as const
 
 init()
+encode_utf_8 = 'utf-8'
 temp = os.path.join(tempfile.gettempdir(), const.__product__)
 if not os.path.exists(temp):
     os.makedirs(temp)
 wait_long = 5
 wait_msg = f'Wait for {wait_long} seconds to go back automatically'
+wait_msg_input = '\n Please press Enter to continue'
 wait_short = 0.5
 
 
@@ -43,7 +46,23 @@ def copying_files(src, dst):
         exception_heading(f'You haven\'t permission: {err}')
 
 
-def find_files(dir_name=None, file_name=None, file_ext=None):
+def extract_archive(root, file_name, pwd=None):
+    start_unzip = time.time()
+    log_show(f'Extracting to {get_temp_path_by_file(file_name)}')
+    zip_file = zipfile.ZipFile(file=os.path.join(root, file_name), mode='r')
+    try:
+        if pwd is not None:
+            zip_file.setpassword(pwd=bytes(pwd, encoding=encode_utf_8))
+        zip_file.extractall(path=temp)
+    except zipfile.error as err_zip:
+        exception_heading(f'Error while unzipping: {err_zip}')
+    finally:
+        zip_file.close()
+        end_unzip = time.time()
+        log_show(f'Extracted {file_name} in ', f'{get_time(start_unzip, end_unzip)}')
+
+
+def find_files(dir_name=None, file_name=None, file_ext=None, pwd=None):
     try:
         start = time.time()
         get_file_path = inspect.stack()[1].filename
@@ -64,13 +83,7 @@ def find_files(dir_name=None, file_name=None, file_ext=None):
                             end = time.time()
                             log_show(f'Found file {file_with_ext} in ', f'{get_time(start, end)}')
                             time.sleep(wait_short)
-                            start_unzip = time.time()
-                            log_show('Unzipping to ' + get_temp_path_by_file(file_name))
-                            zip_file = zipfile.ZipFile(os.path.join(root, file_with_ext), 'r')
-                            zip_file.extractall(path=temp)
-                            zip_file.close()
-                            end_unzip = time.time()
-                            log_show(f'Unzipped {file_with_ext} in ', f'{get_time(start_unzip, end_unzip)}')
+                            extract_archive(root=root, file_name=file_with_ext, pwd=pwd)
                             time.sleep(wait_short)
         else:
             exception_heading(f'Extension for {file_name + file_ext} is unsupported format, please use zip archive')
@@ -120,15 +133,18 @@ def read_reg(computer_name=None, root_key=None, sub_key=None, name_key=None):
 
 
 def remove_temp(is_wait):
-    if not len(os.listdir(temp)) == 0:
-        if is_wait:
-            log_show(f'Wait for {wait_long - 2} seconds deleting {temp}')
-            time.sleep(wait_long - 2)
-            shutil.rmtree(temp, ignore_errors=True)
-            time.sleep(wait_short)
+    if os.path.exists(temp):
+        if os.path.isfile(temp) or os.path.isdir(temp):
+            if is_wait:
+                log_show(f'Wait for {wait_long - 2} seconds deleting {temp}')
+                time.sleep(wait_long - 2)
+                shutil.rmtree(temp, ignore_errors=True)
+                time.sleep(wait_short)
+            else:
+                shutil.rmtree(temp, ignore_errors=True)
+                time.sleep(wait_short)
         else:
-            shutil.rmtree(temp, ignore_errors=True)
-            time.sleep(wait_short)
+            pass
 
 
 def set_console_title(string):
@@ -152,20 +168,22 @@ def set_reg(root_key, sub_key, name_key, value_type, value_key):
 
 
 def back_heading():
-    print(f'{Fore.LIGHTCYAN_EX}    [01] BACK TO MAIN{Style.RESET_ALL}')
+    print(f'{Fore.LIGHTCYAN_EX}\t[01] BACK TO MAIN{Style.RESET_ALL}')
 
 
 def eixt_heading(num):
-    print(f'{Fore.LIGHTRED_EX}    [{num}] EXIT{Style.RESET_ALL}')
+    print(f'{Fore.LIGHTRED_EX}\t[{num}] EXIT{Style.RESET_ALL}')
 
 
-def exception_heading(string):
-    print(f'\n{Fore.LIGHTRED_EX}    {string}{Style.RESET_ALL}')
+def exception_heading(string, wait_input=False):
+    print(f'\n{Fore.LIGHTRED_EX} {string}{Style.RESET_ALL}')
+    if wait_input:
+        input(wait_msg_input)
 
 
 def exception_range_heading(num1, num2):
     print(
-        f'\n{Fore.LIGHTRED_EX}    Value is not between {int(num1)} to {int(num2)}! '
+        f'\n{Fore.LIGHTRED_EX} Value is not between {int(num1)} to {int(num2)}! '
         f'Please try again with valid options{Style.RESET_ALL}')
 
 
@@ -174,7 +192,7 @@ def input_heading():
 
 
 def log_show(string, string_time=''):
-    print(f'\n{Fore.LIGHTYELLOW_EX}    {string}{Style.RESET_ALL}' +
+    print(f'\n{Fore.LIGHTYELLOW_EX} {string}{Style.RESET_ALL}' +
           f'{Fore.LIGHTRED_EX}{string_time}{Style.RESET_ALL}')
 
 
@@ -186,7 +204,7 @@ def main_heading():
 
 
 def main_heading_softwares(num, string):
-    print(f'{Fore.LIGHTGREEN_EX}    [{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Installing{Style.RESET_ALL} '
+    print(f'{Fore.LIGHTGREEN_EX}\t[{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Installing{Style.RESET_ALL} '
           f'{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Softwares{Style.RESET_ALL}')
 
 
@@ -196,17 +214,17 @@ def sub_heading(string):
 
 
 def sub_heading_portable(num, string):
-    print(f'{Fore.LIGHTGREEN_EX}    [{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Program{Style.RESET_ALL} '
+    print(f'{Fore.LIGHTGREEN_EX}\t[{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Program{Style.RESET_ALL} '
           f'{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}(Portable){Style.RESET_ALL}')
 
 
 def sub_heading_softwares(num, string):
-    print(f'{Fore.LIGHTGREEN_EX}    [{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Install{Style.RESET_ALL} '
+    print(f'{Fore.LIGHTGREEN_EX}\t[{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Install{Style.RESET_ALL} '
           f'{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL}')
 
 
 def under_progress_heading(string):
-    print(f'\n{Fore.CYAN}  {string}{Style.RESET_ALL}')
+    print(f'\n{Fore.CYAN} {string}{Style.RESET_ALL}')
 
 
 class AnOtherTask(enum.Enum):
@@ -227,7 +245,7 @@ class JavaVersion(enum.IntEnum):
 
 class InstallSoftware:
     def __init__(self, dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
-                 driver_dir=None, sub_dri_dir=None, ext='.zip', wait=0, wait_input=False):
+                 driver_dir=None, sub_dri_dir=None, ext='.zip', pwd=None, wait=0, wait_input=False):
         self.dir_name = dir_name
         self.file_name = file_name
         self.setup = setup
@@ -237,6 +255,7 @@ class InstallSoftware:
         self.driver_dir = driver_dir
         self.sub_dri_dir = sub_dri_dir
         self.ext = ext
+        self.pwd = pwd
         self.wait = wait
         self.wait_input = wait_input
 
@@ -244,13 +263,11 @@ class InstallSoftware:
             start = time.time()
             if args is None or args == '':
                 split_args = ''
-            elif len(args.split()) == 1:
-                split_args = ', '.join(map(str, args.split()))
             else:
-                split_args = ', '.join(repr(e) for e in args.split())
+                split_args = shlex.split(args)
             wait_for = int(wait)
             if dir_name is not None:  # For find directory
-                log_show(f'Searching directory {dir_name}')
+                log_show(f'Searching directory {dir_name}...')
                 found_dir = find_files(dir_name=dir_name, file_ext=ext)
                 end = time.time()
                 log_show(f'Found directory {dir_name} in ', f'{get_time(start, end)}')
@@ -258,7 +275,7 @@ class InstallSoftware:
                 if len(os.listdir(found_dir)):
                     log_show(f'Installing from directory {found_dir}')
                     time.sleep(wait_short)
-                    subprocess.run([os.path.join(found_dir, setup), split_args], shell=True, stdin=subprocess.PIPE,
+                    subprocess.run([os.path.join(found_dir, setup)] + split_args, shell=True, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     if another_task is not None:
                         self.__perform_another_task(task=another_task, dir_name=found_dir)
@@ -270,7 +287,7 @@ class InstallSoftware:
                     log_show(f'{found_dir} is empty')
             else:
                 if driver_dir is not None:
-                    log_show(f'Searching {file_name}')
+                    log_show(f'Searching {file_name}...')
                     if not os.path.exists(get_temp_drivers_path_by_file(file_name, driver_dir, sub_dri_dir)):
                         find_files(dir_name=None, file_name=file_name, file_ext=ext)
                     if sub_dri_dir is not None:
@@ -282,15 +299,16 @@ class InstallSoftware:
                         log_show(f'Installing {driver_dir} Drivers')
                     time.sleep(wait_short)
                     subprocess.run([os.path.join(
-                        get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir), setup),
-                        split_args], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                        get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir),
+                        setup)] + split_args, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
                     end = time.time()
                     log_show(f'Installed {driver_dir} successfully in ', f'{get_time(start, end)}')
                 else:
                     log_show(f'Searching file {file_name}')
-                    find_files(dir_name=None, file_name=file_name, file_ext=ext)
+                    find_files(dir_name=None, file_name=file_name, file_ext=ext, pwd=pwd)
                     log_show(f'Installing {file_name}')
-                    subprocess.run([os.path.join(get_temp_path_by_file(file_name), setup), split_args], shell=True,
+                    subprocess.run([os.path.join(get_temp_path_by_file(file_name), setup)] + split_args, shell=True,
                                    stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     time.sleep(wait_short)
                     if wait_for >= 1:
@@ -309,9 +327,9 @@ class InstallSoftware:
                 log_show(wait_msg)
                 time.sleep(wait_long)
                 if wait_input:
-                    input('Please press Enter to continue')
+                    input(wait_msg_input)
         except Exception as err:
-            exception_heading(f'Error: {err}')
+            exception_heading(f'Error: {err}', wait_input=True)
 
     @staticmethod
     def __perform_another_task(task, file_name=None, dir_name=None):

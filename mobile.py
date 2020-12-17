@@ -38,17 +38,17 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=samsung_usb, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=samsung_usb, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=smart_switch, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=smart_switch, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=i_tunes, setup='Setup.exe', args='/qn /norestart')
+                func.InstallSoftware(file_name=i_tunes, setup='Setup.exe', args=r'/qn /norestart')
                 func.clear()
                 continue
 

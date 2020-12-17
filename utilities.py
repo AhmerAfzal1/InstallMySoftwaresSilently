@@ -59,12 +59,12 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=c_cleaner, setup='Setup.exe', args='/S /IB /TM')
+                func.InstallSoftware(file_name=c_cleaner, setup='Setup.exe', args=r'/S /IB /TM')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=power_iso, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=power_iso, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
@@ -74,7 +74,7 @@ def main_program():
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(dir_name=winrar, setup='Setup.exe', args='/S /IEN',
+                func.InstallSoftware(dir_name=winrar, setup='Setup.exe', args=r'/S /IEN',
                                      another_task=func.AnOtherTask.WINRAR_KEY)
                 func.clear()
                 continue
@@ -85,7 +85,7 @@ def main_program():
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=eng_to_urdu_dic, setup='Setup.exe', args='/exenoui')
+                func.InstallSoftware(file_name=eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui')
                 func.clear()
                 continue
 
@@ -100,7 +100,7 @@ def main_program():
                 continue
 
             elif choice == 10:
-                func.InstallSoftware(file_name=aomei_partition, setup='Setup.exe', args='/SILENT',
+                func.InstallSoftware(file_name=aomei_partition, setup='Setup.exe', args=r'/SILENT',
                                      another_task=func.AnOtherTask.AOMEI_PRO)
                 func.clear()
                 continue
@@ -111,18 +111,18 @@ def main_program():
                 continue
 
             elif choice == 12:
-                func.InstallSoftware(file_name=seven_zip, setup='Setup.exe', args='/S')
+                func.InstallSoftware(file_name=seven_zip, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 13:
                 func.InstallSoftware(file_name=vs_redistributable, setup='Setup.exe',
-                                     args='/INSTALL /QUIET /NORESTART')
+                                     args=r'/INSTALL /QUIET /NORESTART')
                 func.clear()
                 continue
 
             elif choice == 14:
-                func.InstallSoftware(file_name=better_rename, setup='Setup.exe', args='/VERYSILENT /NORESTART')
+                func.InstallSoftware(file_name=better_rename, setup='Setup.exe', args=r'/VERYSILENT /NORESTART')
                 time.sleep(1)
                 func.Portable(file_name=better_rename, setup_with_arg='Serial.txt')
                 func.clear()
