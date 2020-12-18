@@ -6,9 +6,6 @@ import constant as const
 import functions as func
 import main
 
-k_lite = 'K-Lite Mega Codec Pack 15.9.0'
-mp3_tag = 'Mp3Tag 3.04A'
-
 
 def main_program():
     func.set_console_title(const.heading_multimedia)
@@ -18,8 +15,8 @@ def main_program():
             func.main_heading()
             func.sub_heading(const.heading_multimedia)
             func.back_heading()
-            func.sub_heading_softwares('02', k_lite)
-            func.sub_heading_softwares('03', mp3_tag)
+            func.sub_heading_softwares('02', const.k_lite)
+            func.sub_heading_softwares('03', const.mp3_tag)
             func.eixt_heading('04')
 
             choice = func.input_heading()
@@ -36,12 +33,12 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=k_lite, setup='Setup.exe', args=r'/verysilent')
+                func.InstallSoftware(file_name=const.k_lite, setup='Setup.exe', args=r'/verysilent')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=mp3_tag, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.mp3_tag, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 

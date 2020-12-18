@@ -19,15 +19,15 @@ sys.argv.append('py2exe')
 
 py2exe_console = [{
     'comments': conts.heading_main_title,
-    'copyright': conts.__copyright__,
-    'description': conts.__desription__,
-    'dest_base': conts.__product__,
+    'copyright': conts.copyright_,
+    'description': conts.desription,
+    'dest_base': conts.product,
     'icon_resources': [(0, 'setup.ico')],
-    'product_name': conts.__product__,
-    'product_version': conts.__version__,
+    'product_name': conts.product,
+    'product_version': conts.version,
     'script': '__main__.py',
     'uac_info': 'requireAdministrator',
-    'version': conts.__version__,
+    'version': conts.version,
 }]
 
 py2exe_options = {
@@ -40,18 +40,18 @@ py2exe_options = {
 }
 
 setup(
-    author_email=conts.__email__,
-    author=conts.__author__,
+    author_email=conts.email,
+    author=conts.author,
     console=py2exe_console,
-    description=conts.__desription__,
+    description=conts.desription,
     license='Unlicense',
     long_description=conts.heading_main_title,
-    maintainer_email=conts.__email__,
-    maintainer=conts.__author__,
-    name=conts.__product__,
+    maintainer_email=conts.email,
+    maintainer=conts.author,
+    name=conts.product,
     options={'py2exe': py2exe_options},  # Optionally 'py2exe' can replaced to 'build_exe'
     platforms='Windows',
-    version=conts.__version__,
+    version=conts.version,
     zipfile=None,
 
     classifiers=[

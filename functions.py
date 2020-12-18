@@ -15,7 +15,7 @@ from colorama import init, Fore, Style
 import constant as const
 
 init()
-temp = os.path.join(tempfile.gettempdir(), const.__product__)
+temp = os.path.join(tempfile.gettempdir(), const.product)
 if not os.path.exists(temp):
     os.makedirs(temp)
 
@@ -238,96 +238,23 @@ class JavaVersion(enum.IntEnum):
     JAVA_15 = 15
 
 
-class InstallSoftware:
-    def __init__(self, dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
-                 driver_dir=None, sub_dri_dir=None, ext='.zip', pwd=None, wait=0, wait_input=False):
-        self.dir_name = dir_name
-        self.file_name = file_name
-        self.setup = setup
-        self.args = args
-        self.registry = registry
-        self.another_task = another_task
-        self.driver_dir = driver_dir
-        self.sub_dri_dir = sub_dri_dir
-        self.ext = ext
-        self.pwd = pwd
-        self.wait = wait
-        self.wait_input = wait_input
+class Functions:
+    @staticmethod
+    def run_program(file_name, setup, args=None, is_portable=False):
+        if args is None:
+            arguments = shlex.split('')
+        else:
+            arguments = shlex.split(args)
 
-        try:
-            start = time.time()
-            if args is None:
-                split_args = shlex.split('')
-            else:
-                split_args = shlex.split(args)
-            wait_for = int(wait)
-            if dir_name is not None:  # For find directory
-                log_show(f'Searching directory {dir_name}...')
-                found_dir = find_files(dir_name=dir_name, file_ext=ext)
-                end = time.time()
-                log_show(f'Found directory {dir_name} in ', f'{get_time(start, end)}')
-                time.sleep(const.wait_short)
-                if len(os.listdir(found_dir)):
-                    log_show(f'Installing from directory {found_dir}')
-                    time.sleep(const.wait_short)
-                    subprocess.run([os.path.join(found_dir, setup)] + split_args, shell=True, stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    if another_task is not None:
-                        self.__perform_another_task(task=another_task, dir_name=found_dir)
-                    end = time.time()
-                    log_show(f'Installed {dir_name} successfully in ', f'{get_time(start, end)}')
-                    log_show(const.wait_msg)
-                    time.sleep(const.wait_long)
-                else:
-                    log_show(f'{found_dir} is empty')
-            else:
-                if driver_dir is not None:
-                    log_show(f'Searching {file_name}...')
-                    if not os.path.exists(get_temp_drivers_path_by_file(file_name, driver_dir, sub_dri_dir)):
-                        find_files(dir_name=None, file_name=file_name, file_ext=ext)
-                    if sub_dri_dir is not None:
-                        if sub_dri_dir == os.path.join(*['APPS', 'PROSETDX', 'Winx64']):
-                            log_show(f'Installing {driver_dir} Drivers')
-                        else:
-                            log_show(f'Installing {sub_dri_dir} Drivers')
-                    else:
-                        log_show(f'Installing {driver_dir} Drivers')
-                    time.sleep(const.wait_short)
-                    subprocess.run([os.path.join(
-                        get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir),
-                        setup)] + split_args, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-                    end = time.time()
-                    log_show(f'Installed {driver_dir} successfully in ', f'{get_time(start, end)}')
-                else:
-                    log_show(f'Searching file {file_name}...')
-                    find_files(dir_name=None, file_name=file_name, file_ext=ext, pwd=pwd)
-                    log_show(f'Installing {file_name}')
-                    subprocess.run([os.path.join(get_temp_path_by_file(file_name), setup)] + split_args, shell=True,
-                                   stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    time.sleep(const.wait_short)
-                    if wait_for >= 1:
-                        time.sleep(wait_for)
-                    end = time.time()
-                    log_show(f'Installed {file_name} successfully in ', f'{get_time(start, end)}')
-                    if registry is not None:
-                        if os.path.isfile(os.path.join(*[get_temp_path_by_file(file_name), registry])):
-                            log_show(f'Installing registry {registry}')
-                            time.sleep(const.wait_short)
-                            os.startfile(get_temp_path_by_file(file_name), setup)
-                        else:
-                            exception_heading(f'File {registry} not found')
-                    if another_task is not None:
-                        self.__perform_another_task(task=another_task, file_name=file_name)
-                log_show(const.wait_msg)
-                time.sleep(const.wait_long)
-                if wait_input:
-                    input(const.wait_msg_input)
-        except Exception as err:
-            exception_heading(f'Error: {err}', wait_input=True)
+        if not is_portable:
+            return subprocess.run([file_name, setup] + arguments, shell=True, stdin=subprocess.PIPE,
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=const.encode_utf_8)
+        else:
+            return subprocess.Popen([os.path.join(*[file_name, setup])] + arguments, shell=True, stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=const.encode_utf_8)
 
     @staticmethod
-    def __perform_another_task(task, file_name=None, dir_name=None):
+    def perform_another_task(task, file_name=None, dir_name=None):
         dst_aomei = os.path.join(*[os.environ['ProgramFiles(x86)'], 'AOMEI Partition Assistant'])
         if task.value == AnOtherTask.REG_GIT.value:
             log_show(f'Installing registry')
@@ -436,24 +363,111 @@ class InstallSoftware:
             pass
 
 
-class Portable:
-    def __init__(self, file_name, setup_with_arg, file_ext='.zip'):
+class InstallSoftware(Functions):
+    def __init__(self, dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
+                 driver_dir=None, sub_dri_dir=None, ext='.zip', pwd=None, wait=0, wait_input=False):
+        self.dir_name = dir_name
         self.file_name = file_name
-        self.setup_with_arg = setup_with_arg
+        self.setup = setup
+        self.args = args
+        self.registry = registry
+        self.another_task = another_task
+        self.driver_dir = driver_dir
+        self.sub_dri_dir = sub_dri_dir
+        self.ext = ext
+        self.pwd = pwd
+        self.wait = wait
+        self.wait_input = wait_input
+
+        try:
+            start = time.time()
+            wait_for = int(wait)
+            if dir_name is not None:  # For find directory
+                log_show(f'Searching directory {dir_name}...')
+                found_dir = find_files(dir_name=dir_name, file_ext=ext)
+                end = time.time()
+                log_show(f'Found directory {dir_name} in ', f'{get_time(start, end)}')
+                time.sleep(const.wait_short)
+                if len(os.listdir(found_dir)):
+                    log_show(f'Installing from directory {found_dir}')
+                    time.sleep(const.wait_short)
+                    self.run_program(os.path.join(*[found_dir, setup]), setup=setup, args=args, is_portable=False)
+                    if another_task is not None:
+                        self.perform_another_task(task=another_task, dir_name=found_dir)
+                    end = time.time()
+                    log_show(f'Installed {dir_name} successfully in ', f'{get_time(start, end)}')
+                    log_show(const.wait_msg)
+                    time.sleep(const.wait_long)
+                else:
+                    log_show(f'{found_dir} is empty')
+            else:
+                if driver_dir is not None:
+                    log_show(f'Searching {file_name}...')
+                    if not os.path.exists(get_temp_drivers_path_by_file(file_name, driver_dir, sub_dri_dir)):
+                        find_files(dir_name=None, file_name=file_name, file_ext=ext)
+                    if sub_dri_dir is not None:
+                        if sub_dri_dir == os.path.join(*['APPS', 'PROSETDX', 'Winx64']):
+                            log_show(f'Installing {driver_dir} Drivers')
+                        else:
+                            log_show(f'Installing {sub_dri_dir} Drivers')
+                    else:
+                        log_show(f'Installing {driver_dir} Drivers')
+                    time.sleep(const.wait_short)
+                    self.run_program(file_name=os.path.join(
+                        get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir)), setup=setup,
+                        args=args, is_portable=False)
+                    end = time.time()
+                    log_show(f'Installed {driver_dir} successfully in ', f'{get_time(start, end)}')
+                else:
+                    log_show(f'Searching file {file_name}...')
+                    find_files(dir_name=None, file_name=file_name, file_ext=ext, pwd=pwd)
+                    log_show(f'Installing {file_name}')
+                    self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), setup=setup,
+                                     args=args, is_portable=False)
+                    time.sleep(const.wait_short)
+                    if wait_for >= 1:
+                        time.sleep(wait_for)
+                    end = time.time()
+                    log_show(f'Installed {file_name} successfully in ', f'{get_time(start, end)}')
+                    if registry is not None:
+                        if os.path.isfile(os.path.join(*[get_temp_path_by_file(file_name), registry])):
+                            log_show(f'Installing registry {registry}')
+                            time.sleep(const.wait_short)
+                            os.startfile(get_temp_path_by_file(file_name), setup)
+                        else:
+                            exception_heading(f'File {registry} not found')
+                    if another_task is not None:
+                        self.perform_another_task(task=another_task, file_name=file_name)
+                log_show(const.wait_msg)
+                time.sleep(const.wait_long)
+                if wait_input:
+                    input(const.wait_msg_input)
+        except Exception as err:
+            exception_heading(f'Error: {err}', wait_input=True)
+
+
+class Portable(Functions):
+    def __init__(self, file_name, setup, args=None, file_ext='.zip'):
+        self.file_name = file_name
+        self.setup = setup
+        self.args = args
         self.file_ext = file_ext
 
         if os.path.exists(get_temp_path_by_file(file_name)):
             if len(os.listdir(get_temp_path_by_file(file_name))) > 0:
                 log_show(f'Opening from existing {file_name}')
-                os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
-                time.sleep(const.wait_short)
+                self.run_program(file_name=get_temp_path_by_file(file_name), setup=setup, args=args, is_portable=True)
+                log_show(const.wait_msg)
+                time.sleep(const.wait_long)
             else:
                 find_files(file_name=file_name, file_ext=file_ext)
                 log_show(f'Opening {file_name}')
-                os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
-                time.sleep(const.wait_short)
+                self.run_program(file_name=get_temp_path_by_file(file_name), setup=setup, args=args, is_portable=True)
+                log_show(const.wait_msg)
+                time.sleep(const.wait_long)
         else:
             find_files(file_name=file_name, file_ext=file_ext)
             log_show(f'Opening {file_name}')
-            os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
-            time.sleep(const.wait_short)
+            self.run_program(file_name=get_temp_path_by_file(file_name), setup=setup, args=args, is_portable=True)
+            log_show(const.wait_msg)
+            time.sleep(const.wait_long)

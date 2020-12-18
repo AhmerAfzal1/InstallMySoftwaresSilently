@@ -6,12 +6,6 @@ import constant as const
 import functions as func
 import main
 
-chrome = 'Google Chrome 87.0.4280.88'
-firefox = 'Firefox 83.0'
-idm = 'Internet Download Manager 6.38 Build 15'
-net_balancer = 'NetBalancer 9.12.9'
-net_limiter = 'NetLimiter 4.0.67'
-
 
 def main_program():
     func.set_console_title(const.heading_internet)
@@ -21,11 +15,11 @@ def main_program():
             func.main_heading()
             func.sub_heading(const.heading_internet)
             func.back_heading()
-            func.sub_heading_softwares('02', firefox)
-            func.sub_heading_softwares('03', idm)
-            func.sub_heading_softwares('04', chrome)
-            func.sub_heading_softwares('05', net_balancer)
-            func.sub_heading_softwares('06', net_limiter)
+            func.sub_heading_softwares('02', const.firefox)
+            func.sub_heading_softwares('03', const.idm)
+            func.sub_heading_softwares('04', const.chrome)
+            func.sub_heading_softwares('05', const.net_balancer)
+            func.sub_heading_softwares('06', const.net_limiter)
             func.eixt_heading('07')
 
             choice = func.input_heading()
@@ -42,28 +36,29 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=firefox, setup='Setup.exe', args=r'-ms')
+                func.InstallSoftware(file_name=const.firefox, setup='Setup.exe', args=r'-ms')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
+                func.InstallSoftware(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
                                      another_task=func.AnOtherTask.IDM)
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=chrome, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.chrome, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(file_name=net_balancer, setup='Setup.exe', args=r'/SILENT /VERYSILENT /NORESTART')
+                func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe',
+                                     args=r'/SILENT /VERYSILENT /NORESTART')
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES')
+                func.InstallSoftware(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES')
                 func.clear()
                 continue
 

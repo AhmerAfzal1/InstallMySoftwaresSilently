@@ -6,10 +6,6 @@ import constant as const
 import functions as func
 import main
 
-i_tunes = 'iTunes 12.9.5.7'
-samsung_usb = 'Samsung USB Drivers 1.7.35.0'
-smart_switch = 'Smart Switch 4.2.20072.4'
-
 
 def main_program():
     func.set_console_title(const.heading_mobile)
@@ -19,9 +15,9 @@ def main_program():
             func.main_heading()
             func.sub_heading(const.heading_mobile)
             func.back_heading()
-            func.sub_heading_softwares('02', samsung_usb)
-            func.sub_heading_softwares('03', smart_switch)
-            func.sub_heading_softwares('04', i_tunes)
+            func.sub_heading_softwares('02', const.samsung_usb)
+            func.sub_heading_softwares('03', const.smart_switch)
+            func.sub_heading_softwares('04', const.i_tunes)
             func.eixt_heading('05')
 
             choice = func.input_heading()
@@ -38,17 +34,17 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=samsung_usb, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=smart_switch, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.smart_switch, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=i_tunes, setup='Setup.exe', args=r'/qn /norestart')
+                func.InstallSoftware(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart')
                 func.clear()
                 continue
 

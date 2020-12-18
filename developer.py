@@ -6,14 +6,6 @@ import constant as const
 import functions as func
 import main
 
-android_studio = 'Android Studio 4.1.0 (201.6858069)'
-git = 'Git 2.29.2.3'
-java_jdk_08 = 'Java JDK 8 Update 271'
-java_jdk_15 = 'Java JDK 15.0.1'
-notepad_p_p = 'Notepad++ 7.9.1'
-pycharm = 'PyCharm Community 2020.3'
-python = 'Python 3.9.1'
-
 
 def main_program():
     func.set_console_title(const.heading_developer)
@@ -23,13 +15,13 @@ def main_program():
             func.main_heading()
             func.sub_heading(const.heading_developer)
             func.back_heading()
-            func.sub_heading_softwares('02', android_studio)
-            func.sub_heading_softwares('03', java_jdk_08)
-            func.sub_heading_softwares('04', python)
-            func.sub_heading_softwares('05', git)
-            func.sub_heading_softwares('06', notepad_p_p)
-            func.sub_heading_softwares('07', pycharm)
-            func.sub_heading_softwares('08', java_jdk_15)
+            func.sub_heading_softwares('02', const.android_studio)
+            func.sub_heading_softwares('03', const.java_jdk_08)
+            func.sub_heading_softwares('04', const.python)
+            func.sub_heading_softwares('05', const.git)
+            func.sub_heading_softwares('06', const.notepad_p_p)
+            func.sub_heading_softwares('07', const.pycharm)
+            func.sub_heading_softwares('08', const.java_jdk_15)
             func.eixt_heading('09')
 
             choice = func.input_heading()
@@ -46,25 +38,25 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=android_studio, setup='Setup.exe', args=r'/S /Allusers')
+                func.InstallSoftware(file_name=const.android_studio, setup='Setup.exe', args=r'/S /Allusers')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=java_jdk_08, setup='Setup.exe',
+                func.InstallSoftware(file_name=const.java_jdk_08, setup='Setup.exe',
                                      args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"',
                                      another_task=func.AnOtherTask.JAVA)
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=python, setup='Setup.exe')
+                func.InstallSoftware(file_name=const.python, setup='Setup.exe')
                 func.clear()
                 continue
 
             elif choice == 5:
                 # If not provide *.reg file in variable registry='reg.reg' than optionally use winreg for it
-                func.InstallSoftware(file_name=git, setup='Setup.exe',
+                func.InstallSoftware(file_name=const.git, setup='Setup.exe',
                                      args=r'/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
                                           r'/RESTARTAPPLICATIONS /COMPONENTS="icons,icons\desktop,ext,ext\reg,'
                                           r'ext\reg\shellhere,assoc,assoc_sh,consolefont"',
@@ -73,17 +65,17 @@ def main_program():
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=notepad_p_p, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.notepad_p_p, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=pycharm, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.pycharm, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.InstallSoftware(file_name=java_jdk_15, setup='Setup.exe',
+                func.InstallSoftware(file_name=const.java_jdk_15, setup='Setup.exe',
                                      args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"',
                                      another_task=func.AnOtherTask.JAVA)
                 func.clear()

@@ -6,14 +6,6 @@ import constant as const
 import functions as func
 import main
 
-doro_pdf_writer = 'Doro PDF Writer 2.15.0'
-foxit_adv_pdf_editor = 'Foxit Advanced PDF Editor 3.10'
-infix_pdf_editor = 'Infix PDF Editor Pro 7.4.0'
-pdf_creator = 'PDFCreator 3.4.1'
-pdf_shaper = 'PDF Shaper Pro 8.9'
-pdf_to_jpg = 'PDF to JPG 2.9.10'
-pdf_to_jpg_converter = 'PDF To JPG Converter 4.3.1'
-
 
 def main_program():
     func.set_console_title(const.heading_pdf)
@@ -23,13 +15,13 @@ def main_program():
             func.main_heading()
             func.sub_heading(const.heading_pdf)
             func.back_heading()
-            func.sub_heading_softwares('02', foxit_adv_pdf_editor)
-            func.sub_heading_softwares('03', infix_pdf_editor)
-            func.sub_heading_softwares('04', pdf_creator)
-            func.sub_heading_softwares('05', pdf_shaper)
-            func.sub_heading_softwares('06', pdf_to_jpg)
-            func.sub_heading_softwares('07', pdf_to_jpg_converter)
-            func.sub_heading_softwares('08', doro_pdf_writer)
+            func.sub_heading_softwares('02', const.foxit_adv_pdf_editor)
+            func.sub_heading_softwares('03', const.infix_pdf_editor)
+            func.sub_heading_softwares('04', const.pdf_creator)
+            func.sub_heading_softwares('05', const.pdf_shaper)
+            func.sub_heading_softwares('06', const.pdf_to_jpg)
+            func.sub_heading_softwares('07', const.pdf_to_jpg_converter)
+            func.sub_heading_softwares('08', const.doro_pdf_writer)
             func.eixt_heading('09')
 
             choice = func.input_heading()
@@ -46,38 +38,38 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=foxit_adv_pdf_editor, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.foxit_adv_pdf_editor, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=infix_pdf_editor, setup='Setup.exe', args=r'/S /EN')
+                func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe', args=r'/S /EN')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=infix_pdf_editor, setup='Setup.exe',
+                func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe',
                                      args=r'/SILENT /NORESTART /NOCLOSEAPPLICATIONS /NORESTARTAPPLICATIONS')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(file_name=pdf_shaper, setup='Setup.exe', args=r'/silent')
+                func.InstallSoftware(file_name=const.pdf_shaper, setup='Setup.exe', args=r'/silent')
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=pdf_to_jpg, setup='Setup.exe', args=r'/silent')
+                func.InstallSoftware(file_name=const.pdf_to_jpg, setup='Setup.exe', args=r'/silent')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=pdf_to_jpg_converter, setup='Setup.exe', args=r'/silent')
+                func.InstallSoftware(file_name=const.pdf_to_jpg_converter, setup='Setup.exe', args=r'/silent')
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.InstallSoftware(file_name=doro_pdf_writer, setup='Setup.exe', args=r'/silent')
+                func.InstallSoftware(file_name=const.doro_pdf_writer, setup='Setup.exe', args=r'/silent')
                 func.clear()
                 continue
 

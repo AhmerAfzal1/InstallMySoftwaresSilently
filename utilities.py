@@ -7,20 +7,6 @@ import constant as const
 import functions as func
 import main
 
-aomei_partition = 'AOMEI Partition Assistant 9.0'
-better_rename = 'Better File Rename 6.18'
-c_cleaner = 'CCleaner 5.75.8238'
-cpu_z = 'CPU-Z 1.94.8'
-dism_p_p = 'Dism++ 10.1.1001.10'
-eng_to_urdu_dic = 'Cleantouch English to Urdu Dictionary 7.0'
-fonts = 'Fonts'
-hw_info = 'HWiNFO 6.40 Build 4330'
-power_iso = 'PowerISO 7.8'
-rufus = 'Rufus 3.13'
-seven_zip = '7-Zip 19.00'
-vs_redistributable = 'Microsoft Visual C++ 2015-2019 14.28.29617'
-winrar = 'WinRAR 6.00'
-
 
 def main_program():
     func.set_console_title(const.heading_utilities)
@@ -30,19 +16,19 @@ def main_program():
             func.main_heading()
             func.sub_heading(const.heading_utilities)
             func.back_heading()
-            func.sub_heading_softwares('02', c_cleaner)
-            func.sub_heading_softwares('03', power_iso)
-            func.sub_heading_softwares('04', fonts)
-            func.sub_heading_softwares('05', winrar)
-            func.sub_heading_portable('06', dism_p_p)
-            func.sub_heading_softwares('07', eng_to_urdu_dic)
-            func.sub_heading_portable('08', cpu_z)
-            func.sub_heading_portable('09', hw_info)
-            func.sub_heading_softwares('10', aomei_partition)
-            func.sub_heading_portable('11', rufus)
-            func.sub_heading_softwares('12', seven_zip)
-            func.sub_heading_softwares('13', vs_redistributable)
-            func.sub_heading_softwares('14', better_rename)
+            func.sub_heading_softwares('02', const.c_cleaner)
+            func.sub_heading_softwares('03', const.power_iso)
+            func.sub_heading_softwares('04', const.fonts)
+            func.sub_heading_softwares('05', const.winrar)
+            func.sub_heading_portable('06', const.dism_p_p)
+            func.sub_heading_softwares('07', const.eng_to_urdu_dic)
+            func.sub_heading_portable('08', const.cpu_z)
+            func.sub_heading_portable('09', const.hw_info)
+            func.sub_heading_softwares('10', const.aomei_partition)
+            func.sub_heading_portable('11', const.rufus)
+            func.sub_heading_softwares('12', const.seven_zip)
+            func.sub_heading_softwares('13', const.vs_redistributable)
+            func.sub_heading_softwares('14', const.better_rename)
             func.eixt_heading('15')
 
             choice = func.input_heading()
@@ -59,72 +45,72 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=c_cleaner, setup='Setup.exe', args=r'/S /IB /TM')
+                func.InstallSoftware(file_name=const.c_cleaner, setup='Setup.exe', args=r'/S /IB /TM')
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=power_iso, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.power_iso, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=fonts, setup='Setup.exe')
+                func.InstallSoftware(file_name=const.fonts, setup='Setup.exe')
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(dir_name=winrar, setup='Setup.exe', args=r'/S /IEN',
+                func.InstallSoftware(dir_name=const.winrar, setup='Setup.exe', args=r'/S /IEN',
                                      another_task=func.AnOtherTask.WINRAR_KEY)
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.Portable(file_name=dism_p_p, setup_with_arg='Dism++x64.exe')
+                func.Portable(file_name=const.dism_p_p, setup='Dism++x64.exe')
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui')
+                func.InstallSoftware(file_name=const.eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui')
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.Portable(file_name=cpu_z, setup_with_arg='cpuz_x64.exe')
+                func.Portable(file_name=const.cpu_z, setup='cpuz_x64.exe')
                 func.clear()
                 continue
 
             elif choice == 9:
-                func.Portable(file_name=hw_info, setup_with_arg='HWiNFO64.exe')
+                func.Portable(file_name=const.hw_info, setup='HWiNFO64.exe')
                 func.clear()
                 continue
 
             elif choice == 10:
-                func.InstallSoftware(file_name=aomei_partition, setup='Setup.exe', args=r'/SILENT',
+                func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/SILENT',
                                      another_task=func.AnOtherTask.AOMEI_PRO)
                 func.clear()
                 continue
 
             elif choice == 11:
-                func.Portable(file_name=rufus, setup_with_arg='Rufus.exe')
+                func.Portable(file_name=const.rufus, setup='Rufus.exe')
                 func.clear()
                 continue
 
             elif choice == 12:
-                func.InstallSoftware(file_name=seven_zip, setup='Setup.exe', args=r'/S')
+                func.InstallSoftware(file_name=const.seven_zip, setup='Setup.exe', args=r'/S')
                 func.clear()
                 continue
 
             elif choice == 13:
-                func.InstallSoftware(file_name=vs_redistributable, setup='Setup.exe',
+                func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup.exe',
                                      args=r'/INSTALL /QUIET /NORESTART')
                 func.clear()
                 continue
 
             elif choice == 14:
-                func.InstallSoftware(file_name=better_rename, setup='Setup.exe', args=r'/VERYSILENT /NORESTART')
+                func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=r'/VERYSILENT /NORESTART')
                 time.sleep(1)
-                func.Portable(file_name=better_rename, setup_with_arg='Serial.txt')
+                func.Portable(file_name=const.better_rename, setup='Serial.txt')
                 func.clear()
                 continue
 
