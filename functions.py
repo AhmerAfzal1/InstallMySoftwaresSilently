@@ -15,14 +15,9 @@ from colorama import init, Fore, Style
 import constant as const
 
 init()
-encode_utf_8 = 'utf-8'
 temp = os.path.join(tempfile.gettempdir(), const.__product__)
 if not os.path.exists(temp):
     os.makedirs(temp)
-wait_long = 5
-wait_msg = f'Wait for {wait_long} seconds to go back automatically'
-wait_msg_input = '\n Please press Enter to continue'
-wait_short = 0.5
 
 
 def center_text(string):
@@ -52,7 +47,7 @@ def extract_archive(root, file_name, pwd=None):
     zip_file = zipfile.ZipFile(file=os.path.join(root, file_name), mode='r')
     try:
         if pwd is not None:
-            zip_file.setpassword(pwd=bytes(pwd, encoding=encode_utf_8))
+            zip_file.setpassword(pwd=bytes(pwd, encoding=const.encode_utf_8))
         zip_file.extractall(path=temp)
     except zipfile.error as err_zip:
         exception_heading(f'Error while unzipping: {err_zip}')
@@ -82,9 +77,9 @@ def find_files(dir_name=None, file_name=None, file_ext=None, pwd=None):
                         if file_with_ext in files:
                             end = time.time()
                             log_show(f'Found file {file_with_ext} in ', f'{get_time(start, end)}')
-                            time.sleep(wait_short)
+                            time.sleep(const.wait_short)
                             extract_archive(root=root, file_name=file_with_ext, pwd=pwd)
-                            time.sleep(wait_short)
+                            time.sleep(const.wait_short)
         else:
             exception_heading(f'Extension for {file_name + file_ext} is unsupported format, please use zip archive')
     except Exception as err:
@@ -136,13 +131,13 @@ def remove_temp(is_wait):
     if os.path.exists(temp):
         if os.path.isfile(temp) or os.path.isdir(temp):
             if is_wait:
-                log_show(f'Wait for {wait_long - 2} seconds deleting {temp}')
-                time.sleep(wait_long - 2)
+                log_show(f'Wait for {const.wait_long - 2} seconds deleting {temp}')
+                time.sleep(const.wait_long - 2)
                 shutil.rmtree(temp, ignore_errors=True)
-                time.sleep(wait_short)
+                time.sleep(const.wait_short)
             else:
                 shutil.rmtree(temp, ignore_errors=True)
-                time.sleep(wait_short)
+                time.sleep(const.wait_short)
         else:
             pass
 
@@ -178,7 +173,7 @@ def eixt_heading(num):
 def exception_heading(string, wait_input=False):
     print(f'\n{Fore.LIGHTRED_EX} {string}{Style.RESET_ALL}')
     if wait_input:
-        input(wait_msg_input)
+        input(const.wait_msg_input)
 
 
 def exception_range_heading(num1, num2):
@@ -261,8 +256,8 @@ class InstallSoftware:
 
         try:
             start = time.time()
-            if args is None or args == '':
-                split_args = ''
+            if args is None:
+                split_args = shlex.split('')
             else:
                 split_args = shlex.split(args)
             wait_for = int(wait)
@@ -271,18 +266,18 @@ class InstallSoftware:
                 found_dir = find_files(dir_name=dir_name, file_ext=ext)
                 end = time.time()
                 log_show(f'Found directory {dir_name} in ', f'{get_time(start, end)}')
-                time.sleep(wait_short)
+                time.sleep(const.wait_short)
                 if len(os.listdir(found_dir)):
                     log_show(f'Installing from directory {found_dir}')
-                    time.sleep(wait_short)
+                    time.sleep(const.wait_short)
                     subprocess.run([os.path.join(found_dir, setup)] + split_args, shell=True, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     if another_task is not None:
                         self.__perform_another_task(task=another_task, dir_name=found_dir)
                     end = time.time()
                     log_show(f'Installed {dir_name} successfully in ', f'{get_time(start, end)}')
-                    log_show(wait_msg)
-                    time.sleep(wait_long)
+                    log_show(const.wait_msg)
+                    time.sleep(const.wait_long)
                 else:
                     log_show(f'{found_dir} is empty')
             else:
@@ -297,7 +292,7 @@ class InstallSoftware:
                             log_show(f'Installing {sub_dri_dir} Drivers')
                     else:
                         log_show(f'Installing {driver_dir} Drivers')
-                    time.sleep(wait_short)
+                    time.sleep(const.wait_short)
                     subprocess.run([os.path.join(
                         get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir),
                         setup)] + split_args, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -305,12 +300,12 @@ class InstallSoftware:
                     end = time.time()
                     log_show(f'Installed {driver_dir} successfully in ', f'{get_time(start, end)}')
                 else:
-                    log_show(f'Searching file {file_name}')
+                    log_show(f'Searching file {file_name}...')
                     find_files(dir_name=None, file_name=file_name, file_ext=ext, pwd=pwd)
                     log_show(f'Installing {file_name}')
                     subprocess.run([os.path.join(get_temp_path_by_file(file_name), setup)] + split_args, shell=True,
                                    stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    time.sleep(wait_short)
+                    time.sleep(const.wait_short)
                     if wait_for >= 1:
                         time.sleep(wait_for)
                     end = time.time()
@@ -318,16 +313,16 @@ class InstallSoftware:
                     if registry is not None:
                         if os.path.isfile(os.path.join(*[get_temp_path_by_file(file_name), registry])):
                             log_show(f'Installing registry {registry}')
-                            time.sleep(wait_short)
+                            time.sleep(const.wait_short)
                             os.startfile(get_temp_path_by_file(file_name), setup)
                         else:
                             exception_heading(f'File {registry} not found')
                     if another_task is not None:
                         self.__perform_another_task(task=another_task, file_name=file_name)
-                log_show(wait_msg)
-                time.sleep(wait_long)
+                log_show(const.wait_msg)
+                time.sleep(const.wait_long)
                 if wait_input:
-                    input(wait_msg_input)
+                    input(const.wait_msg_input)
         except Exception as err:
             exception_heading(f'Error: {err}', wait_input=True)
 
@@ -389,34 +384,34 @@ class InstallSoftware:
                 elif new_output[0] == JavaVersion.JAVA_15.value:
                     setx = setx_jdk_15
                     os.environ[java_home] = setx
-                time.sleep(wait_short)
+                time.sleep(const.wait_short)
                 log_show(setx)
         elif task.value == AnOtherTask.AOMEI_PRO.value:
             log_show(f'Cracking {file_name}')
             src = os.path.join(*[temp, file_name, 'Crack', 'Pro', 'cfg.ini'])
             is_copied = copying_files(src=src, dst=dst_aomei)
-            time.sleep(wait_short)
+            time.sleep(const.wait_short)
             if is_copied:
                 log_show(f'Copied crack file to {dst_aomei}')
         elif task.value == AnOtherTask.AOMEI_SERVER.value:
             log_show(f'Cracking {file_name}')
             src = os.path.join(*[temp, file_name, 'Crack', 'Server', 'cfg.ini'])
             is_copied = copying_files(src=src, dst=dst_aomei)
-            time.sleep(wait_short)
+            time.sleep(const.wait_short)
             if is_copied:
                 log_show(f'Copied crack file to {dst_aomei}')
         elif task.value == AnOtherTask.AOMEI_TECHNICIAN.value:
             log_show(f'Cracking {file_name}')
             src = os.path.join(*[temp, file_name, 'Crack', 'Technician', 'cfg.ini'])
             is_copied = copying_files(src=src, dst=dst_aomei)
-            time.sleep(wait_short)
+            time.sleep(const.wait_short)
             if is_copied:
                 log_show(f'Copied crack file to {dst_aomei}')
         elif task.value == AnOtherTask.AOMEI_UNLIMITED.value:
             log_show(f'Cracking {file_name}')
             src = os.path.join(*[temp, file_name, 'Crack', 'Unlimited', 'cfg.ini'])
             is_copied = copying_files(src=src, dst=dst_aomei)
-            time.sleep(wait_short)
+            time.sleep(const.wait_short)
             if is_copied:
                 log_show(f'Copied crack file to {dst_aomei}')
         elif task.value == AnOtherTask.WINRAR_KEY.value:
@@ -424,7 +419,7 @@ class InstallSoftware:
             src_winrar = os.path.join(*[dir_name, 'rarreg.key'])
             dst_winrar = os.path.join(*[os.environ['ProgramFiles'], 'WinRAR'])
             is_copied = copying_files(src=src_winrar, dst=dst_winrar)
-            time.sleep(wait_short)
+            time.sleep(const.wait_short)
             if is_copied:
                 log_show(f'Copied Rarreg.key to {dst_winrar}')
         elif task.value == AnOtherTask.IDM.value:
@@ -434,10 +429,10 @@ class InstallSoftware:
                 [os.path.join(get_temp_path_by_file(file_name), 'Patch.exe'), '/silent', '/overwrite', '/backup',
                  f'/startupworkdir {patcher_dir}'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE)
-            time.sleep(wait_short)
+            time.sleep(const.wait_short)
         else:
             exception_heading(f'Invalid AnOtherTask type')
-            time.sleep(wait_short)
+            time.sleep(const.wait_short)
             pass
 
 
@@ -451,14 +446,14 @@ class Portable:
             if len(os.listdir(get_temp_path_by_file(file_name))) > 0:
                 log_show(f'Opening from existing {file_name}')
                 os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
-                time.sleep(wait_short)
+                time.sleep(const.wait_short)
             else:
                 find_files(file_name=file_name, file_ext=file_ext)
                 log_show(f'Opening {file_name}')
                 os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
-                time.sleep(wait_short)
+                time.sleep(const.wait_short)
         else:
             find_files(file_name=file_name, file_ext=file_ext)
             log_show(f'Opening {file_name}')
             os.startfile(get_temp_path_by_file(file_name), setup_with_arg)
-            time.sleep(wait_short)
+            time.sleep(const.wait_short)

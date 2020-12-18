@@ -63,7 +63,7 @@ def main_program():
                 continue
 
             elif choice == 5:
-                # If not provide *.reg file in variable registry='reg.reg' than other option to use winreg for it
+                # If not provide *.reg file in variable registry='reg.reg' than optionally use winreg for it
                 func.InstallSoftware(file_name=git, setup='Setup.exe',
                                      args=r'/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
                                           r'/RESTARTAPPLICATIONS /COMPONENTS="icons,icons\desktop,ext,ext\reg,'
