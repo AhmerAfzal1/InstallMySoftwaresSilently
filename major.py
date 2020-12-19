@@ -7,6 +7,30 @@ import functions as func
 import main
 
 
+def adobe_acrobat_pro():
+    func.InstallSoftware(file_name=const.adobe_acrobat_pro, setup='Setup.exe', args=r'/S')
+
+
+def adobe_acrobat_reader():
+    func.InstallSoftware(file_name=const.adobe_acrobat_reader, setup='Setup.exe', args=r'/S')
+
+
+def adobe_photoshop():
+    func.InstallSoftware(file_name=const.adobe_photoshop, setup='Setup.exe', args=r'/S')
+
+
+def adobe_xd():
+    func.InstallSoftware(file_name=const.adobe_xd, setup='Setup.exe', args=r'/S')
+
+
+def corel_draw():
+    func.InstallSoftware(file_name=const.corel_draw, setup='Setup.exe', args=r'/S')
+
+
+def ms_office():
+    func.InstallSoftware(file_name=const.ms_office, setup='AUTORUN.exe')
+
+
 def main_program():
     func.set_console_title(const.heading_major)
     init()
@@ -21,7 +45,7 @@ def main_program():
             func.sub_heading_softwares('05', const.adobe_photoshop)
             func.sub_heading_softwares('06', const.adobe_xd)
             func.sub_heading_softwares('07', const.corel_draw)
-            func.eixt_heading('08')
+            exit_code = func.exit_heading('08')
 
             choice = func.input_heading()
 
@@ -37,41 +61,41 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=const.ms_office, setup='AUTORUN.exe')
+                ms_office()
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=const.adobe_acrobat_reader, setup='Setup.exe', args=r'/S')
+                adobe_acrobat_reader()
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=const.adobe_acrobat_pro, setup='Setup.exe', args=r'/S')
+                adobe_acrobat_pro()
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(file_name=const.adobe_photoshop, setup='Setup.exe', args=r'/S')
+                adobe_photoshop()
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=const.adobe_xd, setup='Setup.exe', args=r'/S')
+                adobe_xd()
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=const.corel_draw, setup='Setup.exe', args=r'/S')
+                corel_draw()
                 func.clear()
                 continue
 
-            elif choice == 8:
+            elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 8)
+                func.exception_range_heading(exit_code)
                 input()
                 func.clear()
                 continue

@@ -7,6 +7,18 @@ import functions as func
 import main
 
 
+def i_tunes():
+    func.InstallSoftware(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart')
+
+
+def samsung_usb():
+    func.InstallSoftware(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S')
+
+
+def smart_switch():
+    func.InstallSoftware(file_name=const.smart_switch, setup='Setup.exe', args=r'/S')
+
+
 def main_program():
     func.set_console_title(const.heading_mobile)
     init()
@@ -18,7 +30,7 @@ def main_program():
             func.sub_heading_softwares('02', const.samsung_usb)
             func.sub_heading_softwares('03', const.smart_switch)
             func.sub_heading_softwares('04', const.i_tunes)
-            func.eixt_heading('05')
+            exit_code = func.exit_heading('05')
 
             choice = func.input_heading()
 
@@ -34,26 +46,26 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S')
+                samsung_usb()
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=const.smart_switch, setup='Setup.exe', args=r'/S')
+                smart_switch()
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart')
+                i_tunes()
                 func.clear()
                 continue
 
-            elif choice == 5:
+            elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 5)
+                func.exception_range_heading(exit_code)
                 input()
                 func.clear()
                 continue

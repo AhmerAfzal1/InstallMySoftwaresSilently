@@ -7,6 +7,41 @@ import functions as func
 import main
 
 
+def doro_pdf_writer():
+    func.InstallSoftware(file_name=const.doro_pdf_writer, setup='Setup.exe', args=r'/silent')
+
+
+def foxit_adv_pdf_editor():
+    func.InstallSoftware(file_name=const.foxit_adv_pdf_editor, setup='Setup.exe', args=r'/S')
+
+
+def infix_pdf_editor():
+    func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe', args=r'/S /EN')
+
+
+def pdf_creator():
+    func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe',
+                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS')
+
+
+def pdf_shaper():
+    func.InstallSoftware(file_name=const.pdf_shaper, setup='Setup.exe', args=r'/silent')
+
+
+def pdf_to_jpg():
+    func.InstallSoftware(file_name=const.pdf_to_jpg, setup='Setup.exe', args=r'/silent')
+
+
+def pdf_to_jpg_converter():
+    func.InstallSoftware(file_name=const.pdf_to_jpg_converter, setup='Setup.exe', args=r'/silent')
+
+
+def tri_sun_pdf_to_jpg():
+    func.InstallSoftware(file_name=const.tri_sun_pdf_to_jpg, setup='Setup.exe',
+                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS',
+                         another_task=func.AnOtherTask.TRI_SUN_PDF)
+
+
 def main_program():
     func.set_console_title(const.heading_pdf)
     init()
@@ -19,10 +54,11 @@ def main_program():
             func.sub_heading_softwares('03', const.infix_pdf_editor)
             func.sub_heading_softwares('04', const.pdf_creator)
             func.sub_heading_softwares('05', const.pdf_shaper)
-            func.sub_heading_softwares('06', const.pdf_to_jpg)
-            func.sub_heading_softwares('07', const.pdf_to_jpg_converter)
-            func.sub_heading_softwares('08', const.doro_pdf_writer)
-            func.eixt_heading('09')
+            func.sub_heading_softwares('06', const.tri_sun_pdf_to_jpg)
+            func.sub_heading_softwares('07', const.pdf_to_jpg)
+            func.sub_heading_softwares('08', const.pdf_to_jpg_converter)
+            func.sub_heading_softwares('09', const.doro_pdf_writer)
+            exit_code = func.exit_heading('10')
 
             choice = func.input_heading()
 
@@ -38,47 +74,51 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=const.foxit_adv_pdf_editor, setup='Setup.exe', args=r'/S')
+                foxit_adv_pdf_editor()
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe', args=r'/S /EN')
+                infix_pdf_editor()
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe',
-                                     args=r'/SILENT /NORESTART /NOCLOSEAPPLICATIONS /NORESTARTAPPLICATIONS')
+                pdf_creator()
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(file_name=const.pdf_shaper, setup='Setup.exe', args=r'/silent')
+                pdf_shaper()
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=const.pdf_to_jpg, setup='Setup.exe', args=r'/silent')
+                tri_sun_pdf_to_jpg()
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=const.pdf_to_jpg_converter, setup='Setup.exe', args=r'/silent')
+                pdf_to_jpg()
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.InstallSoftware(file_name=const.doro_pdf_writer, setup='Setup.exe', args=r'/silent')
+                pdf_to_jpg_converter()
                 func.clear()
                 continue
 
             elif choice == 9:
+                doro_pdf_writer()
+                func.clear()
+                continue
+
+            elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 8)
+                func.exception_range_heading(exit_code)
                 input()
                 func.clear()
                 continue

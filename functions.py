@@ -166,8 +166,9 @@ def back_heading():
     print(f'{Fore.LIGHTCYAN_EX}\t[01] BACK TO MAIN{Style.RESET_ALL}')
 
 
-def eixt_heading(num):
+def exit_heading(num):
     print(f'{Fore.LIGHTRED_EX}\t[{num}] EXIT{Style.RESET_ALL}')
+    return num
 
 
 def exception_heading(string, wait_input=False):
@@ -176,9 +177,9 @@ def exception_heading(string, wait_input=False):
         input(const.wait_msg_input)
 
 
-def exception_range_heading(num1, num2):
+def exception_range_heading(num):
     print(
-        f'\n{Fore.LIGHTRED_EX} Value is not between {int(num1)} to {int(num2)}! '
+        f'\n{Fore.LIGHTRED_EX} Value is not between {1} to {int(num)}! '
         f'Please try again with valid options{Style.RESET_ALL}')
 
 
@@ -227,9 +228,11 @@ class AnOtherTask(enum.Enum):
     AOMEI_SERVER = 'server'
     AOMEI_TECHNICIAN = 'technician'
     AOMEI_UNLIMITED = 'unlimited'
+    HELIUM_MUSIC = 'helium'
     IDM = 'idm'
     REG_GIT = 'gitbash'
     JAVA = 'java'
+    TRI_SUN_PDF = 'trysun'
     WINRAR_KEY = 'rar'
 
 
@@ -240,21 +243,24 @@ class JavaVersion(enum.IntEnum):
 
 class Functions:
     @staticmethod
-    def run_program(file_name, setup, args=None, is_portable=False):
+    def run_program(file_name, args=None, path=None, is_portable=False, sys_app_run=False):
         if args is None:
             arguments = shlex.split('')
         else:
             arguments = shlex.split(args)
 
-        if not is_portable:
-            return subprocess.run([file_name, setup] + arguments, shell=True, stdin=subprocess.PIPE,
+        if not is_portable and not sys_app_run:
+            return subprocess.run([file_name] + arguments, shell=True, stdin=subprocess.PIPE,
                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=const.encode_utf_8)
-        else:
-            return subprocess.Popen([os.path.join(*[file_name, setup])] + arguments, shell=True, stdin=subprocess.PIPE,
+        elif sys_app_run and not is_portable:
+            return subprocess.Popen([file_name, path] + arguments, shell=True, stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=const.encode_utf_8)
+        elif is_portable and not sys_app_run:
+            return subprocess.Popen([file_name] + arguments, shell=True, stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding=const.encode_utf_8)
 
     @staticmethod
-    def perform_another_task(task, file_name=None, dir_name=None):
+    def perform_another_task(task, file_name=None, dir_name=None, sys_app=None, child_file=None):
         dst_aomei = os.path.join(*[os.environ['ProgramFiles(x86)'], 'AOMEI Partition Assistant'])
         if task.value == AnOtherTask.REG_GIT.value:
             log_show(f'Installing registry')
@@ -357,6 +363,19 @@ class Functions:
                  f'/startupworkdir {patcher_dir}'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE)
             time.sleep(const.wait_short)
+        elif task.value == AnOtherTask.TRI_SUN_PDF.value:
+            log_show(f'Cracking {file_name}')
+            src = os.path.join(*[temp, file_name, 'Crack', 'PTJ.exe'])
+            dst = os.path.join(*[os.environ['ProgramFiles(x86)'], 'PDF Helper', 'PDF to JPG'])
+            is_copied = copying_files(src=src, dst=dst)
+            time.sleep(const.wait_short)
+            if is_copied:
+                log_show(f'Copied crack file to {dst}')
+        elif task.value == AnOtherTask.HELIUM_MUSIC.value:
+            log_show(f'Opening Notepad {file_name}')
+            path = os.path.join(*[get_temp_path_by_file(file_name), child_file])
+            Functions.run_program(file_name=sys_app, path=path, sys_app_run=True)
+            time.sleep(const.wait_short)
         else:
             exception_heading(f'Invalid AnOtherTask type')
             time.sleep(const.wait_short)
@@ -365,7 +384,8 @@ class Functions:
 
 class InstallSoftware(Functions):
     def __init__(self, dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
-                 driver_dir=None, sub_dri_dir=None, ext='.zip', pwd=None, wait=0, wait_input=False):
+                 driver_dir=None, sub_dri_dir=None, sys_app=None, child_file=None, ext='.zip', pwd=None, wait=0,
+                 wait_input=False):
         self.dir_name = dir_name
         self.file_name = file_name
         self.setup = setup
@@ -374,6 +394,8 @@ class InstallSoftware(Functions):
         self.another_task = another_task
         self.driver_dir = driver_dir
         self.sub_dri_dir = sub_dri_dir
+        self.sys_app = sys_app
+        self.child_file = child_file
         self.ext = ext
         self.pwd = pwd
         self.wait = wait
@@ -389,9 +411,9 @@ class InstallSoftware(Functions):
                 log_show(f'Found directory {dir_name} in ', f'{get_time(start, end)}')
                 time.sleep(const.wait_short)
                 if len(os.listdir(found_dir)):
-                    log_show(f'Installing from directory {found_dir}')
+                    log_show(f'Installing from directory {found_dir}...')
                     time.sleep(const.wait_short)
-                    self.run_program(os.path.join(*[found_dir, setup]), setup=setup, args=args, is_portable=False)
+                    self.run_program(file_name=os.path.join(*[found_dir, setup]), args=args, is_portable=False)
                     if another_task is not None:
                         self.perform_another_task(task=another_task, dir_name=found_dir)
                     end = time.time()
@@ -407,23 +429,23 @@ class InstallSoftware(Functions):
                         find_files(dir_name=None, file_name=file_name, file_ext=ext)
                     if sub_dri_dir is not None:
                         if sub_dri_dir == os.path.join(*['APPS', 'PROSETDX', 'Winx64']):
-                            log_show(f'Installing {driver_dir} Drivers')
+                            log_show(f'Installing {driver_dir} Drivers...')
                         else:
-                            log_show(f'Installing {sub_dri_dir} Drivers')
+                            log_show(f'Installing {sub_dri_dir} Drivers...')
                     else:
-                        log_show(f'Installing {driver_dir} Drivers')
+                        log_show(f'Installing {driver_dir} Drivers...')
                     time.sleep(const.wait_short)
                     self.run_program(file_name=os.path.join(
-                        get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir)), setup=setup,
+                        get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir), setup),
                         args=args, is_portable=False)
                     end = time.time()
                     log_show(f'Installed {driver_dir} successfully in ', f'{get_time(start, end)}')
                 else:
                     log_show(f'Searching file {file_name}...')
                     find_files(dir_name=None, file_name=file_name, file_ext=ext, pwd=pwd)
-                    log_show(f'Installing {file_name}')
-                    self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), setup=setup,
-                                     args=args, is_portable=False)
+                    log_show(f'Installing {file_name}...')
+                    self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
+                                     is_portable=False)
                     time.sleep(const.wait_short)
                     if wait_for >= 1:
                         time.sleep(wait_for)
@@ -431,13 +453,14 @@ class InstallSoftware(Functions):
                     log_show(f'Installed {file_name} successfully in ', f'{get_time(start, end)}')
                     if registry is not None:
                         if os.path.isfile(os.path.join(*[get_temp_path_by_file(file_name), registry])):
-                            log_show(f'Installing registry {registry}')
+                            log_show(f'Installing registry {registry}...')
                             time.sleep(const.wait_short)
                             os.startfile(get_temp_path_by_file(file_name), setup)
                         else:
                             exception_heading(f'File {registry} not found')
                     if another_task is not None:
-                        self.perform_another_task(task=another_task, file_name=file_name)
+                        self.perform_another_task(task=another_task, file_name=file_name, sys_app=sys_app,
+                                                  child_file=child_file)
                 log_show(const.wait_msg)
                 time.sleep(const.wait_long)
                 if wait_input:
@@ -456,18 +479,21 @@ class Portable(Functions):
         if os.path.exists(get_temp_path_by_file(file_name)):
             if len(os.listdir(get_temp_path_by_file(file_name))) > 0:
                 log_show(f'Opening from existing {file_name}')
-                self.run_program(file_name=get_temp_path_by_file(file_name), setup=setup, args=args, is_portable=True)
+                self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
+                                 is_portable=True)
                 log_show(const.wait_msg)
                 time.sleep(const.wait_long)
             else:
                 find_files(file_name=file_name, file_ext=file_ext)
                 log_show(f'Opening {file_name}')
-                self.run_program(file_name=get_temp_path_by_file(file_name), setup=setup, args=args, is_portable=True)
+                self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
+                                 is_portable=True)
                 log_show(const.wait_msg)
                 time.sleep(const.wait_long)
         else:
             find_files(file_name=file_name, file_ext=file_ext)
             log_show(f'Opening {file_name}')
-            self.run_program(file_name=get_temp_path_by_file(file_name), setup=setup, args=args, is_portable=True)
+            self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
+                             is_portable=True)
             log_show(const.wait_msg)
             time.sleep(const.wait_long)

@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.2.3'
+version = '1.2.4'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -36,7 +36,7 @@ python = 'Python 3.9.1'
 
 # For Internet
 chrome = 'Google Chrome 87.0.4280.88'
-firefox = 'Firefox 83.0'
+firefox = 'Firefox 84.0'
 idm = 'Internet Download Manager 6.38 Build 15'
 net_balancer = 'NetBalancer 9.12.9'
 net_limiter = 'NetLimiter 4.0.67'
@@ -55,6 +55,7 @@ samsung_usb = 'Samsung USB Drivers 1.7.35.0'
 smart_switch = 'Smart Switch 4.2.20072.4'
 
 # For Multimedia
+helium_music = 'Helium Music Manager 14.9 Build 16658'
 k_lite = 'K-Lite Mega Codec Pack 15.9.0'
 mp3_tag = 'Mp3Tag 3.04A'
 
@@ -66,6 +67,7 @@ pdf_creator = 'PDFCreator 3.4.1'
 pdf_shaper = 'PDF Shaper Pro 8.9'
 pdf_to_jpg = 'PDF to JPG 2.9.10'
 pdf_to_jpg_converter = 'PDF To JPG Converter 4.3.1'
+tri_sun_pdf_to_jpg = 'TriSun PDF To JPG 18.0 Build 76'
 
 # For Utilities
 aomei_partition = 'AOMEI Partition Assistant 9.0'

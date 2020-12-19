@@ -7,6 +7,27 @@ import functions as func
 import main
 
 
+def chrome():
+    func.InstallSoftware(file_name=const.chrome, setup='Setup.exe', args=r'/S')
+
+
+def firefox():
+    func.InstallSoftware(file_name=const.firefox, setup='Setup.exe', args=r'-ms')
+
+
+def idm():
+    func.InstallSoftware(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
+                         another_task=func.AnOtherTask.IDM)
+
+
+def net_balancer():
+    func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe', args=r'/SILENT /VERYSILENT /NORESTART')
+
+
+def net_limiter():
+    func.InstallSoftware(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES')
+
+
 def main_program():
     func.set_console_title(const.heading_internet)
     init()
@@ -20,7 +41,7 @@ def main_program():
             func.sub_heading_softwares('04', const.chrome)
             func.sub_heading_softwares('05', const.net_balancer)
             func.sub_heading_softwares('06', const.net_limiter)
-            func.eixt_heading('07')
+            exit_code = func.exit_heading('07')
 
             choice = func.input_heading()
 
@@ -36,38 +57,36 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=const.firefox, setup='Setup.exe', args=r'-ms')
+                firefox()
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
-                                     another_task=func.AnOtherTask.IDM)
+                idm()
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=const.chrome, setup='Setup.exe', args=r'/S')
+                chrome()
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe',
-                                     args=r'/SILENT /VERYSILENT /NORESTART')
+                net_balancer()
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES')
+                net_limiter()
                 func.clear()
                 continue
 
-            elif choice == 7:
+            elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 7)
+                func.exception_range_heading(exit_code)
                 input()
                 func.clear()
                 continue

@@ -59,7 +59,7 @@ def main():
             func.main_heading_softwares('06', 'Multimedia')
             func.main_heading_softwares('07', 'PDF')
             func.main_heading_softwares('08', 'Utilities')
-            func.eixt_heading('09')
+            exit_code = func.exit_heading('09')
 
             choice = func.input_heading()
 
@@ -82,7 +82,7 @@ def main():
                                      sub_dri_dir=os.path.join(*['APPS', 'PROSETDX', 'Winx64']), setup='DxSetup.exe',
                                      args=r'/QUIET /NORESTART')
                 developer.git()
-                developer.java_jdk_08()
+                developer.java_jdk_8()
                 developer.notepad_p_p()
                 developer.android_studio()
                 internet.firefox()
@@ -130,12 +130,12 @@ def main():
                 utilities.main_program()
                 continue
 
-            elif choice == 9:
+            elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 9)
+                func.exception_range_heading(exit_code)
                 input()
                 func.clear()
                 continue

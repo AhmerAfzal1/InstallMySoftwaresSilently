@@ -8,6 +8,62 @@ import functions as func
 import main
 
 
+def aomei_partition():
+    func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/SILENT',
+                         another_task=func.AnOtherTask.AOMEI_PRO)
+
+
+def better_rename():
+    func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=r'/VERYSILENT /NORESTART')
+    time.sleep(1)
+    func.Portable(file_name=const.better_rename, setup='Serial.txt')
+
+
+def c_cleaner():
+    func.InstallSoftware(file_name=const.c_cleaner, setup='Setup.exe', args=r'/S /IB /TM')
+
+
+def cpu_z():
+    func.Portable(file_name=const.cpu_z, setup='cpuz_x64.exe')
+
+
+def dism_p_p():
+    func.Portable(file_name=const.dism_p_p, setup='Dism++x64.exe')
+
+
+def eng_to_urdu_dic():
+    func.InstallSoftware(file_name=const.eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui')
+
+
+def fonts():
+    func.InstallSoftware(file_name=const.fonts, setup='Setup.exe')
+
+
+def hw_info():
+    func.Portable(file_name=const.hw_info, setup='HWiNFO64.exe')
+
+
+def power_iso():
+    func.InstallSoftware(file_name=const.power_iso, setup='Setup.exe', args=r'/S')
+
+
+def rufus():
+    func.Portable(file_name=const.rufus, setup='Rufus.exe')
+
+
+def seven_zip():
+    func.InstallSoftware(file_name=const.seven_zip, setup='Setup.exe', args=r'/S')
+
+
+def vs_redistributable():
+    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup.exe', args=r'/INSTALL /QUIET /NORESTART')
+
+
+def winrar():
+    func.InstallSoftware(dir_name=const.winrar, setup='Setup.exe', args=r'/S /IEN',
+                         another_task=func.AnOtherTask.WINRAR_KEY)
+
+
 def main_program():
     func.set_console_title(const.heading_utilities)
     init()
@@ -29,7 +85,7 @@ def main_program():
             func.sub_heading_softwares('12', const.seven_zip)
             func.sub_heading_softwares('13', const.vs_redistributable)
             func.sub_heading_softwares('14', const.better_rename)
-            func.eixt_heading('15')
+            exit_code = func.exit_heading('15')
 
             choice = func.input_heading()
 
@@ -45,81 +101,76 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=const.c_cleaner, setup='Setup.exe', args=r'/S /IB /TM')
+                c_cleaner()
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=const.power_iso, setup='Setup.exe', args=r'/S')
+                power_iso()
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=const.fonts, setup='Setup.exe')
+                fonts()
                 func.clear()
                 continue
 
             elif choice == 5:
-                func.InstallSoftware(dir_name=const.winrar, setup='Setup.exe', args=r'/S /IEN',
-                                     another_task=func.AnOtherTask.WINRAR_KEY)
+                winrar()
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.Portable(file_name=const.dism_p_p, setup='Dism++x64.exe')
+                dism_p_p()
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=const.eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui')
+                eng_to_urdu_dic()
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.Portable(file_name=const.cpu_z, setup='cpuz_x64.exe')
+                cpu_z()
                 func.clear()
                 continue
 
             elif choice == 9:
-                func.Portable(file_name=const.hw_info, setup='HWiNFO64.exe')
+                hw_info()
                 func.clear()
                 continue
 
             elif choice == 10:
-                func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/SILENT',
-                                     another_task=func.AnOtherTask.AOMEI_PRO)
+                aomei_partition()
                 func.clear()
                 continue
 
             elif choice == 11:
-                func.Portable(file_name=const.rufus, setup='Rufus.exe')
+                rufus()
                 func.clear()
                 continue
 
             elif choice == 12:
-                func.InstallSoftware(file_name=const.seven_zip, setup='Setup.exe', args=r'/S')
+                seven_zip()
                 func.clear()
                 continue
 
             elif choice == 13:
-                func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup.exe',
-                                     args=r'/INSTALL /QUIET /NORESTART')
+                vs_redistributable()
                 func.clear()
                 continue
 
             elif choice == 14:
-                func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=r'/VERYSILENT /NORESTART')
-                time.sleep(1)
-                func.Portable(file_name=const.better_rename, setup='Serial.txt')
+                better_rename()
                 func.clear()
                 continue
 
-            elif choice == 15:
+            elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 15)
+                func.exception_range_heading(exit_code)
                 input()
                 func.clear()
                 continue

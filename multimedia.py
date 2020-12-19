@@ -7,6 +7,20 @@ import functions as func
 import main
 
 
+def helium_music():
+    func.InstallSoftware(file_name=const.helium_music, setup='Setup.exe',
+                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS',
+                         child_file='License.txt', sys_app='notepad.exe', another_task=func.AnOtherTask.HELIUM_MUSIC)
+
+
+def k_lite():
+    func.InstallSoftware(file_name=const.k_lite, setup='Setup.exe', args=r'/verysilent')
+
+
+def mp3_tag():
+    func.InstallSoftware(file_name=const.mp3_tag, setup='Setup.exe', args=r'/S')
+
+
 def main_program():
     func.set_console_title(const.heading_multimedia)
     init()
@@ -17,7 +31,8 @@ def main_program():
             func.back_heading()
             func.sub_heading_softwares('02', const.k_lite)
             func.sub_heading_softwares('03', const.mp3_tag)
-            func.eixt_heading('04')
+            func.sub_heading_softwares('04', const.helium_music)
+            exit_code = func.exit_heading('05')
 
             choice = func.input_heading()
 
@@ -33,21 +48,26 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=const.k_lite, setup='Setup.exe', args=r'/verysilent')
+                k_lite()
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=const.mp3_tag, setup='Setup.exe', args=r'/S')
+                mp3_tag()
                 func.clear()
                 continue
 
             elif choice == 4:
+                helium_music()
+                func.clear()
+                continue
+
+            elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 4)
+                func.exception_range_heading(exit_code)
                 input()
                 func.clear()
                 continue

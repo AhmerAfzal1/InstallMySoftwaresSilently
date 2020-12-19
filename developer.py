@@ -7,6 +7,41 @@ import functions as func
 import main
 
 
+def android_studio():
+    func.InstallSoftware(file_name=const.android_studio, setup='Setup.exe', args=r'/S /Allusers')
+
+
+def git():
+    # If not provide *.reg file in variable registry='reg.reg' than optionally use winreg for it
+    func.InstallSoftware(file_name=const.git, setup='Setup.exe',
+                         args=r'/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS '
+                              r'/COMPONENTS="icons,icons\desktop,ext,ext\reg,ext\reg\shellhere,assoc,assoc_sh,'
+                              r'consolefont"',
+                         another_task=func.AnOtherTask.REG_GIT)
+
+
+def java_jdk_8():
+    func.InstallSoftware(file_name=const.java_jdk_08, setup='Setup.exe',
+                         args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"', another_task=func.AnOtherTask.JAVA)
+
+
+def java_jdk_15():
+    func.InstallSoftware(file_name=const.java_jdk_15, setup='Setup.exe',
+                         args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"', another_task=func.AnOtherTask.JAVA)
+
+
+def notepad_p_p():
+    func.InstallSoftware(file_name=const.notepad_p_p, setup='Setup.exe', args=r'/S')
+
+
+def pycharm():
+    func.InstallSoftware(file_name=const.pycharm, setup='Setup.exe', args=r'/S')
+
+
+def python():
+    func.InstallSoftware(file_name=const.python, setup='Setup.exe')
+
+
 def main_program():
     func.set_console_title(const.heading_developer)
     init()
@@ -22,7 +57,7 @@ def main_program():
             func.sub_heading_softwares('06', const.notepad_p_p)
             func.sub_heading_softwares('07', const.pycharm)
             func.sub_heading_softwares('08', const.java_jdk_15)
-            func.eixt_heading('09')
+            exit_code = func.exit_heading('09')
 
             choice = func.input_heading()
 
@@ -38,55 +73,46 @@ def main_program():
                 break
 
             elif choice == 2:
-                func.InstallSoftware(file_name=const.android_studio, setup='Setup.exe', args=r'/S /Allusers')
+                android_studio()
                 func.clear()
                 continue
 
             elif choice == 3:
-                func.InstallSoftware(file_name=const.java_jdk_08, setup='Setup.exe',
-                                     args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"',
-                                     another_task=func.AnOtherTask.JAVA)
+                java_jdk_8()
                 func.clear()
                 continue
 
             elif choice == 4:
-                func.InstallSoftware(file_name=const.python, setup='Setup.exe')
+                python()
                 func.clear()
                 continue
 
             elif choice == 5:
-                # If not provide *.reg file in variable registry='reg.reg' than optionally use winreg for it
-                func.InstallSoftware(file_name=const.git, setup='Setup.exe',
-                                     args=r'/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS '
-                                          r'/RESTARTAPPLICATIONS /COMPONENTS="icons,icons\desktop,ext,ext\reg,'
-                                          r'ext\reg\shellhere,assoc,assoc_sh,consolefont"',
-                                     another_task=func.AnOtherTask.REG_GIT)
+                git()
                 func.clear()
                 continue
 
             elif choice == 6:
-                func.InstallSoftware(file_name=const.notepad_p_p, setup='Setup.exe', args=r'/S')
+                notepad_p_p()
                 func.clear()
                 continue
 
             elif choice == 7:
-                func.InstallSoftware(file_name=const.pycharm, setup='Setup.exe', args=r'/S')
+                pycharm()
                 func.clear()
                 continue
 
             elif choice == 8:
-                func.InstallSoftware(file_name=const.java_jdk_15, setup='Setup.exe',
-                                     args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"',
-                                     another_task=func.AnOtherTask.JAVA)
+                java_jdk_15()
                 func.clear()
                 continue
 
-            elif choice == 9:
+            elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
 
             else:
-                func.exception_range_heading(1, 8)
+                func.exception_range_heading(exit_code)
                 input()
                 func.clear()
                 continue
