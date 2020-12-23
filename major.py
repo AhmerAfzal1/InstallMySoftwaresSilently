@@ -24,7 +24,9 @@ def adobe_xd():
 
 
 def corel_draw():
-    func.InstallSoftware(file_name=const.corel_draw, setup='Setup.exe', args=r'/S')
+    func.InstallSoftware(file_name=const.corel_draw, setup='Setup.exe',
+                         args=r'-y -nr -gm2 & "%SYSTEMDRIVE%\Temp\CORELDRAW\SETUP.exe" /S & RD /S /Q '
+                              r'"%SYSTEMDRIVE%\Temp\CORELDRAW"')
 
 
 def ms_office():

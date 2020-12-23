@@ -21,11 +21,17 @@ def idm():
 
 
 def net_balancer():
-    func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe', args=r'/SILENT /VERYSILENT /NORESTART')
+    func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe',
+                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS')
 
 
 def net_limiter():
     func.InstallSoftware(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES')
+
+
+def net_set_man():
+    func.InstallSoftware(file_name=const.net_set_man, setup='Setup.exe',
+                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS')
 
 
 def main_program():
@@ -41,7 +47,8 @@ def main_program():
             func.sub_heading_softwares('04', const.chrome)
             func.sub_heading_softwares('05', const.net_balancer)
             func.sub_heading_softwares('06', const.net_limiter)
-            exit_code = func.exit_heading('07')
+            func.sub_heading_softwares('07', const.net_set_man)
+            exit_code = func.exit_heading('08')
 
             choice = func.input_heading()
 
@@ -78,6 +85,11 @@ def main_program():
 
             elif choice == 6:
                 net_limiter()
+                func.clear()
+                continue
+
+            elif choice == 7:
+                net_set_man()
                 func.clear()
                 continue
 

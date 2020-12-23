@@ -180,7 +180,7 @@ def exception_heading(string, wait_input=False):
 def exception_range_heading(num):
     print(
         f'\n{Fore.LIGHTRED_EX} Value is not between {1} to {int(num)}! '
-        f'Please try again with valid options{Style.RESET_ALL}')
+        f'Please try again with valid option{Style.RESET_ALL}')
 
 
 def input_heading():

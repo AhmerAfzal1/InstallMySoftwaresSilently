@@ -43,8 +43,19 @@ def hw_info():
     func.Portable(file_name=const.hw_info, setup='HWiNFO64.exe')
 
 
+def occt_checking_tool():
+    func.Portable(file_name=const.occt_checking_tool, setup='OCCT.exe')
+
+
 def power_iso():
     func.InstallSoftware(file_name=const.power_iso, setup='Setup.exe', args=r'/S')
+
+
+def print_conductor():
+    func.InstallSoftware(file_name=const.print_conductor, setup='Setup.exe',
+                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS')
+    time.sleep(const.wait_short)
+    func.Portable(file_name=const.print_conductor, setup='Keygen.exe')
 
 
 def rufus():
@@ -85,7 +96,9 @@ def main_program():
             func.sub_heading_softwares('12', const.seven_zip)
             func.sub_heading_softwares('13', const.vs_redistributable)
             func.sub_heading_softwares('14', const.better_rename)
-            exit_code = func.exit_heading('15')
+            func.sub_heading_softwares('15', const.print_conductor)
+            func.sub_heading_portable('16', const.occt_checking_tool)
+            exit_code = func.exit_heading('17')
 
             choice = func.input_heading()
 
@@ -162,6 +175,16 @@ def main_program():
 
             elif choice == 14:
                 better_rename()
+                func.clear()
+                continue
+
+            elif choice == 15:
+                print_conductor()
+                func.clear()
+                continue
+
+            elif choice == 16:
+                occt_checking_tool()
                 func.clear()
                 continue
 

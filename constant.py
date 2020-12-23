@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.2.4'
+version = '1.2.5'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -26,27 +26,28 @@ wait_msg_input = '\n Please press Enter to continue'
 wait_short = 0.5
 
 # For Developer
-android_studio = 'Android Studio 4.1.0 (201.6858069)'
+android_studio = 'Android Studio 4.1.1 (201.6953283)'
 git = 'Git 2.29.2.3'
 java_jdk_08 = 'Java JDK 8 Update 271'
 java_jdk_15 = 'Java JDK 15.0.1'
 notepad_p_p = 'Notepad++ 7.9.1'
-pycharm = 'PyCharm Community 2020.3'
+pycharm = 'PyCharm Community 2020.3.1'
 python = 'Python 3.9.1'
 
 # For Internet
 chrome = 'Google Chrome 87.0.4280.88'
-firefox = 'Firefox 84.0'
+firefox = 'Firefox 84.0.1'
 idm = 'Internet Download Manager 6.38 Build 15'
 net_balancer = 'NetBalancer 9.12.9'
 net_limiter = 'NetLimiter 4.0.67'
+net_set_man = 'NetSetMan 5.0.0'
 
 # For Major
 adobe_acrobat_pro = 'Adobe Acrobat Pro DC 2020.009.20067'
 adobe_acrobat_reader = 'Adobe Acrobat Reader DC 2020.009.20067'
 adobe_photoshop = 'Adobe Photoshop 2021 22.0.0.35'
 adobe_xd = 'Adobe XD 34.1.12.9'
-corel_draw = 'CorelDRAW Graphics Suite 2020 (22.1.0.517)'
+corel_draw = 'CorelDRAW Technical Suite 2020 22.2.0.532'
 ms_office = 'Microsoft Office 2016-2019 (2020.10)'
 
 # For Mobile
@@ -77,8 +78,10 @@ cpu_z = 'CPU-Z 1.94.8'
 dism_p_p = 'Dism++ 10.1.1001.10'
 eng_to_urdu_dic = 'Cleantouch English to Urdu Dictionary 7.0'
 fonts = 'Fonts'
-hw_info = 'HWiNFO 6.40 Build 4330'
+hw_info = 'HWiNFO 6.41 Build 4335'
+occt_checking_tool = 'OCCT OverClock Checking Tool 7.2.0'
 power_iso = 'PowerISO 7.8'
+print_conductor = 'Print Conductor 7.1.2012.18090'
 rufus = 'Rufus 3.13'
 seven_zip = '7-Zip 19.00'
 vs_redistributable = 'Microsoft Visual C++ 2015-2019 14.28.29617'
