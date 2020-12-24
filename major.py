@@ -103,7 +103,6 @@ def main_program():
                 continue
 
         except Exception as err:
-            func.exception_heading(f'Please input a number')
-            func.exception_heading(f'Error: {err}')
+            func.exception_heading(f'Please input a number. {err}')
             input()
             func.clear()

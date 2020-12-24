@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.2.5'
+version = '1.2.6'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -65,7 +65,7 @@ doro_pdf_writer = 'Doro PDF Writer 2.15.0'
 foxit_adv_pdf_editor = 'Foxit Advanced PDF Editor 3.10'
 infix_pdf_editor = 'Infix PDF Editor Pro 7.4.0'
 pdf_creator = 'PDFCreator 3.4.1'
-pdf_shaper = 'PDF Shaper Pro 8.9'
+pdf_shaper = 'PDF Shaper Pro 10.6'
 pdf_to_jpg = 'PDF to JPG 2.9.10'
 pdf_to_jpg_converter = 'PDF To JPG Converter 4.3.1'
 tri_sun_pdf_to_jpg = 'TriSun PDF To JPG 18.0 Build 76'
@@ -86,3 +86,10 @@ rufus = 'Rufus 3.13'
 seven_zip = '7-Zip 19.00'
 vs_redistributable = 'Microsoft Visual C++ 2015-2019 14.28.29617'
 winrar = 'WinRAR 6.00'
+
+# Very common arg and essential softwares list for update newer softwares
+common_arg = r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS'
+softwares_list = [
+    android_studio, c_cleaner, firefox, java_jdk_08, k_lite, notepad_p_p, power_iso, pycharm, python, samsung_usb,
+    winrar, git, vs_redistributable
+]

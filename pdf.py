@@ -1,4 +1,5 @@
 import sys
+import time
 
 from colorama import init
 
@@ -20,12 +21,13 @@ def infix_pdf_editor():
 
 
 def pdf_creator():
-    func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe',
-                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS')
+    func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe', args=const.common_arg)
 
 
 def pdf_shaper():
-    func.InstallSoftware(file_name=const.pdf_shaper, setup='Setup.exe', args=r'/silent')
+    func.InstallSoftware(file_name=const.pdf_shaper, setup='Setup.exe', args=const.common_arg)
+    time.sleep(const.wait_short)
+    func.Portable(file_name=const.pdf_shaper, setup='Patch.exe')
 
 
 def pdf_to_jpg():
@@ -37,8 +39,7 @@ def pdf_to_jpg_converter():
 
 
 def tri_sun_pdf_to_jpg():
-    func.InstallSoftware(file_name=const.tri_sun_pdf_to_jpg, setup='Setup.exe',
-                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS',
+    func.InstallSoftware(file_name=const.tri_sun_pdf_to_jpg, setup='Setup.exe', args=const.common_arg,
                          another_task=func.AnOtherTask.TRI_SUN_PDF)
 
 
@@ -124,7 +125,6 @@ def main_program():
                 continue
 
         except Exception as err:
-            func.exception_heading(f'Please input a number')
-            func.exception_heading(f'Error: {err}')
+            func.exception_heading(f'Please input a number. {err}')
             input()
             func.clear()

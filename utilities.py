@@ -14,7 +14,7 @@ def aomei_partition():
 
 
 def better_rename():
-    func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=r'/VERYSILENT /NORESTART')
+    func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=const.common_arg)
     time.sleep(1)
     func.Portable(file_name=const.better_rename, setup='Serial.txt')
 
@@ -52,8 +52,7 @@ def power_iso():
 
 
 def print_conductor():
-    func.InstallSoftware(file_name=const.print_conductor, setup='Setup.exe',
-                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS')
+    func.InstallSoftware(file_name=const.print_conductor, setup='Setup.exe', args=const.common_arg)
     time.sleep(const.wait_short)
     func.Portable(file_name=const.print_conductor, setup='Keygen.exe')
 
@@ -199,7 +198,6 @@ def main_program():
                 continue
 
         except Exception as err:
-            func.exception_heading(f'Please input a number')
-            func.exception_heading(f'Error: {err}')
+            func.exception_heading(f'Please input a number. {err}')
             input()
             func.clear()

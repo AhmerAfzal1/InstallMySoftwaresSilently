@@ -1,6 +1,7 @@
 import ctypes
 import os
 import sys
+import time
 
 from colorama import init
 
@@ -52,14 +53,15 @@ def main():
         try:
             func.main_heading()
             func.main_heading_softwares('01', 'All Drivers & Recommended')
-            func.main_heading_softwares('02', 'Developer')
-            func.main_heading_softwares('03', 'Internet')
-            func.main_heading_softwares('04', 'Major')
-            func.main_heading_softwares('05', 'Mobile')
-            func.main_heading_softwares('06', 'Multimedia')
-            func.main_heading_softwares('07', 'PDF')
-            func.main_heading_softwares('08', 'Utilities')
-            exit_code = func.exit_heading('09')
+            func.main_heading_softwares('02', const.heading_developer)
+            func.main_heading_softwares('03', const.heading_internet)
+            func.main_heading_softwares('04', const.heading_major)
+            func.main_heading_softwares('05', const.heading_mobile)
+            func.main_heading_softwares('06', const.heading_multimedia)
+            func.main_heading_softwares('07', const.heading_pdf)
+            func.main_heading_softwares('08', const.heading_utilities)
+            func.main_heading_softwares('09', 'Recommended Newer Updated')
+            exit_code = func.exit_heading('10')
 
             choice = func.input_heading()
 
@@ -92,6 +94,7 @@ def main():
                 utilities.fonts()
                 utilities.winrar()
                 developer.python()
+                developer.pycharm()
                 func.clear()
                 continue
 
@@ -130,6 +133,11 @@ def main():
                 utilities.main_program()
                 continue
 
+            elif choice == 9:
+                func.install_newer_softwares()
+                func.clear()
+                continue
+
             elif choice == int(exit_code):
                 func.remove_temp(is_wait=True)
                 sys.exit()
@@ -141,7 +149,6 @@ def main():
                 continue
 
         except Exception as err:
-            func.exception_heading(f'Please input a number')
-            func.exception_heading(f'Error: {err}')
+            func.exception_heading(f'Please input a number. {err}')
             input()
             func.clear()

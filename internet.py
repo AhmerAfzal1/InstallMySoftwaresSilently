@@ -21,8 +21,7 @@ def idm():
 
 
 def net_balancer():
-    func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe',
-                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS')
+    func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe', args=const.common_arg)
 
 
 def net_limiter():
@@ -30,8 +29,7 @@ def net_limiter():
 
 
 def net_set_man():
-    func.InstallSoftware(file_name=const.net_set_man, setup='Setup.exe',
-                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS')
+    func.InstallSoftware(file_name=const.net_set_man, setup='Setup.exe', args=const.common_arg)
 
 
 def main_program():
@@ -104,7 +102,6 @@ def main_program():
                 continue
 
         except Exception as err:
-            func.exception_heading(f'Please input a number')
-            func.exception_heading(f'Error: {err}')
+            func.exception_heading(f'Please input a number. {err}')
             input()
             func.clear()

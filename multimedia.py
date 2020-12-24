@@ -8,8 +8,7 @@ import main
 
 
 def helium_music():
-    func.InstallSoftware(file_name=const.helium_music, setup='Setup.exe',
-                         args=r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS',
+    func.InstallSoftware(file_name=const.helium_music, setup='Setup.exe', args=const.common_arg,
                          child_file='License.txt', sys_app='notepad.exe', another_task=func.AnOtherTask.HELIUM_MUSIC)
 
 
@@ -73,7 +72,6 @@ def main_program():
                 continue
 
         except Exception as err:
-            func.exception_heading(f'Please input a number')
-            func.exception_heading(f'Error: {err}')
+            func.exception_heading(f'Please input a number. {err}')
             input()
             func.clear()

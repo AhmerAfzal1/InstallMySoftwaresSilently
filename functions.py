@@ -1,7 +1,9 @@
 import enum
 import inspect
 import os
+import pathlib
 import re
+import shelve
 import shlex
 import shutil
 import subprocess
@@ -86,6 +88,10 @@ def find_files(dir_name=None, file_name=None, file_ext=None, pwd=None):
         exception_heading(err)
 
 
+def get_variable_name(s):
+    return str(s).split()[0]
+
+
 def get_temp_drivers_path_by_file(file_name, drivers_dir, sub_drivers_dir=None):
     if sub_drivers_dir is not None:
         return os.path.join(*[get_temp_path_by_file(file_name), drivers_dir, sub_drivers_dir])
@@ -110,6 +116,27 @@ def get_time(start, end):
         return f'{mins:0.0f} Minute and {secs:0.2f} Seconds'
     else:
         return f'{mins:0.0f} Minutes and {secs:0.2f} Seconds'
+
+
+def install_newer_softwares():
+    if os.path.isfile(os.path.join(*[pathlib.Path(__file__).parent, const.product + '.bak'])):
+        log_show('Checking new softwares...')
+        is_found_newer_softwares = None
+        db = shelve.open(const.product, 'r')
+        for my_list in const.softwares_list:
+            if not db.get(get_variable_name(my_list)) == my_list:
+                is_found_newer_softwares = True
+                log_show(f'Newer is: {my_list}')
+        if not is_found_newer_softwares:
+            log_show(f'There is no newer software')
+        db.close()
+        time.sleep(const.wait_long)
+    else:
+        log_show('Creating new database...')
+        new_db = shelve.open(const.product, 'c')
+        for new_list in const.softwares_list:
+            new_db[get_variable_name(new_list)] = new_list
+        new_db.close()
 
 
 def read_reg(computer_name=None, root_key=None, sub_key=None, name_key=None):
