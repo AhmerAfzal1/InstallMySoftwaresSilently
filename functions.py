@@ -1,12 +1,12 @@
 import enum
 import inspect
 import os
-import pathlib
 import re
 import shelve
 import shlex
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import winreg as reg
@@ -119,24 +119,28 @@ def get_time(start, end):
 
 
 def install_newer_softwares():
-    if os.path.isfile(os.path.join(*[pathlib.Path(__file__).parent, const.product + '.bak'])):
-        log_show('Checking new softwares...')
-        is_found_newer_softwares = None
-        db = shelve.open(const.product, 'r')
-        for my_list in const.softwares_list:
-            if not db.get(get_variable_name(my_list)) == my_list:
-                is_found_newer_softwares = True
-                log_show(f'Newer is: {my_list}')
-        if not is_found_newer_softwares:
-            log_show(f'There is no newer software')
-        db.close()
-        time.sleep(const.wait_long)
-    else:
-        log_show('Creating new database...')
-        new_db = shelve.open(const.product, 'c')
-        for new_list in const.softwares_list:
-            new_db[get_variable_name(new_list)] = new_list
-        new_db.close()
+    current_db_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    try:
+        if os.path.isfile(os.path.join(*[current_db_dir, const.product + '.bak'])):
+            log_show('Checking new softwares...')
+            is_found_newer_softwares = None
+            db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='r')
+            for my_list in const.softwares_list:
+                if not db[get_variable_name(my_list)] == my_list:
+                    is_found_newer_softwares = True
+                    log_show(f'Newer is: {my_list}')
+            if not is_found_newer_softwares:
+                log_show(f'There is no newer software')
+            db.close()
+            time.sleep(const.wait_long)
+        else:
+            log_show('Creating new database...')
+            new_db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='c')
+            for new_list in const.softwares_list:
+                new_db[get_variable_name(new_list)] = new_list
+            new_db.close()
+    except BaseException as e:
+        exception_heading(e, True)
 
 
 def read_reg(computer_name=None, root_key=None, sub_key=None, name_key=None):

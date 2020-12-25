@@ -36,6 +36,7 @@ py2exe_options = {
     'dist_dir': 'dist',
     'dll_excludes': [],
     'excludes': ['tkinter'],
+    'includes': ['dbm.dumb'],
     'optimize': 2,
 }
 
@@ -51,6 +52,7 @@ setup(
     name=conts.product,
     options={'py2exe': py2exe_options},  # Optionally 'py2exe' can replaced to 'build_exe'
     platforms='Windows',
+    data_files=[('', ['InstallMySofts.bak', 'InstallMySofts.dat', 'InstallMySofts.dir'])],
     version=conts.version,
     zipfile=None,
 
