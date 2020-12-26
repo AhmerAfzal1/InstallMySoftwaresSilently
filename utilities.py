@@ -9,8 +9,7 @@ import main
 
 
 def aomei_partition():
-    func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/SILENT',
-                         another_task=func.AnOtherTask.AOMEI_PRO)
+    func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/S')
 
 
 def better_rename():

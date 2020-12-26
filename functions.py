@@ -15,8 +15,14 @@ import zipfile
 from colorama import init, Fore, Style
 
 import constant as const
+import developer
+import internet
+import mobile
+import multimedia
+import utilities
 
 init()
+current_db_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
 temp = os.path.join(tempfile.gettempdir(), const.product)
 if not os.path.exists(temp):
     os.makedirs(temp)
@@ -88,10 +94,6 @@ def find_files(dir_name=None, file_name=None, file_ext=None, pwd=None):
         exception_heading(err)
 
 
-def get_variable_name(s):
-    return str(s).split()[0]
-
-
 def get_temp_drivers_path_by_file(file_name, drivers_dir, sub_drivers_dir=None):
     if sub_drivers_dir is not None:
         return os.path.join(*[get_temp_path_by_file(file_name), drivers_dir, sub_drivers_dir])
@@ -116,31 +118,6 @@ def get_time(start, end):
         return f'{mins:0.0f} Minute and {secs:0.2f} Seconds'
     else:
         return f'{mins:0.0f} Minutes and {secs:0.2f} Seconds'
-
-
-def install_newer_softwares():
-    current_db_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    try:
-        if os.path.isfile(os.path.join(*[current_db_dir, const.product + '.bak'])):
-            log_show('Checking new softwares...')
-            is_found_newer_softwares = None
-            db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='r')
-            for my_list in const.softwares_list:
-                if not db[get_variable_name(my_list)] == my_list:
-                    is_found_newer_softwares = True
-                    log_show(f'Newer is: {my_list}')
-            if not is_found_newer_softwares:
-                log_show(f'There is no newer software')
-            db.close()
-            time.sleep(const.wait_long)
-        else:
-            log_show('Creating new database...')
-            new_db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='c')
-            for new_list in const.softwares_list:
-                new_db[get_variable_name(new_list)] = new_list
-            new_db.close()
-    except BaseException as e:
-        exception_heading(e, True)
 
 
 def read_reg(computer_name=None, root_key=None, sub_key=None, name_key=None):
@@ -273,6 +250,25 @@ class JavaVersion(enum.IntEnum):
 
 
 class Functions:
+    @staticmethod
+    def create_db():
+        try:
+            new_db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='c')
+            for new_list in const.softwares_list:
+                new_db[new_list.get('id')] = new_list.get('file')
+            new_db.close()
+        except BaseException as e:
+            exception_heading(e, True)
+
+    @staticmethod
+    def update_db(key, file):
+        try:
+            update = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='c')
+            update[key] = file
+            update.close()
+        except BaseException as e:
+            exception_heading(e, True)
+
     @staticmethod
     def run_program(file_name, args=None, path=None, is_portable=False, sys_app_run=False):
         if args is None:
@@ -528,3 +524,65 @@ class Portable(Functions):
                              is_portable=True)
             log_show(const.wait_msg)
             time.sleep(const.wait_long)
+
+
+class InstallUpdate(Functions):
+    def __init__(self):
+        if os.path.isfile(os.path.join(*[current_db_dir, const.product + '.bak'])):
+            db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='r')
+            is_found_newer_softwares = None
+            if not db.get('md5') or not db['md5'] == len(const.softwares_list):
+                log_show('Updating database...')
+                time.sleep(const.wait_short)
+                self.update_db('md5', len(const.softwares_list))
+                for no_in_list in const.softwares_list:
+                    if not db.get(no_in_list.get('id')) == no_in_list.get('file'):
+                        self.update_db(no_in_list.get('id'), no_in_list.get('file'))
+                time.sleep(const.wait_long / 2)
+            else:
+                log_show('Checking new softwares...')
+                time.sleep(const.wait_short)
+                for my_list in const.softwares_list:
+                    key_id = my_list.get('id')
+                    if not db[key_id] == my_list.get('file'):
+                        is_found_newer_softwares = True
+                        if key_id == 'android_studio':
+                            developer.android_studio()
+                        elif key_id == 'c_cleaner':
+                            utilities.c_cleaner()
+                        elif key_id == 'firefox':
+                            internet.firefox()
+                        elif key_id == 'idm':
+                            internet.idm()
+                        elif key_id == 'java_jdk_08':
+                            developer.java_jdk_8()
+                        elif key_id == 'k_lite':
+                            multimedia.k_lite()
+                        elif key_id == 'notepad_p_p':
+                            developer.notepad_p_p()
+                        elif key_id == 'power_iso':
+                            utilities.power_iso()
+                        elif key_id == 'pycharm':
+                            developer.pycharm()
+                        elif key_id == 'python':
+                            developer.python()
+                        elif key_id == 'samsung_usb':
+                            mobile.samsung_usb()
+                        elif key_id == 'winrar':
+                            utilities.winrar()
+                        elif key_id == 'git':
+                            developer.git()
+                        elif key_id == 'vs_redistributable':
+                            utilities.vs_redistributable()
+                        time.sleep(const.wait_short)
+                        self.update_db(key_id, my_list.get('file'))
+            if not is_found_newer_softwares:
+                log_show(f'There are no new software updates')
+            db.close()
+            time.sleep(const.wait_long / 2)
+        else:
+            log_show('Creating new database...')
+            time.sleep(const.wait_short)
+            self.create_db()
+            self.update_db('md5', len(const.softwares_list))
+            time.sleep(const.wait_long / 2)

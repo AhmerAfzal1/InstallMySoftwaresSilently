@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.2.7'
+version = '1.2.8'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -37,10 +37,10 @@ python = 'Python 3.9.1'
 # For Internet
 chrome = 'Google Chrome 87.0.4280.88'
 firefox = 'Firefox 84.0.1'
-idm = 'Internet Download Manager 6.38 Build 15'
+idm = 'Internet Download Manager 6.38 Build 16'
 net_balancer = 'NetBalancer 9.12.9'
 net_limiter = 'NetLimiter 4.0.67'
-net_set_man = 'NetSetMan 5.0.0'
+net_set_man = 'NetSetMan 5.0.1'
 
 # For Major
 adobe_acrobat_pro = 'Adobe Acrobat Pro DC 2020.009.20067'
@@ -71,7 +71,7 @@ pdf_to_jpg_converter = 'PDF To JPG Converter 4.3.1'
 tri_sun_pdf_to_jpg = 'TriSun PDF To JPG 18.0 Build 76'
 
 # For Utilities
-aomei_partition = 'AOMEI Partition Assistant 9.0'
+aomei_partition = 'AOMEI Partition Assistant 9.1.0'
 better_rename = 'Better File Rename 6.18'
 c_cleaner = 'CCleaner 5.75.8238'
 cpu_z = 'CPU-Z 1.94.8'
@@ -90,6 +90,18 @@ winrar = 'WinRAR 6.00'
 # Very common arg and essential softwares list for update newer softwares
 common_arg = r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS'
 softwares_list = [
-    android_studio, c_cleaner, firefox, java_jdk_08, k_lite, notepad_p_p, power_iso, pycharm, python, samsung_usb,
-    winrar, git, vs_redistributable
+    {'id': 'android_studio', 'file': android_studio},
+    {'id': 'c_cleaner', 'file': c_cleaner},
+    {'id': 'firefox', 'file': firefox},
+    {'id': 'idm', 'file': idm},
+    {'id': 'java_jdk_08', 'file': java_jdk_08},
+    {'id': 'k_lite', 'file': k_lite},
+    {'id': 'notepad_p_p', 'file': notepad_p_p},
+    {'id': 'power_iso', 'file': power_iso},
+    {'id': 'pycharm', 'file': pycharm},
+    {'id': 'python', 'file': python},
+    {'id': 'samsung_usb', 'file': samsung_usb},
+    {'id': 'winrar', 'file': winrar},
+    {'id': 'git', 'file': git},
+    {'id': 'vs_redistributable', 'file': vs_redistributable}
 ]

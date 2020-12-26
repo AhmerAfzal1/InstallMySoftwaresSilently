@@ -1,7 +1,6 @@
 import ctypes
 import os
 import sys
-import time
 
 from colorama import init
 
@@ -134,7 +133,7 @@ def main():
                 continue
 
             elif choice == 9:
-                func.install_newer_softwares()
+                func.InstallUpdate()
                 func.clear()
                 continue
 
