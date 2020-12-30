@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.2.8'
+version = '1.2.9'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -54,6 +54,7 @@ ms_office = 'Microsoft Office 2016-2019 (2020.10)'
 i_tunes = 'iTunes 12.9.5.7'
 samsung_usb = 'Samsung USB Drivers 1.7.35.0'
 smart_switch = 'Smart Switch 4.2.20072.4'
+sms_contacts_recover = 'Coolmuster Android SMS Contacts Recovery 4.5.43'
 
 # For Multimedia
 helium_music = 'Helium Music Manager 14.9 Build 16658'
@@ -72,6 +73,7 @@ tri_sun_pdf_to_jpg = 'TriSun PDF To JPG 18.0 Build 76'
 
 # For Utilities
 aomei_partition = 'AOMEI Partition Assistant 9.1.0'
+auslogics_duplicate = 'Auslogics Duplicate File Finder 9.0.0.2'
 better_rename = 'Better File Rename 6.18'
 c_cleaner = 'CCleaner 5.75.8238'
 cpu_z = 'CPU-Z 1.94.8'

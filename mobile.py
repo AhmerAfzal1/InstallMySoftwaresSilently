@@ -1,4 +1,5 @@
 import sys
+import time
 
 from colorama import init
 
@@ -19,6 +20,12 @@ def smart_switch():
     func.InstallSoftware(file_name=const.smart_switch, setup='Setup.exe', args=r'/S')
 
 
+def sms_contacts_recover():
+    func.InstallSoftware(file_name=const.sms_contacts_recover, setup='Setup.exe', args=r'/S')
+    time.sleep(const.wait_short)
+    func.Portable(file_name=const.sms_contacts_recover, setup='Patch.exe')
+
+
 def main_program():
     func.set_console_title(const.heading_mobile)
     init()
@@ -30,7 +37,8 @@ def main_program():
             func.sub_heading_softwares('02', const.samsung_usb)
             func.sub_heading_softwares('03', const.smart_switch)
             func.sub_heading_softwares('04', const.i_tunes)
-            exit_code = func.exit_heading('05')
+            func.sub_heading_softwares('05', const.sms_contacts_recover)
+            exit_code = func.exit_heading('06')
 
             choice = func.input_heading()
 
@@ -57,6 +65,11 @@ def main_program():
 
             elif choice == 4:
                 i_tunes()
+                func.clear()
+                continue
+
+            elif choice == 5:
+                sms_contacts_recover()
                 func.clear()
                 continue
 

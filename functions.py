@@ -555,7 +555,7 @@ class InstallUpdate(Functions):
                         elif key_id == 'idm':
                             internet.idm()
                         elif key_id == 'java_jdk_08':
-                            developer.java_jdk_8()
+                            developer.java_jdk(const.java_jdk_08)
                         elif key_id == 'k_lite':
                             multimedia.k_lite()
                         elif key_id == 'notepad_p_p':

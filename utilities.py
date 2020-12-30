@@ -12,6 +12,10 @@ def aomei_partition():
     func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/S')
 
 
+def auslogics_duplicate():
+    func.InstallSoftware(file_name=const.auslogics_duplicate, setup='Setup.exe', args=const.common_arg)
+
+
 def better_rename():
     func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=const.common_arg)
     time.sleep(1)
@@ -94,9 +98,10 @@ def main_program():
             func.sub_heading_softwares('12', const.seven_zip)
             func.sub_heading_softwares('13', const.vs_redistributable)
             func.sub_heading_softwares('14', const.better_rename)
-            func.sub_heading_softwares('15', const.print_conductor)
-            func.sub_heading_portable('16', const.occt_checking_tool)
-            exit_code = func.exit_heading('17')
+            func.sub_heading_softwares('15', const.auslogics_duplicate)
+            func.sub_heading_softwares('16', const.print_conductor)
+            func.sub_heading_portable('17', const.occt_checking_tool)
+            exit_code = func.exit_heading('18')
 
             choice = func.input_heading()
 
@@ -177,11 +182,16 @@ def main_program():
                 continue
 
             elif choice == 15:
-                print_conductor()
+                auslogics_duplicate()
                 func.clear()
                 continue
 
             elif choice == 16:
+                print_conductor()
+                func.clear()
+                continue
+
+            elif choice == 17:
                 occt_checking_tool()
                 func.clear()
                 continue

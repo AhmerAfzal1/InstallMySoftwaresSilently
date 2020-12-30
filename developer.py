@@ -20,13 +20,8 @@ def git():
                          another_task=func.AnOtherTask.REG_GIT)
 
 
-def java_jdk_8():
-    func.InstallSoftware(file_name=const.java_jdk_08, setup='Setup.exe',
-                         args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"', another_task=func.AnOtherTask.JAVA)
-
-
-def java_jdk_15():
-    func.InstallSoftware(file_name=const.java_jdk_15, setup='Setup.exe',
+def java_jdk(file_name):
+    func.InstallSoftware(file_name=file_name, setup='Setup.exe',
                          args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"', another_task=func.AnOtherTask.JAVA)
 
 
@@ -78,7 +73,7 @@ def main_program():
                 continue
 
             elif choice == 3:
-                java_jdk_8()
+                java_jdk(const.java_jdk_08)
                 func.clear()
                 continue
 
@@ -103,7 +98,7 @@ def main_program():
                 continue
 
             elif choice == 8:
-                java_jdk_15()
+                java_jdk(const.java_jdk_15)
                 func.clear()
                 continue
 
