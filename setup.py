@@ -38,6 +38,8 @@ py2exe_options = {
     'excludes': ['tkinter'],
     'includes': ['dbm.dumb'],
     'optimize': 2,
+    'unbuffered': True,
+    'xref': True,
 }
 
 setup(

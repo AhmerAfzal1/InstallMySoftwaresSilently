@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.2.9'
+version = '1.3.0'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -27,11 +27,11 @@ wait_short = 0.5
 
 # For Developer
 android_studio = 'Android Studio 4.1.1 (201.6953283)'
-git = 'Git 2.29.2.3'
+git = 'Git 2.30.0'
 java_jdk_08 = 'Java JDK 8 Update 271'
 java_jdk_15 = 'Java JDK 15.0.1'
 notepad_p_p = 'Notepad++ 7.9.1'
-pycharm = 'PyCharm Community 2020.3.1'
+pycharm = 'PyCharm Community 2020.3.2'
 python = 'Python 3.9.1'
 
 # For Internet
