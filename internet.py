@@ -1,4 +1,5 @@
 import sys
+import time
 
 from colorama import init
 
@@ -16,6 +17,8 @@ def firefox():
 
 
 def idm():
+    func.task_kill('IDMan.exe')
+    time.sleep(const.wait_short)
     func.InstallSoftware(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
                          another_task=func.AnOtherTask.IDM)
 

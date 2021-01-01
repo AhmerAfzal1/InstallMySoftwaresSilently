@@ -170,6 +170,20 @@ def set_reg(root_key, sub_key, name_key, value_type, value_key):
         return False
 
 
+def task_kill(task):
+    start = time.time()
+    kill = subprocess.check_output('tasklist')
+    if task in str(kill):
+        log_show(f'Killing task {task}...')
+        time.sleep(const.wait_short)
+        subprocess.run(['taskkill', '/F', '/IM', task, '>nul'])
+        end = time.time()
+        log_show(f'Killed task {task} in ', get_time(start, end))
+        return True
+    else:
+        return False
+
+
 def back_heading():
     print(f'{Fore.LIGHTCYAN_EX}\t[01] BACK TO MAIN{Style.RESET_ALL}')
 
@@ -384,7 +398,7 @@ class Functions:
                 log_show(f'Copied Rarreg.key to {dst_winrar}')
         elif task.value == AnOtherTask.IDM.value:
             log_show(f'Patching {file_name}')
-            patcher_dir = os.path.join(*[os.environ['ProgramFiles(x86)'], file_name])
+            patcher_dir = os.path.join(*[os.environ['ProgramFiles(x86)'], 'Internet Download Manager'])
             subprocess.run(
                 [os.path.join(get_temp_path_by_file(file_name), 'Patch.exe'), '/silent', '/overwrite', '/backup',
                  f'/startupworkdir {patcher_dir}'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
