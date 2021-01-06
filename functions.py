@@ -246,16 +246,19 @@ def under_progress_heading(string):
 
 
 class AnOtherTask(enum.Enum):
+    ANDROID_IPHONE = 'androidiphone'
     AOMEI_PRO = 'pro'
     AOMEI_SERVER = 'server'
     AOMEI_TECHNICIAN = 'technician'
     AOMEI_UNLIMITED = 'unlimited'
     HELIUM_MUSIC = 'helium'
     IDM = 'idm'
-    REG_GIT = 'gitbash'
     JAVA = 'java'
+    REG_GIT = 'gitbash'
+    SQLITE = 'sqlite'
     TRI_SUN_PDF = 'trysun'
     WINRAR_KEY = 'rar'
+    WISE_DUPLICATE = 'wiseduplicate'
 
 
 class JavaVersion(enum.IntEnum):
@@ -416,6 +419,30 @@ class Functions:
             log_show(f'Opening Notepad {file_name}')
             path = os.path.join(*[get_temp_path_by_file(file_name), child_file])
             Functions.run_program(file_name=sys_app, path=path, sys_app_run=True)
+            time.sleep(const.wait_short)
+        elif task.value == AnOtherTask.ANDROID_IPHONE.value:
+            log_show(f'Cracking {file_name}')
+            for file in os.listdir(os.path.join(*[temp, file_name, 'Crack'])):
+                src = os.path.join(*[temp, file_name, 'Crack', file])
+                dst = os.path.join(*[os.environ['LOCALAPPDATA'], 'Backuptrans Android iPhone Line Transfer + (x64)'])
+                is_copied = copying_files(src=src, dst=dst)
+                if is_copied:
+                    log_show(f'Copied crack file to {dst}')
+            time.sleep(const.wait_short)
+        elif task.value == AnOtherTask.SQLITE.value:
+            log_show(f'Cracking {file_name}')
+            src = os.path.join(*[temp, file_name, 'license3.key'])
+            dst = os.path.join(*[os.environ['ProgramFiles'], 'SQLite Expert', 'Professional 5'])
+            is_copied = copying_files(src=src, dst=dst)
+            time.sleep(const.wait_short)
+            if is_copied:
+                log_show(f'Copied crack file to {dst}')
+        elif task.value == AnOtherTask.WISE_DUPLICATE.value:
+            log_show(f'Registering {file_name}')
+            subprocess.run(
+                [os.path.join(get_temp_path_by_file(file_name), 'Activator.exe'), '/activate', f'/name {const.author}',
+                 f'/email {const.email}', '/overwrite', '/patchhosts', '/generate', '/product 3', '/verysilent'],
+                shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             time.sleep(const.wait_short)
         else:
             exception_heading(f'Invalid AnOtherTask type')

@@ -37,6 +37,11 @@ def python():
     func.InstallSoftware(file_name=const.python, setup='Setup.exe')
 
 
+def sq_lite():
+    func.InstallSoftware(file_name=const.sq_lite, setup='Setup.exe', args=const.common_arg,
+                         another_task=func.AnOtherTask.SQLITE)
+
+
 def main_program():
     func.set_console_title(const.heading_developer)
     init()
@@ -52,7 +57,8 @@ def main_program():
             func.sub_heading_softwares('06', const.notepad_p_p)
             func.sub_heading_softwares('07', const.pycharm)
             func.sub_heading_softwares('08', const.java_jdk_15)
-            exit_code = func.exit_heading('09')
+            func.sub_heading_softwares('09', const.sq_lite)
+            exit_code = func.exit_heading('10')
 
             choice = func.input_heading()
 
@@ -99,6 +105,11 @@ def main_program():
 
             elif choice == 8:
                 java_jdk(const.java_jdk_15)
+                func.clear()
+                continue
+
+            elif choice == 9:
+                sq_lite()
                 func.clear()
                 continue
 

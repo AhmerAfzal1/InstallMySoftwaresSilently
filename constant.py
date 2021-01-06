@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.3.0'
+version = '1.3.2'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -30,9 +30,10 @@ android_studio = 'Android Studio 4.1.1 (201.6953283)'
 git = 'Git 2.30.0'
 java_jdk_08 = 'Java JDK 8 Update 271'
 java_jdk_15 = 'Java JDK 15.0.1'
-notepad_p_p = 'Notepad++ 7.9.1'
+notepad_p_p = 'Notepad++ 7.9.2'
 pycharm = 'PyCharm Community 2020.3.2'
 python = 'Python 3.9.1'
+sq_lite = 'SQLite Expert Professional 5.4.2.503'
 
 # For Internet
 chrome = 'Google Chrome 87.0.4280.88'
@@ -48,9 +49,11 @@ adobe_acrobat_reader = 'Adobe Acrobat Reader DC 2020.009.20067'
 adobe_photoshop = 'Adobe Photoshop 2021 22.0.0.35'
 adobe_xd = 'Adobe XD 34.1.12.9'
 corel_draw = 'CorelDRAW Technical Suite 2020 22.2.0.532'
-ms_office = 'Microsoft Office 2016-2019 (2020.10)'
+ms_office = 'Microsoft Office 2016-2019 (2020.12)'
 
 # For Mobile
+android_iphone = 'Backuptrans Android iPhone Line Transfer 3.1.57'
+i_mobie = 'İMobie PhoneTrans Pro 5.1.0 Build 20201230'
 i_tunes = 'iTunes 12.9.5.7'
 samsung_usb = 'Samsung USB Drivers 1.7.35.0'
 smart_switch = 'Smart Switch 4.2.20072.4'
@@ -88,6 +91,7 @@ rufus = 'Rufus 3.13'
 seven_zip = '7-Zip 19.00'
 vs_redistributable = 'Microsoft Visual C++ 2015-2019 14.28.29617'
 winrar = 'WinRAR 6.00'
+wise_duplicate = 'Wise Duplicate Finder Pro 1.3.8.52'
 
 # Very common arg and essential softwares list for update newer softwares
 common_arg = r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS'

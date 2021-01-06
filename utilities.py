@@ -77,6 +77,11 @@ def winrar():
                          another_task=func.AnOtherTask.WINRAR_KEY)
 
 
+def wise_duplicate():
+    func.InstallSoftware(file_name=const.wise_duplicate, setup='Setup.exe', args=const.common_arg,
+                         another_task=func.AnOtherTask.WISE_DUPLICATE)
+
+
 def main_program():
     func.set_console_title(const.heading_utilities)
     init()
@@ -100,8 +105,9 @@ def main_program():
             func.sub_heading_softwares('14', const.better_rename)
             func.sub_heading_softwares('15', const.auslogics_duplicate)
             func.sub_heading_softwares('16', const.print_conductor)
-            func.sub_heading_portable('17', const.occt_checking_tool)
-            exit_code = func.exit_heading('18')
+            func.sub_heading_softwares('17', const.wise_duplicate)
+            func.sub_heading_portable('18', const.occt_checking_tool)
+            exit_code = func.exit_heading('19')
 
             choice = func.input_heading()
 
@@ -192,6 +198,11 @@ def main_program():
                 continue
 
             elif choice == 17:
+                wise_duplicate()
+                func.clear()
+                continue
+
+            elif choice == 18:
                 occt_checking_tool()
                 func.clear()
                 continue

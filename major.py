@@ -30,7 +30,8 @@ def corel_draw():
 
 
 def ms_office():
-    func.InstallSoftware(file_name=const.ms_office, setup='AUTORUN.exe')
+    func.InstallSoftware(file_name=const.ms_office, setup=r'Office\helper.exe',
+                         args=r'/S /INSTALL /PROX64 /WORD /EXCEL /POWERPOINT /PUBLISHER /LANG=EN-US /KMS')
 
 
 def main_program():

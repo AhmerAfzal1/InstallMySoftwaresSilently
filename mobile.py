@@ -8,6 +8,14 @@ import functions as func
 import main
 
 
+def android_iphone():
+    func.InstallSoftware(file_name=const.android_iphone, setup='Setup.exe', args=r'/S')
+
+
+def i_mobie():
+    func.InstallSoftware(file_name=const.i_mobie, setup='Setup.exe', args=const.common_arg)
+
+
 def i_tunes():
     func.InstallSoftware(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart')
 
@@ -38,7 +46,8 @@ def main_program():
             func.sub_heading_softwares('03', const.smart_switch)
             func.sub_heading_softwares('04', const.i_tunes)
             func.sub_heading_softwares('05', const.sms_contacts_recover)
-            exit_code = func.exit_heading('06')
+            func.sub_heading_softwares('06', const.i_mobie)
+            exit_code = func.exit_heading('07')
 
             choice = func.input_heading()
 
@@ -70,6 +79,11 @@ def main_program():
 
             elif choice == 5:
                 sms_contacts_recover()
+                func.clear()
+                continue
+
+            elif choice == 6:
+                i_mobie()
                 func.clear()
                 continue
 
