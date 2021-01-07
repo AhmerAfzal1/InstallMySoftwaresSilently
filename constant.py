@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.3.2'
+version = '1.3.3'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -38,6 +38,7 @@ sq_lite = 'SQLite Expert Professional 5.4.2.503'
 # For Internet
 chrome = 'Google Chrome 87.0.4280.88'
 firefox = 'Firefox 84.0.1'
+fdm = 'Free Download Manager 6.13.1 Build 3483'
 idm = 'Internet Download Manager 6.38 Build 16'
 net_balancer = 'NetBalancer 9.12.9'
 net_limiter = 'NetLimiter 4.0.67'
@@ -61,7 +62,7 @@ sms_contacts_recover = 'Coolmuster Android SMS Contacts Recovery 4.5.43'
 
 # For Multimedia
 helium_music = 'Helium Music Manager 14.9 Build 16658'
-k_lite = 'K-Lite Mega Codec Pack 15.9.0'
+k_lite = 'K-Lite Mega Codec Pack 15.9.5'
 mp3_tag = 'Mp3Tag 3.04A'
 
 # For PDF

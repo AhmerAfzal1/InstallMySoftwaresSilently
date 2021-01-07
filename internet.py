@@ -16,6 +16,10 @@ def firefox():
     func.InstallSoftware(file_name=const.firefox, setup='Setup.exe', args=r'-ms')
 
 
+def fdm():
+    func.InstallSoftware(file_name=const.fdm, setup='Setup.exe', args=const.common_arg)
+
+
 def idm():
     func.task_kill('IDMan.exe')
     time.sleep(const.wait_short)
@@ -46,10 +50,11 @@ def main_program():
             func.sub_heading_softwares('02', const.firefox)
             func.sub_heading_softwares('03', const.idm)
             func.sub_heading_softwares('04', const.chrome)
-            func.sub_heading_softwares('05', const.net_balancer)
-            func.sub_heading_softwares('06', const.net_limiter)
-            func.sub_heading_softwares('07', const.net_set_man)
-            exit_code = func.exit_heading('08')
+            func.sub_heading_softwares('05', const.fdm)
+            func.sub_heading_softwares('06', const.net_balancer)
+            func.sub_heading_softwares('07', const.net_limiter)
+            func.sub_heading_softwares('08', const.net_set_man)
+            exit_code = func.exit_heading('09')
 
             choice = func.input_heading()
 
@@ -80,16 +85,21 @@ def main_program():
                 continue
 
             elif choice == 5:
-                net_balancer()
+                fdm()
                 func.clear()
                 continue
 
             elif choice == 6:
-                net_limiter()
+                net_balancer()
                 func.clear()
                 continue
 
             elif choice == 7:
+                net_limiter()
+                func.clear()
+                continue
+
+            elif choice == 8:
                 net_set_man()
                 func.clear()
                 continue

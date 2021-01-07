@@ -54,7 +54,7 @@ setup(
     name=conts.product,
     options={'py2exe': py2exe_options},  # Optionally 'py2exe' can replaced to 'build_exe'
     platforms='Windows',
-    data_files=[('', ['InstallMySofts.bak', 'InstallMySofts.dat', 'InstallMySofts.dir'])],
+    # data_files=[('', ['InstallMySofts.bak', 'InstallMySofts.dat', 'InstallMySofts.dir'])],
     version=conts.version,
     zipfile=None,
 
