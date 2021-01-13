@@ -17,6 +17,7 @@ from colorama import init, Fore, Style
 import constant as const
 import developer
 import internet
+import main
 import mobile
 import multimedia
 import utilities
@@ -453,7 +454,7 @@ class Functions:
 class InstallSoftware(Functions):
     def __init__(self, dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
                  driver_dir=None, sub_dri_dir=None, sys_app=None, child_file=None, ext='.zip', pwd=None, wait=0,
-                 wait_input=False):
+                 is_wait_long=None, wait_input=False):
         self.dir_name = dir_name
         self.file_name = file_name
         self.setup = setup
@@ -471,7 +472,6 @@ class InstallSoftware(Functions):
 
         try:
             start = time.time()
-            wait_for = int(wait)
             if dir_name is not None:  # For find directory
                 log_show(f'Searching directory {dir_name}...')
                 found_dir = find_files(dir_name=dir_name, file_ext=ext)
@@ -509,14 +509,15 @@ class InstallSoftware(Functions):
                     end = time.time()
                     log_show(f'Installed {driver_dir} successfully in ', f'{get_time(start, end)}')
                 else:
-                    log_show(f'Searching file {file_name}...')
-                    find_files(dir_name=None, file_name=file_name, file_ext=ext, pwd=pwd)
+                    if not os.path.exists(get_temp_path_by_file(file_name)):
+                        log_show(f'Searching file {file_name}...')
+                        find_files(dir_name=None, file_name=file_name, file_ext=ext, pwd=pwd)
                     log_show(f'Installing {file_name}...')
                     self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
                                      is_portable=False)
                     time.sleep(const.wait_short)
-                    if wait_for >= 1:
-                        time.sleep(wait_for)
+                    if wait >= 1:
+                        time.sleep(wait)
                     end = time.time()
                     log_show(f'Installed {file_name} successfully in ', f'{get_time(start, end)}')
                     if registry is not None:
@@ -530,7 +531,10 @@ class InstallSoftware(Functions):
                         self.perform_another_task(task=another_task, file_name=file_name, sys_app=sys_app,
                                                   child_file=child_file)
                 log_show(const.wait_msg)
-                time.sleep(const.wait_long)
+                if is_wait_long:
+                    time.sleep(const.wait_long)
+                else:
+                    time.sleep(const.wait_long / 4)
                 if wait_input:
                     input(const.wait_msg_input)
         except Exception as err:
@@ -572,51 +576,51 @@ class InstallUpdate(Functions):
         if os.path.isfile(os.path.join(*[current_db_dir, const.product + '.bak'])):
             db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='r')
             is_found_newer_softwares = None
-            if not db.get('md5') or not db['md5'] == len(const.softwares_list):
-                log_show('Updating database...')
-                time.sleep(const.wait_short)
-                self.update_db('md5', len(const.softwares_list))
-                for no_in_list in const.softwares_list:
-                    if not db.get(no_in_list.get('id')) == no_in_list.get('file'):
-                        self.update_db(no_in_list.get('id'), no_in_list.get('file'))
-                time.sleep(const.wait_long / 2)
-            else:
-                log_show('Checking new softwares...')
-                time.sleep(const.wait_short)
-                for my_list in const.softwares_list:
-                    key_id = my_list.get('id')
-                    if not db[key_id] == my_list.get('file'):
-                        is_found_newer_softwares = True
-                        if key_id == 'android_studio':
-                            developer.android_studio()
-                        elif key_id == 'c_cleaner':
-                            utilities.c_cleaner()
-                        elif key_id == 'firefox':
-                            internet.firefox()
-                        elif key_id == 'idm':
-                            internet.idm()
-                        elif key_id == 'java_jdk_08':
-                            developer.java_jdk(const.java_jdk_08)
-                        elif key_id == 'k_lite':
-                            multimedia.k_lite()
-                        elif key_id == 'notepad_p_p':
-                            developer.notepad_p_p()
-                        elif key_id == 'power_iso':
-                            utilities.power_iso()
-                        elif key_id == 'pycharm':
-                            developer.pycharm()
-                        elif key_id == 'python':
-                            developer.python()
-                        elif key_id == 'samsung_usb':
-                            mobile.samsung_usb()
-                        elif key_id == 'winrar':
-                            utilities.winrar()
-                        elif key_id == 'git':
-                            developer.git()
-                        elif key_id == 'vs_redistributable':
-                            utilities.vs_redistributable()
-                        time.sleep(const.wait_short)
-                        self.update_db(key_id, my_list.get('file'))
+            log_show('Checking new softwares...')
+            time.sleep(const.wait_short)
+            for my_list in const.softwares_list:
+                key_id = my_list.get('id')
+                if key_id not in list(db.keys()):
+                    is_found_newer_softwares = True
+                    print(f'Adding new softwares "{my_list.get("file")}" in database...')
+                    time.sleep(const.wait_short)
+                    self.update_db(key_id, 'Empty')
+                    self.update_db('md5', len(const.softwares_list))
+                    time.sleep(const.wait_short)
+                if not db[key_id] == my_list.get('file'):
+                    is_found_newer_softwares = True
+                    if key_id == 'android_studio':
+                        developer.android_studio(is_wait_long=False)
+                    elif key_id == 'c_cleaner':
+                        utilities.c_cleaner(is_wait_long=False)
+                    elif key_id == 'firefox':
+                        internet.firefox(is_wait_long=False)
+                    elif key_id == 'idm':
+                        internet.idm(is_wait_long=False)
+                    elif key_id == 'java_jdk_08':
+                        developer.java_jdk(const.java_jdk_08, is_wait_long=False)
+                    elif key_id == 'k_lite':
+                        multimedia.k_lite(is_wait_long=False)
+                    elif key_id == 'notepad_p_p':
+                        developer.notepad_p_p(is_wait_long=False)
+                    elif key_id == 'os_build':
+                        main.os_build(is_wait_long=False)
+                    elif key_id == 'power_iso':
+                        utilities.power_iso(is_wait_long=False)
+                    elif key_id == 'pycharm':
+                        developer.pycharm(is_wait_long=False)
+                    elif key_id == 'python':
+                        developer.python(is_wait_long=False)
+                    elif key_id == 'samsung_usb':
+                        mobile.samsung_usb(is_wait_long=False)
+                    elif key_id == 'winrar':
+                        utilities.winrar(is_wait_long=False)
+                    elif key_id == 'git':
+                        developer.git(is_wait_long=False)
+                    elif key_id == 'vs_redistributable':
+                        utilities.vs_redistributable(is_wait_long=False)
+                    time.sleep(const.wait_short)
+                    self.update_db(key_id, my_list.get('file'))
             if not is_found_newer_softwares:
                 log_show(f'There are no new software updates')
             db.close()

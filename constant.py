@@ -16,7 +16,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.3.3'
+version = '1.3.4'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -24,6 +24,9 @@ wait_long = 5
 wait_msg = f'Wait for {wait_long} seconds to go back automatically'
 wait_msg_input = '\n Please press Enter to continue'
 wait_short = 0.5
+
+# For Main
+os_build = 'KB4598242 (OS Builds 19042.746)'
 
 # For Developer
 android_studio = 'Android Studio 4.1.1 (201.6953283)'
@@ -47,8 +50,8 @@ net_set_man = 'NetSetMan 5.0.1'
 # For Major
 adobe_acrobat_pro = 'Adobe Acrobat Pro DC 2020.009.20067'
 adobe_acrobat_reader = 'Adobe Acrobat Reader DC 2020.009.20067'
-adobe_photoshop = 'Adobe Photoshop 2021 22.0.0.35'
-adobe_xd = 'Adobe XD 34.1.12.9'
+adobe_photoshop = 'Adobe Photoshop 2021 22.1.1.138'
+adobe_xd = 'Adobe XD 36.0.32.10'
 corel_draw = 'CorelDRAW Technical Suite 2020 22.2.0.532'
 ms_office = 'Microsoft Office 2016-2019 (2020.12)'
 
@@ -90,7 +93,7 @@ power_iso = 'PowerISO 7.8'
 print_conductor = 'Print Conductor 7.1.2012.18090'
 rufus = 'Rufus 3.13'
 seven_zip = '7-Zip 19.00'
-vs_redistributable = 'Microsoft Visual C++ 2015-2019 14.28.29617'
+vs_redistributable = 'Microsoft Visual C++ 2005-2019 14.28.29805.2'
 winrar = 'WinRAR 6.00'
 wise_duplicate = 'Wise Duplicate Finder Pro 1.3.8.52'
 
@@ -104,6 +107,7 @@ softwares_list = [
     {'id': 'java_jdk_08', 'file': java_jdk_08},
     {'id': 'k_lite', 'file': k_lite},
     {'id': 'notepad_p_p', 'file': notepad_p_p},
+    {'id': 'os_build', 'file': os_build},
     {'id': 'power_iso', 'file': power_iso},
     {'id': 'pycharm', 'file': pycharm},
     {'id': 'python', 'file': python},

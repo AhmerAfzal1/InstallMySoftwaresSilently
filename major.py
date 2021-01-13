@@ -7,31 +7,32 @@ import functions as func
 import main
 
 
-def adobe_acrobat_pro():
-    func.InstallSoftware(file_name=const.adobe_acrobat_pro, setup='Setup.exe', args=r'/S')
+def adobe_acrobat_pro(is_wait_long=True):
+    func.InstallSoftware(file_name=const.adobe_acrobat_pro, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def adobe_acrobat_reader():
-    func.InstallSoftware(file_name=const.adobe_acrobat_reader, setup='Setup.exe', args=r'/S')
+def adobe_acrobat_reader(is_wait_long=True):
+    func.InstallSoftware(file_name=const.adobe_acrobat_reader, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def adobe_photoshop():
-    func.InstallSoftware(file_name=const.adobe_photoshop, setup='Setup.exe', args=r'/S')
+def adobe_photoshop(is_wait_long=True):
+    func.InstallSoftware(file_name=const.adobe_photoshop, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def adobe_xd():
-    func.InstallSoftware(file_name=const.adobe_xd, setup='Setup.exe', args=r'/S')
+def adobe_xd(is_wait_long=True):
+    func.InstallSoftware(file_name=const.adobe_xd, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def corel_draw():
+def corel_draw(is_wait_long=True):
     func.InstallSoftware(file_name=const.corel_draw, setup='Setup.exe',
                          args=r'-y -nr -gm2 & "%SYSTEMDRIVE%\Temp\CORELDRAW\SETUP.exe" /S & RD /S /Q '
-                              r'"%SYSTEMDRIVE%\Temp\CORELDRAW"')
+                              r'"%SYSTEMDRIVE%\Temp\CORELDRAW"', is_wait_long=is_wait_long)
 
 
-def ms_office():
+def ms_office(is_wait_long=True):
     func.InstallSoftware(file_name=const.ms_office, setup=r'Office\helper.exe',
-                         args=r'/S /INSTALL /PROX64 /WORD /EXCEL /POWERPOINT /PUBLISHER /LANG=EN-US /KMS')
+                         args=r'/S /INSTALL /PROX64 /WORD /EXCEL /POWERPOINT /PUBLISHER /LANG=EN-US /KMS',
+                         is_wait_long=is_wait_long)
 
 
 def main_program():

@@ -7,17 +7,18 @@ import functions as func
 import main
 
 
-def helium_music():
+def helium_music(is_wait_long=True):
     func.InstallSoftware(file_name=const.helium_music, setup='Setup.exe', args=const.common_arg,
-                         child_file='License.txt', sys_app='notepad.exe', another_task=func.AnOtherTask.HELIUM_MUSIC)
+                         child_file='License.txt', sys_app='notepad.exe', another_task=func.AnOtherTask.HELIUM_MUSIC,
+                         is_wait_long=is_wait_long)
 
 
-def k_lite():
-    func.InstallSoftware(file_name=const.k_lite, setup='Setup.exe', args=r'/verysilent')
+def k_lite(is_wait_long=True):
+    func.InstallSoftware(file_name=const.k_lite, setup='Setup.exe', args=r'/verysilent', is_wait_long=is_wait_long)
 
 
-def mp3_tag():
-    func.InstallSoftware(file_name=const.mp3_tag, setup='Setup.exe', args=r'/S')
+def mp3_tag(is_wait_long=True):
+    func.InstallSoftware(file_name=const.mp3_tag, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
 def main_program():

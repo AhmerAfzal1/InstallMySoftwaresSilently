@@ -43,6 +43,11 @@ def make_font_bigger():
     ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
 
 
+def os_build(is_wait_long=True):
+    func.InstallSoftware(file_name=const.os_build, setup='Setup.msu', args='/QUIET /NORESTART',
+                         is_wait_long=is_wait_long)
+
+
 def main():
     make_font_bigger()
     os.system('mode 120, 45')

@@ -8,35 +8,38 @@ import functions as func
 import main
 
 
-def chrome():
-    func.InstallSoftware(file_name=const.chrome, setup='Setup.exe', args=r'/S')
+def chrome(is_wait_long=True):
+    func.InstallSoftware(file_name=const.chrome, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def firefox():
-    func.InstallSoftware(file_name=const.firefox, setup='Setup.exe', args=r'-ms')
+def firefox(is_wait_long=True):
+    func.InstallSoftware(file_name=const.firefox, setup='Setup.exe', args=r'-ms', is_wait_long=is_wait_long)
 
 
-def fdm():
-    func.InstallSoftware(file_name=const.fdm, setup='Setup.exe', args=const.common_arg)
+def fdm(is_wait_long=True):
+    func.InstallSoftware(file_name=const.fdm, setup='Setup.exe', args=const.common_arg, is_wait_long=is_wait_long)
 
 
-def idm():
+def idm(is_wait_long=True):
     func.task_kill('IDMan.exe')
     time.sleep(const.wait_short)
     func.InstallSoftware(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
-                         another_task=func.AnOtherTask.IDM)
+                         another_task=func.AnOtherTask.IDM, is_wait_long=is_wait_long)
 
 
-def net_balancer():
-    func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe', args=const.common_arg)
+def net_balancer(is_wait_long=True):
+    func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe', args=const.common_arg,
+                         is_wait_long=is_wait_long)
 
 
-def net_limiter():
-    func.InstallSoftware(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES')
+def net_limiter(is_wait_long=True):
+    func.InstallSoftware(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES',
+                         is_wait_long=is_wait_long)
 
 
-def net_set_man():
-    func.InstallSoftware(file_name=const.net_set_man, setup='Setup.exe', args=const.common_arg)
+def net_set_man(is_wait_long=True):
+    func.InstallSoftware(file_name=const.net_set_man, setup='Setup.exe', args=const.common_arg,
+                         is_wait_long=is_wait_long)
 
 
 def main_program():

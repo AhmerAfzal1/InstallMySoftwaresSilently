@@ -8,28 +8,28 @@ import functions as func
 import main
 
 
-def android_iphone():
-    func.InstallSoftware(file_name=const.android_iphone, setup='Setup.exe', args=r'/S')
+def android_iphone(is_wait_long=True):
+    func.InstallSoftware(file_name=const.android_iphone, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def i_mobie():
-    func.InstallSoftware(file_name=const.i_mobie, setup='Setup.exe', args=const.common_arg)
+def i_mobie(is_wait_long=True):
+    func.InstallSoftware(file_name=const.i_mobie, setup='Setup.exe', args=const.common_arg, is_wait_long=is_wait_long)
 
 
-def i_tunes():
-    func.InstallSoftware(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart')
+def i_tunes(is_wait_long=True):
+    func.InstallSoftware(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart', is_wait_long=is_wait_long)
 
 
-def samsung_usb():
-    func.InstallSoftware(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S')
+def samsung_usb(is_wait_long=True):
+    func.InstallSoftware(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def smart_switch():
-    func.InstallSoftware(file_name=const.smart_switch, setup='Setup.exe', args=r'/S')
+def smart_switch(is_wait_long=True):
+    func.InstallSoftware(file_name=const.smart_switch, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def sms_contacts_recover():
-    func.InstallSoftware(file_name=const.sms_contacts_recover, setup='Setup.exe', args=r'/S')
+def sms_contacts_recover(is_wait_long=True):
+    func.InstallSoftware(file_name=const.sms_contacts_recover, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
     time.sleep(const.wait_short)
     func.Portable(file_name=const.sms_contacts_recover, setup='Patch.exe')
 

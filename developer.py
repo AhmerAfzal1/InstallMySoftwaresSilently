@@ -7,39 +7,41 @@ import functions as func
 import main
 
 
-def android_studio():
-    func.InstallSoftware(file_name=const.android_studio, setup='Setup.exe', args=r'/S /Allusers')
+def android_studio(is_wait_long=True):
+    func.InstallSoftware(file_name=const.android_studio, setup='Setup.exe', args=r'/S /Allusers',
+                         is_wait_long=is_wait_long)
 
 
-def git():
+def git(is_wait_long=True):
     # If not provide *.reg file in variable registry='reg.reg' than optionally use winreg for it
     func.InstallSoftware(file_name=const.git, setup='Setup.exe',
                          args=r'/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS '
                               r'/COMPONENTS="icons,icons\desktop,ext,ext\reg,ext\reg\shellhere,assoc,assoc_sh,'
                               r'consolefont"',
-                         another_task=func.AnOtherTask.REG_GIT)
+                         another_task=func.AnOtherTask.REG_GIT, is_wait_long=is_wait_long)
 
 
-def java_jdk(file_name):
+def java_jdk(file_name, is_wait_long=True):
     func.InstallSoftware(file_name=file_name, setup='Setup.exe',
-                         args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"', another_task=func.AnOtherTask.JAVA)
+                         args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"', another_task=func.AnOtherTask.JAVA,
+                         is_wait_long=is_wait_long)
 
 
-def notepad_p_p():
-    func.InstallSoftware(file_name=const.notepad_p_p, setup='Setup.exe', args=r'/S')
+def notepad_p_p(is_wait_long=True):
+    func.InstallSoftware(file_name=const.notepad_p_p, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def pycharm():
-    func.InstallSoftware(file_name=const.pycharm, setup='Setup.exe', args=r'/S')
+def pycharm(is_wait_long=True):
+    func.InstallSoftware(file_name=const.pycharm, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def python():
-    func.InstallSoftware(file_name=const.python, setup='Setup.exe')
+def python(is_wait_long=True):
+    func.InstallSoftware(file_name=const.python, setup='Setup.exe', is_wait_long=is_wait_long)
 
 
-def sq_lite():
+def sq_lite(is_wait_long=True):
     func.InstallSoftware(file_name=const.sq_lite, setup='Setup.exe', args=const.common_arg,
-                         another_task=func.AnOtherTask.SQLITE)
+                         another_task=func.AnOtherTask.SQLITE, is_wait_long=is_wait_long)
 
 
 def main_program():

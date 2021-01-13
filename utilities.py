@@ -8,22 +8,24 @@ import functions as func
 import main
 
 
-def aomei_partition():
-    func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/S')
+def aomei_partition(is_wait_long=True):
+    func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def auslogics_duplicate():
-    func.InstallSoftware(file_name=const.auslogics_duplicate, setup='Setup.exe', args=const.common_arg)
+def auslogics_duplicate(is_wait_long=True):
+    func.InstallSoftware(file_name=const.auslogics_duplicate, setup='Setup.exe', args=const.common_arg,
+                         is_wait_long=is_wait_long)
 
 
-def better_rename():
-    func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=const.common_arg)
+def better_rename(is_wait_long=True):
+    func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=const.common_arg,
+                         is_wait_long=is_wait_long)
     time.sleep(1)
     func.Portable(file_name=const.better_rename, setup='Serial.txt')
 
 
-def c_cleaner():
-    func.InstallSoftware(file_name=const.c_cleaner, setup='Setup.exe', args=r'/S /IB /TM')
+def c_cleaner(is_wait_long=True):
+    func.InstallSoftware(file_name=const.c_cleaner, setup='Setup.exe', args=r'/S /IB /TM', is_wait_long=is_wait_long)
 
 
 def cpu_z():
@@ -34,12 +36,13 @@ def dism_p_p():
     func.Portable(file_name=const.dism_p_p, setup='Dism++x64.exe')
 
 
-def eng_to_urdu_dic():
-    func.InstallSoftware(file_name=const.eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui')
+def eng_to_urdu_dic(is_wait_long=True):
+    func.InstallSoftware(file_name=const.eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui',
+                         is_wait_long=is_wait_long)
 
 
-def fonts():
-    func.InstallSoftware(file_name=const.fonts, setup='Setup.exe')
+def fonts(is_wait_long=True):
+    func.InstallSoftware(file_name=const.fonts, setup='Setup.exe', is_wait_long=is_wait_long)
 
 
 def hw_info():
@@ -50,12 +53,13 @@ def occt_checking_tool():
     func.Portable(file_name=const.occt_checking_tool, setup='OCCT.exe')
 
 
-def power_iso():
-    func.InstallSoftware(file_name=const.power_iso, setup='Setup.exe', args=r'/S')
+def power_iso(is_wait_long=True):
+    func.InstallSoftware(file_name=const.power_iso, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def print_conductor():
-    func.InstallSoftware(file_name=const.print_conductor, setup='Setup.exe', args=const.common_arg)
+def print_conductor(is_wait_long=True):
+    func.InstallSoftware(file_name=const.print_conductor, setup='Setup.exe', args=const.common_arg,
+                         is_wait_long=is_wait_long)
     time.sleep(const.wait_short)
     func.Portable(file_name=const.print_conductor, setup='Keygen.exe')
 
@@ -64,22 +68,38 @@ def rufus():
     func.Portable(file_name=const.rufus, setup='Rufus.exe')
 
 
-def seven_zip():
-    func.InstallSoftware(file_name=const.seven_zip, setup='Setup.exe', args=r'/S')
+def seven_zip(is_wait_long=True):
+    func.InstallSoftware(file_name=const.seven_zip, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def vs_redistributable():
-    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup.exe', args=r'/INSTALL /QUIET /NORESTART')
+def vs_redistributable(is_wait_long=True):
+    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2005.exe', args=r'/Q',
+                         is_wait_long=is_wait_long)
+    time.sleep(const.wait_short)
+    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2008.exe', args=r'/Q',
+                         is_wait_long=is_wait_long)
+    time.sleep(const.wait_short)
+    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2010.exe', args=r'/Q /NORESTART',
+                         is_wait_long=is_wait_long)
+    time.sleep(const.wait_short)
+    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2012.exe', args=r'/INSTALL /QUIET /NORESTART',
+                         is_wait_long=is_wait_long)
+    time.sleep(const.wait_short)
+    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2013.exe', args=r'/INSTALL /QUIET /NORESTART',
+                         is_wait_long=is_wait_long)
+    time.sleep(const.wait_short)
+    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2019.exe', args=r'/INSTALL /QUIET /NORESTART',
+                         is_wait_long=is_wait_long)
 
 
-def winrar():
+def winrar(is_wait_long=True):
     func.InstallSoftware(dir_name=const.winrar, setup='Setup.exe', args=r'/S /IEN',
-                         another_task=func.AnOtherTask.WINRAR_KEY)
+                         another_task=func.AnOtherTask.WINRAR_KEY, is_wait_long=is_wait_long)
 
 
-def wise_duplicate():
+def wise_duplicate(is_wait_long=True):
     func.InstallSoftware(file_name=const.wise_duplicate, setup='Setup.exe', args=const.common_arg,
-                         another_task=func.AnOtherTask.WISE_DUPLICATE)
+                         another_task=func.AnOtherTask.WISE_DUPLICATE, is_wait_long=is_wait_long)
 
 
 def main_program():

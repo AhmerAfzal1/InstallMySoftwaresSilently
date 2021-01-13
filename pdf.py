@@ -8,39 +8,42 @@ import functions as func
 import main
 
 
-def doro_pdf_writer():
-    func.InstallSoftware(file_name=const.doro_pdf_writer, setup='Setup.exe', args=r'/silent')
+def doro_pdf_writer(is_wait_long=True):
+    func.InstallSoftware(file_name=const.doro_pdf_writer, setup='Setup.exe', args=r'/silent', is_wait_long=is_wait_long)
 
 
-def foxit_adv_pdf_editor():
-    func.InstallSoftware(file_name=const.foxit_adv_pdf_editor, setup='Setup.exe', args=r'/S')
+def foxit_adv_pdf_editor(is_wait_long=True):
+    func.InstallSoftware(file_name=const.foxit_adv_pdf_editor, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
-def infix_pdf_editor():
-    func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe', args=r'/S /EN')
+def infix_pdf_editor(is_wait_long=True):
+    func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe', args=r'/S /EN', is_wait_long=is_wait_long)
 
 
-def pdf_creator():
-    func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe', args=const.common_arg)
+def pdf_creator(is_wait_long=True):
+    func.InstallSoftware(file_name=const.infix_pdf_editor, setup='Setup.exe', args=const.common_arg,
+                         is_wait_long=is_wait_long)
 
 
-def pdf_shaper():
-    func.InstallSoftware(file_name=const.pdf_shaper, setup='Setup.exe', args=const.common_arg)
+def pdf_shaper(is_wait_long=True):
+    func.InstallSoftware(file_name=const.pdf_shaper, setup='Setup.exe', args=const.common_arg,
+                         is_wait_long=is_wait_long)
     time.sleep(const.wait_short)
     func.Portable(file_name=const.pdf_shaper, setup='Patch.exe')
 
 
-def pdf_to_jpg():
-    func.InstallSoftware(file_name=const.pdf_to_jpg, setup='Setup.exe', args=r'/silent')
+def pdf_to_jpg(is_wait_long=True):
+    func.InstallSoftware(file_name=const.pdf_to_jpg, setup='Setup.exe', args=r'/silent', is_wait_long=is_wait_long)
 
 
-def pdf_to_jpg_converter():
-    func.InstallSoftware(file_name=const.pdf_to_jpg_converter, setup='Setup.exe', args=r'/silent')
+def pdf_to_jpg_converter(is_wait_long=True):
+    func.InstallSoftware(file_name=const.pdf_to_jpg_converter, setup='Setup.exe', args=r'/silent',
+                         is_wait_long=is_wait_long)
 
 
-def tri_sun_pdf_to_jpg():
+def tri_sun_pdf_to_jpg(is_wait_long=True):
     func.InstallSoftware(file_name=const.tri_sun_pdf_to_jpg, setup='Setup.exe', args=const.common_arg,
-                         another_task=func.AnOtherTask.TRI_SUN_PDF)
+                         another_task=func.AnOtherTask.TRI_SUN_PDF, is_wait_long=is_wait_long)
 
 
 def main_program():
