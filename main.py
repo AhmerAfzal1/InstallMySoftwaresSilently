@@ -5,6 +5,7 @@ import sys
 from colorama import init
 
 import constant as const
+import converter
 import developer
 import functions as func
 import internet
@@ -57,15 +58,16 @@ def main():
         try:
             func.main_heading()
             func.main_heading_softwares('01', 'All Drivers & Recommended')
-            func.main_heading_softwares('02', const.heading_developer)
-            func.main_heading_softwares('03', const.heading_internet)
-            func.main_heading_softwares('04', const.heading_major)
-            func.main_heading_softwares('05', const.heading_mobile)
-            func.main_heading_softwares('06', const.heading_multimedia)
-            func.main_heading_softwares('07', const.heading_pdf)
-            func.main_heading_softwares('08', const.heading_utilities)
-            func.main_heading_softwares('09', 'Recommended Newer Updated')
-            exit_code = func.exit_heading('10')
+            func.main_heading_softwares('02', const.heading_converter)
+            func.main_heading_softwares('03', const.heading_developer)
+            func.main_heading_softwares('04', const.heading_internet)
+            func.main_heading_softwares('05', const.heading_major)
+            func.main_heading_softwares('06', const.heading_mobile)
+            func.main_heading_softwares('07', const.heading_multimedia)
+            func.main_heading_softwares('08', const.heading_pdf)
+            func.main_heading_softwares('09', const.heading_utilities)
+            func.main_heading_softwares('10', 'Recommended Newer Updated')
+            exit_code = func.exit_heading('11')
 
             choice = func.input_heading()
 
@@ -104,40 +106,45 @@ def main():
 
             elif choice == 2:
                 func.clear()
-                developer.main_program()
+                converter.main_program()
                 break
 
             elif choice == 3:
                 func.clear()
-                internet.main_program()
+                developer.main_program()
                 break
 
             elif choice == 4:
                 func.clear()
-                major.main_program()
-                continue
+                internet.main_program()
+                break
 
             elif choice == 5:
                 func.clear()
-                mobile.main_program()
+                major.main_program()
                 continue
 
             elif choice == 6:
                 func.clear()
-                multimedia.main_program()
+                mobile.main_program()
                 continue
 
             elif choice == 7:
                 func.clear()
-                pdf.main_program()
+                multimedia.main_program()
                 continue
 
             elif choice == 8:
                 func.clear()
-                utilities.main_program()
+                pdf.main_program()
                 continue
 
             elif choice == 9:
+                func.clear()
+                utilities.main_program()
+                continue
+
+            elif choice == 10:
                 func.InstallUpdate()
                 func.clear()
                 continue

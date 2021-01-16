@@ -34,7 +34,7 @@ def net_balancer(is_wait_long=True):
 
 def net_limiter(is_wait_long=True):
     func.InstallSoftware(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES',
-                         is_wait_long=is_wait_long)
+                         another_task=func.AnOtherTask.NETSETMAN, is_wait_long=is_wait_long)
 
 
 def net_set_man(is_wait_long=True):

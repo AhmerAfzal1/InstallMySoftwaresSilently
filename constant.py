@@ -1,5 +1,6 @@
 # Headings
 heading_main_title = 'Ahmer\'s Automaticalling And Silently Software Installation Program'
+heading_converter = 'Converter'
 heading_developer = 'Developer'
 heading_internet = 'Internet'
 heading_major = 'Major'
@@ -16,7 +17,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.3.4'
+version = '1.3.5'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -27,6 +28,9 @@ wait_short = 0.5
 
 # For Main
 os_build = 'KB4598242 (OS Builds 19042.746)'
+
+# For Converter
+rea_converter = 'ReaConverter Pro 7.620'
 
 # For Developer
 android_studio = 'Android Studio 4.1.1 (201.6953283)'
@@ -45,7 +49,7 @@ fdm = 'Free Download Manager 6.13.1 Build 3483'
 idm = 'Internet Download Manager 6.38 Build 16'
 net_balancer = 'NetBalancer 9.12.9'
 net_limiter = 'NetLimiter 4.0.67'
-net_set_man = 'NetSetMan 5.0.1'
+net_set_man = 'NetSetMan Pro 4.7.2'
 
 # For Major
 adobe_acrobat_pro = 'Adobe Acrobat Pro DC 2020.009.20067'
@@ -57,8 +61,9 @@ ms_office = 'Microsoft Office 2016-2019 (2020.12)'
 
 # For Mobile
 android_iphone = 'Backuptrans Android iPhone Line Transfer 3.1.57'
-i_mobie = 'İMobie PhoneTrans Pro 5.1.0 Build 20201230'
+i_mobie = 'İMobie PhoneTrans Pro 5.1.0 Build 20210113'
 i_tunes = 'iTunes 12.9.5.7'
+fone_paw = 'FonePaw iPhone Data Recovery 8.0.0'
 samsung_usb = 'Samsung USB Drivers 1.7.35.0'
 smart_switch = 'Smart Switch 4.2.20072.4'
 sms_contacts_recover = 'Coolmuster Android SMS Contacts Recovery 4.5.43'
@@ -82,7 +87,7 @@ tri_sun_pdf_to_jpg = 'TriSun PDF To JPG 18.0 Build 76'
 aomei_partition = 'AOMEI Partition Assistant 9.1.0'
 auslogics_duplicate = 'Auslogics Duplicate File Finder 9.0.0.2'
 better_rename = 'Better File Rename 6.18'
-c_cleaner = 'CCleaner 5.75.8238'
+c_cleaner = 'CCleaner 5.76.8269'
 cpu_z = 'CPU-Z 1.94.8'
 dism_p_p = 'Dism++ 10.1.1001.10'
 eng_to_urdu_dic = 'Cleantouch English to Urdu Dictionary 7.0'

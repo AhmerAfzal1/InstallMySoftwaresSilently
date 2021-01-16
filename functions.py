@@ -237,9 +237,13 @@ def sub_heading_portable(num, string):
           f'{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}(Portable){Style.RESET_ALL}')
 
 
-def sub_heading_softwares(num, string):
-    print(f'{Fore.LIGHTGREEN_EX}\t[{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Install{Style.RESET_ALL} '
-          f'{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL}')
+def sub_heading_softwares(num, string, option_string=None):
+    if option_string is None:
+        print(f'{Fore.LIGHTGREEN_EX}\t[{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Install{Style.RESET_ALL} '
+              f'{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL}')
+    else:
+        print(f'{Fore.LIGHTGREEN_EX}\t[{num}]{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Install{Style.RESET_ALL} '
+              f'{Fore.LIGHTGREEN_EX}{string} ({option_string}){Style.RESET_ALL}')
 
 
 def under_progress_heading(string):
@@ -252,9 +256,12 @@ class AnOtherTask(enum.Enum):
     AOMEI_SERVER = 'server'
     AOMEI_TECHNICIAN = 'technician'
     AOMEI_UNLIMITED = 'unlimited'
+    FONEPAW = 'fonepaw'
     HELIUM_MUSIC = 'helium'
     IDM = 'idm'
     JAVA = 'java'
+    NETSETMAN = 'netsetman'
+    REA_CONVERTER = 'rea'
     REG_GIT = 'gitbash'
     SQLITE = 'sqlite'
     TRI_SUN_PDF = 'trysun'
@@ -445,6 +452,32 @@ class Functions:
                  f'/email {const.email}', '/overwrite', '/patchhosts', '/generate', '/product 3', '/verysilent'],
                 shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             time.sleep(const.wait_short)
+        elif task.value == AnOtherTask.NETSETMAN.value:
+            log_show(f'Cracking {file_name}')
+            for file in os.listdir(os.path.join(*[temp, file_name, 'Crack'])):
+                src = os.path.join(*[temp, file_name, 'Crack', file])
+                dst = os.path.join(*[os.environ['ProgramFiles(x86)'], 'NetSetMan Pro'])
+                is_copied = copying_files(src=src, dst=dst)
+                if is_copied:
+                    log_show(f'Copied crack file to {dst}')
+            time.sleep(const.wait_short)
+        elif task.value == AnOtherTask.FONEPAW.value:
+            log_show(f'Cracking {file_name}')
+            for file in os.listdir(os.path.join(*[temp, file_name, 'Crack'])):
+                src = os.path.join(*[temp, file_name, 'Crack', file])
+                dst = os.path.join(*[os.environ['ProgramFiles(x86)'], 'FonePaw', 'FonePaw iPhone Data Recovery'])
+                is_copied = copying_files(src=src, dst=dst)
+                if is_copied:
+                    log_show(f'Copied crack file to {dst}')
+            time.sleep(const.wait_short)
+        elif task.value == AnOtherTask.REA_CONVERTER.value:
+            log_show(f'Cracking {file_name}')
+            src = os.path.join(*[temp, file_name, 'reaconverter7_pro_loader.exe'])
+            dst = os.path.join(*[os.environ['ProgramFiles(x86)'], 'reaConverter 7 Pro'])
+            is_copied = copying_files(src=src, dst=dst)
+            time.sleep(const.wait_short)
+            if is_copied:
+                log_show(f'Copied crack file to {dst}')
         else:
             exception_heading(f'Invalid AnOtherTask type')
             time.sleep(const.wait_short)
@@ -530,8 +563,8 @@ class InstallSoftware(Functions):
                     if another_task is not None:
                         self.perform_another_task(task=another_task, file_name=file_name, sys_app=sys_app,
                                                   child_file=child_file)
-                log_show(const.wait_msg)
                 if is_wait_long:
+                    log_show(const.wait_msg)
                     time.sleep(const.wait_long)
                 else:
                     time.sleep(const.wait_long / 4)

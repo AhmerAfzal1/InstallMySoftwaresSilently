@@ -20,6 +20,11 @@ def i_tunes(is_wait_long=True):
     func.InstallSoftware(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart', is_wait_long=is_wait_long)
 
 
+def fone_paw(is_wait_long=True):
+    func.InstallSoftware(file_name=const.fone_paw, setup='Setup.exe', args=const.common_arg, is_wait_long=is_wait_long,
+                         another_task=func.AnOtherTask.FONEPAW)
+
+
 def samsung_usb(is_wait_long=True):
     func.InstallSoftware(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
@@ -47,7 +52,8 @@ def main_program():
             func.sub_heading_softwares('04', const.i_tunes)
             func.sub_heading_softwares('05', const.sms_contacts_recover)
             func.sub_heading_softwares('06', const.i_mobie)
-            exit_code = func.exit_heading('07')
+            func.sub_heading_softwares('07', const.fone_paw)
+            exit_code = func.exit_heading('08')
 
             choice = func.input_heading()
 
@@ -84,6 +90,11 @@ def main_program():
 
             elif choice == 6:
                 i_mobie()
+                func.clear()
+                continue
+
+            elif choice == 7:
+                fone_paw()
                 func.clear()
                 continue
 
