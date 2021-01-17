@@ -17,7 +17,7 @@ copyright_ = 'Copyright (c) 2016 - 2020, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.3.5'
+version = '1.3.6'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -55,6 +55,7 @@ net_set_man = 'NetSetMan Pro 4.7.2'
 adobe_acrobat_pro = 'Adobe Acrobat Pro DC 2020.009.20067'
 adobe_acrobat_reader = 'Adobe Acrobat Reader DC 2020.009.20067'
 adobe_photoshop = 'Adobe Photoshop 2021 22.1.1.138'
+adobe_premiere = 'Adobe Premiere Pro 2020 14.8.0.39'
 adobe_xd = 'Adobe XD 36.0.32.10'
 corel_draw = 'CorelDRAW Technical Suite 2020 22.2.0.532'
 ms_office = 'Microsoft Office 2016-2019 (2020.12)'

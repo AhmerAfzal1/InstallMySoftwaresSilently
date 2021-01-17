@@ -111,7 +111,7 @@ def get_time(start, end):
     mins, secs = divmod(t, 60)
     if secs <= 1 and mins <= 0:
         return f'{secs:0.2f} Second'
-    elif secs >= 2 and mins <= 0:
+    elif secs > 1 and mins <= 0:
         return f'{secs:0.2f} Seconds'
     elif mins <= 1 and secs <= 1:
         return f'{mins:0.0f} Minute and {secs:0.2f} Second'

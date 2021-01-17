@@ -19,6 +19,10 @@ def adobe_photoshop(is_wait_long=True):
     func.InstallSoftware(file_name=const.adobe_photoshop, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
+def adobe_premiere(is_wait_long=True):
+    func.InstallSoftware(file_name=const.adobe_premiere, setup='Setup.exe', args=r'-S', is_wait_long=is_wait_long)
+
+
 def adobe_xd(is_wait_long=True):
     func.InstallSoftware(file_name=const.adobe_xd, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
@@ -49,7 +53,8 @@ def main_program():
             func.sub_heading_softwares('05', const.adobe_photoshop)
             func.sub_heading_softwares('06', const.adobe_xd)
             func.sub_heading_softwares('07', const.corel_draw)
-            exit_code = func.exit_heading('08')
+            func.sub_heading_softwares('08', const.adobe_premiere)
+            exit_code = func.exit_heading('09')
 
             choice = func.input_heading()
 
@@ -91,6 +96,11 @@ def main_program():
 
             elif choice == 7:
                 corel_draw()
+                func.clear()
+                continue
+
+            elif choice == 8:
+                adobe_premiere()
                 func.clear()
                 continue
 
