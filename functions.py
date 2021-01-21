@@ -1,10 +1,12 @@
+import datetime
 import enum
+import glob
 import inspect
 import os
 import re
-import shelve
 import shlex
 import shutil
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -275,25 +277,6 @@ class JavaVersion(enum.IntEnum):
 
 
 class Functions:
-    @staticmethod
-    def create_db():
-        try:
-            new_db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='c')
-            for new_list in const.softwares_list:
-                new_db[new_list.get('id')] = new_list.get('file')
-            new_db.close()
-        except BaseException as e:
-            exception_heading(e, True)
-
-    @staticmethod
-    def update_db(key, file):
-        try:
-            update = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='c')
-            update[key] = file
-            update.close()
-        except BaseException as e:
-            exception_heading(e, True)
-
     @staticmethod
     def run_program(file_name, args=None, path=None, is_portable=False, sys_app_run=False):
         if args is None:
@@ -604,63 +587,121 @@ class Portable(Functions):
             time.sleep(const.wait_long)
 
 
-class InstallUpdate(Functions):
-    def __init__(self):
-        if os.path.isfile(os.path.join(*[current_db_dir, const.product + '.bak'])):
-            db = shelve.open(filename=os.path.join(*[current_db_dir, const.product]), flag='r')
-            is_found_newer_softwares = None
+class InstallUpdate:
+    def __init__(self, db):
+        self.db = db
+
+        db_file = glob.glob(os.path.join(*[current_db_dir, const.product + '.db']))
+        connect = sqlite3.connect(db)
+        cursor = connect.cursor()
+
+        try:
+            if not db_file:
+                log_show('Creating a new database...')
+                cursor.execute('''CREATE TABLE IF NOT EXISTS softwares (
+                                id TEXT PRIMARY KEY NOT NULL, 
+                                name TEXT NOT NULL,
+                                datetime timestamp)''')
+                time.sleep(const.wait_short)
+                log_show('A new empty database has been created')
+        except sqlite3.Error as error:
+            exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            cursor.close()
+            connect.close()
+
+    def update(self):
+        log_show('Connecting to database...')
+        connect = sqlite3.connect(self.db)
+        cursor = connect.cursor()
+        db_ids = []
+        new_update = False
+        time.sleep(const.wait_short)
+        log_show("Connected to database")
+
+        try:
             log_show('Checking new softwares...')
-            time.sleep(const.wait_short)
-            for my_list in const.softwares_list:
-                key_id = my_list.get('id')
-                if key_id not in list(db.keys()):
-                    is_found_newer_softwares = True
-                    print(f'Adding new softwares "{my_list.get("file")}" in database...')
-                    time.sleep(const.wait_short)
-                    self.update_db(key_id, 'Empty')
-                    self.update_db('md5', len(const.softwares_list))
-                    time.sleep(const.wait_short)
-                if not db[key_id] == my_list.get('file'):
-                    is_found_newer_softwares = True
-                    if key_id == 'android_studio':
-                        developer.android_studio(is_wait_long=False)
-                    elif key_id == 'c_cleaner':
-                        utilities.c_cleaner(is_wait_long=False)
-                    elif key_id == 'firefox':
-                        internet.firefox(is_wait_long=False)
-                    elif key_id == 'idm':
-                        internet.idm(is_wait_long=False)
-                    elif key_id == 'java_jdk_08':
-                        developer.java_jdk(const.java_jdk_08, is_wait_long=False)
-                    elif key_id == 'k_lite':
-                        multimedia.k_lite(is_wait_long=False)
-                    elif key_id == 'notepad_p_p':
-                        developer.notepad_p_p(is_wait_long=False)
-                    elif key_id == 'os_build':
-                        main.os_build(is_wait_long=False)
-                    elif key_id == 'power_iso':
-                        utilities.power_iso(is_wait_long=False)
-                    elif key_id == 'pycharm':
-                        developer.pycharm(is_wait_long=False)
-                    elif key_id == 'python':
-                        developer.python(is_wait_long=False)
-                    elif key_id == 'samsung_usb':
-                        mobile.samsung_usb(is_wait_long=False)
-                    elif key_id == 'winrar':
-                        utilities.winrar(is_wait_long=False)
-                    elif key_id == 'git':
-                        developer.git(is_wait_long=False)
-                    elif key_id == 'vs_redistributable':
-                        utilities.vs_redistributable(is_wait_long=False)
-                    time.sleep(const.wait_short)
-                    self.update_db(key_id, my_list.get('file'))
-            if not is_found_newer_softwares:
+            get_len_db = cursor.execute("SELECT COUNT(*) FROM softwares").fetchone()[0]
+            if not get_len_db == 0:
+                for ids, names in cursor.execute('SELECT id, name FROM softwares'):
+                    db_ids.append(ids)
+            for software in const.softwares_list:
+                date = datetime.datetime.now().strftime("%d %b %Y %I:%M:%S %p")
+                key_id = software.get('id')
+                key_name = software.get('name')
+                if key_id not in db_ids:
+                    new_update = True
+                    log_show(f'New software "{key_name}" is being added to the database...')
+                    cursor.execute('INSERT INTO softwares VALUES (\"%s\", \"%s\", \"%s\")'
+                                   % (key_id, key_name, date))
+                time.sleep(const.wait_short)
+                if get_len_db == 0:
+                    for record in cursor.execute('SELECT * FROM softwares WHERE "id" = \"%s\"' % key_id):
+                        if not record[1] == key_name:
+                            new_update = True
+                            log_show(f'"{record[1]}" was last updated on "{record[2]}"')
+                            log_show(f'Now updated latest version of "{key_name}" in the database...')
+                            if key_id == 'android_studio':
+                                developer.android_studio(is_wait_long=False)
+                            elif key_id == 'c_cleaner':
+                                utilities.c_cleaner(is_wait_long=False)
+                            elif key_id == 'firefox':
+                                internet.firefox(is_wait_long=False)
+                            elif key_id == 'idm':
+                                internet.idm(is_wait_long=False)
+                            elif key_id == 'java_jdk_08':
+                                developer.java_jdk(const.java_jdk_08, is_wait_long=False)
+                            elif key_id == 'k_lite':
+                                multimedia.k_lite(is_wait_long=False)
+                            elif key_id == 'notepad_p_p':
+                                developer.notepad_p_p(is_wait_long=False)
+                            elif key_id == 'os_build':
+                                main.os_build(is_wait_long=False)
+                            elif key_id == 'power_iso':
+                                utilities.power_iso(is_wait_long=False)
+                            elif key_id == 'pycharm':
+                                developer.pycharm(is_wait_long=False)
+                            elif key_id == 'python':
+                                developer.python(is_wait_long=False)
+                            elif key_id == 'samsung_usb':
+                                mobile.samsung_usb(is_wait_long=False)
+                            elif key_id == 'winrar':
+                                utilities.winrar(is_wait_long=False)
+                            elif key_id == 'git':
+                                developer.git(is_wait_long=False)
+                            elif key_id == 'vc_redist':
+                                utilities.vs_redistributable(is_wait_long=False)
+                            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                                           '"id" = \"%s\"' % (key_name, date, key_id))
+                    connect.commit()
+        except sqlite3.Error as error:
+            exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            if not new_update:
                 log_show(f'There are no new software updates')
-            db.close()
-            time.sleep(const.wait_long / 2)
-        else:
-            log_show('Creating new database...')
-            time.sleep(const.wait_short)
-            self.create_db()
-            self.update_db('md5', len(const.softwares_list))
-            time.sleep(const.wait_long / 2)
+                time.sleep(const.wait_long)
+            cursor.close()
+            connect.close()
+
+    def test(self):
+        log_show('Connecting to database...')
+        connect = sqlite3.connect(self.db)
+        cursor = connect.cursor()
+        time.sleep(const.wait_short)
+        log_show("Connected to database")
+
+        try:
+            log_show('Testing...')
+            cursor.execute('SELECT * FROM softwares')
+            for rec in cursor.fetchall():
+                log_show(rec)
+            # for ids, names, date in SoftwaresDB.cursor.execute('SELECT id, name, datetime FROM softwares'):
+            #     log_show(f'ID: {ids}')
+            #     log_show(f'NAME: {names}')
+            #     log_show(f'DATE: {date}')
+        except sqlite3.Error as error:
+            exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            cursor.close()
+            connect.close()

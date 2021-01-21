@@ -20,7 +20,7 @@ def auslogics_duplicate(is_wait_long=True):
 def better_rename(is_wait_long=True):
     func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=const.common_arg,
                          is_wait_long=is_wait_long)
-    time.sleep(1)
+    time.sleep(const.wait_short * 2)
     func.Portable(file_name=const.better_rename, setup='Serial.txt')
 
 

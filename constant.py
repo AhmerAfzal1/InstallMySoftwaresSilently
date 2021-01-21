@@ -13,11 +13,11 @@ heading_zero = 'Value must be greater than zero'
 # For Setup
 author = 'Ahmer Afzal'
 company = 'Rose Corporation'
-copyright_ = 'Copyright (c) 2016 - 2020, ' + company
+copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.3.7'
+version = '1.3.8'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -107,19 +107,19 @@ wise_duplicate = 'Wise Duplicate Finder Pro 1.3.8.52'
 # Very common arg and essential softwares list for update newer softwares
 common_arg = r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS'
 softwares_list = [
-    {'id': 'android_studio', 'file': android_studio},
-    {'id': 'c_cleaner', 'file': c_cleaner},
-    {'id': 'firefox', 'file': firefox},
-    {'id': 'idm', 'file': idm},
-    {'id': 'java_jdk_08', 'file': java_jdk_08},
-    {'id': 'k_lite', 'file': k_lite},
-    {'id': 'notepad_p_p', 'file': notepad_p_p},
-    {'id': 'os_build', 'file': os_build},
-    {'id': 'power_iso', 'file': power_iso},
-    {'id': 'pycharm', 'file': pycharm},
-    {'id': 'python', 'file': python},
-    {'id': 'samsung_usb', 'file': samsung_usb},
-    {'id': 'winrar', 'file': winrar},
-    {'id': 'git', 'file': git},
-    {'id': 'vs_redistributable', 'file': vs_redistributable}
+    {'id': 'android_studio', 'name': android_studio},
+    {'id': 'c_cleaner', 'name': c_cleaner},
+    {'id': 'firefox', 'name': firefox},
+    {'id': 'idm', 'name': idm},
+    {'id': 'java_jdk_08', 'name': java_jdk_08},
+    {'id': 'k_lite', 'name': k_lite},
+    {'id': 'notepad_p_p', 'name': notepad_p_p},
+    {'id': 'os_build', 'name': os_build},
+    {'id': 'power_iso', 'name': power_iso},
+    {'id': 'pycharm', 'name': pycharm},
+    {'id': 'python', 'name': python},
+    {'id': 'samsung_usb', 'name': samsung_usb},
+    {'id': 'winrar', 'name': winrar},
+    {'id': 'git', 'name': git},
+    {'id': 'vc_redist', 'name': vs_redistributable}
 ]

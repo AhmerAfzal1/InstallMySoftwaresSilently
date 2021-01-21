@@ -145,7 +145,7 @@ def main():
                 continue
 
             elif choice == 10:
-                func.InstallUpdate()
+                func.InstallUpdate(const.product + '.db').update()
                 func.clear()
                 continue
 
