@@ -1,4 +1,5 @@
 import sys
+import time
 
 from colorama import init
 
@@ -21,6 +22,13 @@ def mp3_tag(is_wait_long=True):
     func.InstallSoftware(file_name=const.mp3_tag, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
 
 
+def zortam_mp3(is_wait_long=True):
+    func.InstallSoftware(file_name=const.zortam_mp3, setup='Setup.exe', args=const.common_arg,
+                         is_wait_long=is_wait_long)
+    time.sleep(const.wait_short)
+    func.Portable(file_name=const.zortam_mp3, setup='Keygen.exe')
+
+
 def main_program():
     func.set_console_title(const.heading_multimedia)
     init()
@@ -32,7 +40,8 @@ def main_program():
             func.sub_heading_softwares('02', const.k_lite)
             func.sub_heading_softwares('03', const.mp3_tag)
             func.sub_heading_softwares('04', const.helium_music)
-            exit_code = func.exit_heading('05')
+            func.sub_heading_softwares('05', const.zortam_mp3)
+            exit_code = func.exit_heading('06')
 
             choice = func.input_heading()
 
@@ -59,6 +68,11 @@ def main_program():
 
             elif choice == 4:
                 helium_music()
+                func.clear()
+                continue
+
+            elif choice == 5:
+                zortam_mp3()
                 func.clear()
                 continue
 
