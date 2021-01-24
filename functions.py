@@ -329,31 +329,32 @@ class Functions:
             #         value_key=f'"{value}" "--cd=%1"')
         elif task.value == AnOtherTask.JAVA.value:
             log_show(f'Setting up Java Environments')
-            setx = ''
+            setx_jdk = ''
+            setx_jre = ''
             java_home = 'JAVA_HOME'
+            java_jre = 'JAVA_JRE'
             output = re.findall(r'[\d.]+', file_name)
             new_output = re.findall(r'[\d]+', output[0])
-            setx_jdk_08 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk1.8.0_{output[1]}'])
-            setx_jdk_15 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk-{output[0]}'])
-            if os.environ.get(java_home) is not None:
-                log_show(f'Already existed JAVA_HOME {os.environ[java_home]}')
-                if new_output[0] == JavaVersion.JAVA_8.value:
-                    setx = setx_jdk_08
-                    os.environ[java_home] = setx
-                elif new_output[0] == JavaVersion.JAVA_15.value:
-                    setx = setx_jdk_15
-                    os.environ[java_home] = setx
-                log_show(setx)
-                log_show(f'Now updated to {setx}')
-            else:
-                if new_output[0] == JavaVersion.JAVA_8.value:
-                    setx = setx_jdk_08
-                    os.environ[java_home] = setx
-                elif new_output[0] == JavaVersion.JAVA_15.value:
-                    setx = setx_jdk_15
-                    os.environ[java_home] = setx
+            try:
+                if int(new_output[0]) == JavaVersion.JAVA_8.value:
+                    setx_jdk_08 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk1.8.0_{output[1]}'])
+                    setx_jre_08 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jre1.8.0_{output[1]}'])
+                    setx_jdk = setx_jdk_08
+                    setx_jre = setx_jre_08
+                    os.environ[java_home] = setx_jdk
+                    os.environ[java_jre] = setx_jre
+                elif int(new_output[0]) == JavaVersion.JAVA_15.value:
+                    setx_jdk_15 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk-{output[0]}'])
+                    setx_jre_15 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jre-{output[0]}'])
+                    setx_jdk = setx_jdk_15
+                    setx_jre = setx_jre_15
+                    os.environ[java_home] = setx_jdk
+                    os.environ[java_jre] = setx_jre
                 time.sleep(const.wait_short)
-                log_show(setx)
+                log_show(f'Modified {java_home}: {setx_jdk}')
+                log_show(f'Modified {java_jre}: {setx_jre}')
+            except KeyError:
+                exception_heading(f'Key {setx_jdk} or {setx_jre} does not exist')
         elif task.value == AnOtherTask.AOMEI_PRO.value:
             log_show(f'Cracking {file_name}')
             src = os.path.join(*[temp, file_name, 'Crack', 'Pro', 'cfg.ini'])

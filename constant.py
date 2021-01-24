@@ -17,7 +17,7 @@ copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.3.8'
+version = '1.3.9'
 
 # For Functions
 encode_utf_8 = 'utf-8'
@@ -33,7 +33,7 @@ os_build = 'KB4598242 (OS Builds 19042.746)'
 rea_converter = 'ReaConverter Pro 7.620'
 
 # For Developer
-android_studio = 'Android Studio 4.1.1 (201.6953283)'
+android_studio = 'Android Studio 4.1.2 (201.7042882)'
 git = 'Git 2.30.0'
 java_jdk_08 = 'Java JDK 8 Update 281'
 java_jdk_15 = 'Java JDK 15.0.2'

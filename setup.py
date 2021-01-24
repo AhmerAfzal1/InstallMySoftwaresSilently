@@ -39,6 +39,7 @@ py2exe_options = {
     'includes': ['dbm.dumb'],
     'optimize': 2,
     'unbuffered': True,
+    'verbose': 4,
     'xref': True,
 }
 
