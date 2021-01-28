@@ -1,3 +1,4 @@
+import sqlite3
 import sys
 import time
 
@@ -9,34 +10,61 @@ import main
 
 
 def android_iphone(is_wait_long=True):
-    func.InstallSoftware(file_name=const.android_iphone, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.android_iphone, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
 
 
 def i_mobie(is_wait_long=True):
-    func.InstallSoftware(file_name=const.i_mobie, setup='Setup.exe', args=const.common_arg, is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.i_mobie, setup='Setup.exe', args=const.common_arg,
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def i_tunes(is_wait_long=True):
-    func.InstallSoftware(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.i_tunes, setup='Setup.exe', args=r'/qn /norestart',
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def fone_paw(is_wait_long=True):
-    func.InstallSoftware(file_name=const.fone_paw, setup='Setup.exe', args=const.common_arg, is_wait_long=is_wait_long,
-                         another_task=func.AnOtherTask.FONEPAW)
+    software = func.Softwares(file_name=const.fone_paw, setup='Setup.exe', args=const.common_arg,
+                              is_wait_long=is_wait_long,
+                              another_task=func.AnOtherTask.FONEPAW)
+    software.install()
 
 
 def samsung_usb(is_wait_long=True):
-    func.InstallSoftware(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'samsung_usb'
+            key_name = const.samsung_usb
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def smart_switch(is_wait_long=True):
-    func.InstallSoftware(file_name=const.smart_switch, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.smart_switch, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
 
 
 def sms_contacts_recover(is_wait_long=True):
-    func.InstallSoftware(file_name=const.sms_contacts_recover, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.sms_contacts_recover, setup='Setup.exe', args=r'/S',
+                              is_wait_long=is_wait_long)
+    software.install()
     time.sleep(const.wait_short)
-    func.Portable(file_name=const.sms_contacts_recover, setup='Patch.exe')
+    func.Softwares(file_name=const.sms_contacts_recover, setup='Patch.exe').portable()
 
 
 def main_program():

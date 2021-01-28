@@ -40,6 +40,17 @@ def clear():
         os.system('cls')
 
 
+def connect_db(show_log=True):
+    if show_log:
+        log_show('Connecting to database...')
+    connect = sqlite3.connect(const.db_name)
+    cursor = connect.cursor()
+    if show_log:
+        time.sleep(const.wait_short)
+        log_show("Connected to database")
+    return connect, cursor
+
+
 def copying_files(src, dst):
     try:
         if os.path.isfile(src) and os.path.exists(dst):
@@ -54,7 +65,7 @@ def copying_files(src, dst):
 
 def extract_archive(root, file_name, pwd=None):
     start_unzip = time.time()
-    log_show(f'Extracting to {get_temp_path_by_file(file_name)}')
+    log_show(f'Extracting to {get_temp_path(file_name)}')
     zip_file = zipfile.ZipFile(file=os.path.join(root, file_name), mode='r')
     try:
         if pwd is not None:
@@ -91,20 +102,27 @@ def find_files(dir_name=None, file_name=None, file_ext=None, pwd=None):
                             time.sleep(const.wait_short)
                             extract_archive(root=root, file_name=file_with_ext, pwd=pwd)
                             time.sleep(const.wait_short)
+                            return True
+                        else:
+                            return False
         else:
             exception_heading(f'Extension for {file_name + file_ext} is unsupported format, please use zip archive')
     except Exception as err:
         exception_heading(err)
 
 
-def get_temp_drivers_path_by_file(file_name, drivers_dir, sub_drivers_dir=None):
+def get_date_time():
+    return datetime.datetime.now().strftime("%d %b %Y %I:%M:%S %p")
+
+
+def get_temp_drivers_path(file_name, drivers_dir, sub_drivers_dir=None):
     if sub_drivers_dir is not None:
-        return os.path.join(*[get_temp_path_by_file(file_name), drivers_dir, sub_drivers_dir])
+        return os.path.join(*[get_temp_path(file_name), drivers_dir, sub_drivers_dir])
     else:
-        return os.path.join(*[get_temp_path_by_file(file_name), drivers_dir])
+        return os.path.join(*[get_temp_path(file_name), drivers_dir])
 
 
-def get_temp_path_by_file(file_name):
+def get_temp_path(file_name):
     return os.path.join(temp, file_name)
 
 
@@ -336,14 +354,14 @@ class Functions:
             output = re.findall(r'[\d.]+', file_name)
             new_output = re.findall(r'[\d]+', output[0])
             try:
-                if int(new_output[0]) == JavaVersion.JAVA_8.value:
+                if int(new_output[0]) == int(JavaVersion.JAVA_8.value):
                     setx_jdk_08 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk1.8.0_{output[1]}'])
                     setx_jre_08 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jre1.8.0_{output[1]}'])
                     setx_jdk = setx_jdk_08
                     setx_jre = setx_jre_08
                     os.environ[java_home] = setx_jdk
                     os.environ[java_jre] = setx_jre
-                elif int(new_output[0]) == JavaVersion.JAVA_15.value:
+                elif int(new_output[0]) == int(JavaVersion.JAVA_15.value):
                     setx_jdk_15 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk-{output[0]}'])
                     setx_jre_15 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jre-{output[0]}'])
                     setx_jdk = setx_jdk_15
@@ -395,7 +413,7 @@ class Functions:
             log_show(f'Patching {file_name}')
             patcher_dir = os.path.join(*[os.environ['ProgramFiles(x86)'], 'Internet Download Manager'])
             subprocess.run(
-                [os.path.join(get_temp_path_by_file(file_name), 'Patch.exe'), '/silent', '/overwrite', '/backup',
+                [os.path.join(get_temp_path(file_name), 'Patch.exe'), '/silent', '/overwrite', '/backup',
                  f'/startupworkdir {patcher_dir}'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE)
             time.sleep(const.wait_short)
@@ -409,7 +427,7 @@ class Functions:
                 log_show(f'Copied crack file to {dst}')
         elif task.value == AnOtherTask.HELIUM_MUSIC.value:
             log_show(f'Opening Notepad {file_name}')
-            path = os.path.join(*[get_temp_path_by_file(file_name), child_file])
+            path = os.path.join(*[get_temp_path(file_name), child_file])
             Functions.run_program(file_name=sys_app, path=path, sys_app_run=True)
             time.sleep(const.wait_short)
         elif task.value == AnOtherTask.ANDROID_IPHONE.value:
@@ -432,7 +450,7 @@ class Functions:
         elif task.value == AnOtherTask.WISE_DUPLICATE.value:
             log_show(f'Registering {file_name}')
             subprocess.run(
-                [os.path.join(get_temp_path_by_file(file_name), 'Activator.exe'), '/activate', f'/name {const.author}',
+                [os.path.join(get_temp_path(file_name), 'Activator.exe'), '/activate', f'/name {const.author}',
                  f'/email {const.email}', '/overwrite', '/patchhosts', '/generate', '/product 3', '/verysilent'],
                 shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             time.sleep(const.wait_short)
@@ -468,141 +486,36 @@ class Functions:
             pass
 
 
-class InstallSoftware(Functions):
-    def __init__(self, dir_name=None, file_name=None, setup=None, args=None, registry=None, another_task=None,
-                 driver_dir=None, sub_dri_dir=None, sys_app=None, child_file=None, ext='.zip', pwd=None, wait=0,
-                 is_wait_long=None, wait_input=False):
-        self.dir_name = dir_name
-        self.file_name = file_name
-        self.setup = setup
-        self.args = args
-        self.registry = registry
+class Softwares(Functions):
+    def __init__(self, another_task=None, args=None, child_file=None, dir_name=None, driver_dir=None, ext='.zip',
+                 file_name=None, is_wait_long=None, pwd=None, registry=None, setup=None, sub_dri_dir=None, sys_app=None,
+                 wait_input=False, wait=0):
         self.another_task = another_task
+        self.args = args
+        self.child_file = child_file
+        self.dir_name = dir_name
         self.driver_dir = driver_dir
+        self.ext = ext
+        self.file_name = file_name
+        self.is_wait_long = is_wait_long
+        self.pwd = pwd
+        self.registry = registry
+        self.setup = setup
         self.sub_dri_dir = sub_dri_dir
         self.sys_app = sys_app
-        self.child_file = child_file
-        self.ext = ext
-        self.pwd = pwd
         self.wait = wait
         self.wait_input = wait_input
 
-        try:
-            start = time.time()
-            if dir_name is not None:  # For find directory
-                log_show(f'Searching directory {dir_name}...')
-                found_dir = find_files(dir_name=dir_name, file_ext=ext)
-                end = time.time()
-                log_show(f'Found directory {dir_name} in ', f'{get_time(start, end)}')
-                time.sleep(const.wait_short)
-                if len(os.listdir(found_dir)):
-                    log_show(f'Installing from directory {found_dir}...')
-                    time.sleep(const.wait_short)
-                    self.run_program(file_name=os.path.join(*[found_dir, setup]), args=args, is_portable=False)
-                    if another_task is not None:
-                        self.perform_another_task(task=another_task, dir_name=found_dir)
-                    end = time.time()
-                    log_show(f'Installed {dir_name} successfully in ', f'{get_time(start, end)}')
-                    log_show(const.wait_msg)
-                    time.sleep(const.wait_long)
-                else:
-                    log_show(f'{found_dir} is empty')
-            else:
-                if driver_dir is not None:
-                    log_show(f'Searching {file_name}...')
-                    if not os.path.exists(get_temp_drivers_path_by_file(file_name, driver_dir, sub_dri_dir)):
-                        find_files(dir_name=None, file_name=file_name, file_ext=ext)
-                    if sub_dri_dir is not None:
-                        if sub_dri_dir == os.path.join(*['APPS', 'PROSETDX', 'Winx64']):
-                            log_show(f'Installing {driver_dir} Drivers...')
-                        else:
-                            log_show(f'Installing {sub_dri_dir} Drivers...')
-                    else:
-                        log_show(f'Installing {driver_dir} Drivers...')
-                    time.sleep(const.wait_short)
-                    self.run_program(file_name=os.path.join(
-                        get_temp_drivers_path_by_file(file_name, driver_dir, sub_drivers_dir=sub_dri_dir), setup),
-                        args=args, is_portable=False)
-                    end = time.time()
-                    log_show(f'Installed {driver_dir} successfully in ', f'{get_time(start, end)}')
-                else:
-                    if not os.path.exists(get_temp_path_by_file(file_name)):
-                        log_show(f'Searching file {file_name}...')
-                        find_files(dir_name=None, file_name=file_name, file_ext=ext, pwd=pwd)
-                    log_show(f'Installing {file_name}...')
-                    self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
-                                     is_portable=False)
-                    time.sleep(const.wait_short)
-                    if wait >= 1:
-                        time.sleep(wait)
-                    end = time.time()
-                    log_show(f'Installed {file_name} successfully in ', f'{get_time(start, end)}')
-                    if registry is not None:
-                        if os.path.isfile(os.path.join(*[get_temp_path_by_file(file_name), registry])):
-                            log_show(f'Installing registry {registry}...')
-                            time.sleep(const.wait_short)
-                            os.startfile(get_temp_path_by_file(file_name), setup)
-                        else:
-                            exception_heading(f'File {registry} not found')
-                    if another_task is not None:
-                        self.perform_another_task(task=another_task, file_name=file_name, sys_app=sys_app,
-                                                  child_file=child_file)
-                if is_wait_long:
-                    log_show(const.wait_msg)
-                    time.sleep(const.wait_long)
-                else:
-                    time.sleep(const.wait_long / 4)
-                if wait_input:
-                    input(const.wait_msg_input)
-        except Exception as err:
-            exception_heading(f'Error: {err}', wait_input=True)
-
-
-class Portable(Functions):
-    def __init__(self, file_name, setup, args=None, file_ext='.zip'):
-        self.file_name = file_name
-        self.setup = setup
-        self.args = args
-        self.file_ext = file_ext
-
-        if os.path.exists(get_temp_path_by_file(file_name)):
-            if len(os.listdir(get_temp_path_by_file(file_name))) > 0:
-                log_show(f'Opening from existing {file_name}')
-                self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
-                                 is_portable=True)
-                log_show(const.wait_msg)
-                time.sleep(const.wait_long)
-            else:
-                find_files(file_name=file_name, file_ext=file_ext)
-                log_show(f'Opening {file_name}')
-                self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
-                                 is_portable=True)
-                log_show(const.wait_msg)
-                time.sleep(const.wait_long)
-        else:
-            find_files(file_name=file_name, file_ext=file_ext)
-            log_show(f'Opening {file_name}')
-            self.run_program(file_name=os.path.join(get_temp_path_by_file(file_name), setup), args=args,
-                             is_portable=True)
-            log_show(const.wait_msg)
-            time.sleep(const.wait_long)
-
-
-class InstallUpdate:
-    def __init__(self, db):
-        self.db = db
-
-        db_file = glob.glob(os.path.join(*[current_db_dir, const.product + '.db']))
-        connect = sqlite3.connect(db)
-        cursor = connect.cursor()
+        db_file = glob.glob(os.path.join(*[current_db_dir, const.db_name]))
+        connect, cursor = connect_db(show_log=False)
 
         try:
             if not db_file:
                 log_show('Creating a new database...')
                 cursor.execute('''CREATE TABLE IF NOT EXISTS softwares (
-                                id TEXT PRIMARY KEY NOT NULL, 
-                                name TEXT NOT NULL,
-                                datetime timestamp)''')
+                                    id TEXT PRIMARY KEY NOT NULL, 
+                                    name TEXT NOT NULL,
+                                    datetime timestamp)''')
                 time.sleep(const.wait_short)
                 log_show('A new empty database has been created')
         except sqlite3.Error as error:
@@ -611,14 +524,119 @@ class InstallUpdate:
             cursor.close()
             connect.close()
 
-    def update(self):
-        log_show('Connecting to database...')
-        connect = sqlite3.connect(self.db)
-        cursor = connect.cursor()
+    def install(self):
+        try:
+            start = time.time()
+            is_exist_file = None
+            is_found_file = None
+            is_skip_process = None
+            if self.dir_name is not None:  # For find directory
+                log_show(f'Searching directory {self.dir_name}...')
+                found_dir = find_files(dir_name=self.dir_name, file_ext=self.ext)
+                end = time.time()
+                log_show(f'Found directory {self.dir_name} in ', f'{get_time(start, end)}')
+                time.sleep(const.wait_short)
+                if len(os.listdir(found_dir)):
+                    log_show(f'Installing from directory {found_dir}...')
+                    time.sleep(const.wait_short)
+                    self.run_program(file_name=os.path.join(*[found_dir, self.setup]), args=self.args,
+                                     is_portable=False)
+                    if self.another_task is not None:
+                        self.perform_another_task(task=self.another_task, dir_name=found_dir)
+                    end = time.time()
+                    log_show(f'Installed {self.dir_name} successfully in ', f'{get_time(start, end)}')
+                    log_show(const.wait_msg)
+                    time.sleep(const.wait_long)
+                else:
+                    log_show(f'{found_dir} is empty')
+            else:
+                if self.driver_dir is not None:
+                    log_show(f'Searching {self.file_name}...')
+                    if not os.path.exists(
+                            get_temp_drivers_path(self.file_name, self.driver_dir, self.sub_dri_dir)):
+                        find_files(dir_name=None, file_name=self.file_name, file_ext=self.ext)
+                    if self.sub_dri_dir is not None:
+                        if self.sub_dri_dir == os.path.join(*['APPS', 'PROSETDX', 'Winx64']):
+                            log_show(f'Installing {self.driver_dir} Drivers...')
+                        else:
+                            log_show(f'Installing {self.sub_dri_dir} Drivers...')
+                    else:
+                        log_show(f'Installing {self.driver_dir} Drivers...')
+                    time.sleep(const.wait_short)
+                    self.run_program(file_name=os.path.join(
+                        get_temp_drivers_path(self.file_name, self.driver_dir, sub_drivers_dir=self.sub_dri_dir),
+                        self.setup), args=self.args, is_portable=False)
+                    end = time.time()
+                    log_show(f'Installed {self.driver_dir} successfully in ', f'{get_time(start, end)}')
+                else:
+                    if not os.path.exists(get_temp_path(self.file_name)):
+                        log_show(f'Searching file {self.file_name}...')
+                        is_found_file = find_files(dir_name=None, file_name=self.file_name, file_ext=self.ext,
+                                                   pwd=self.pwd)
+                    else:
+                        is_exist_file = True
+                    if is_found_file or is_exist_file:
+                        log_show(f'Installing {self.file_name}...')
+                        self.run_program(file_name=os.path.join(get_temp_path(self.file_name), self.setup),
+                                         args=self.args, is_portable=False)
+                        time.sleep(const.wait_short)
+                        if self.wait >= 1:
+                            time.sleep(self.wait)
+                        end = time.time()
+                        log_show(f'Installed {self.file_name} successfully in ', f'{get_time(start, end)}')
+                        if self.registry is not None:
+                            if os.path.isfile(os.path.join(*[get_temp_path(self.file_name), self.registry])):
+                                log_show(f'Installing registry {self.registry}...')
+                                time.sleep(const.wait_short)
+                                os.startfile(get_temp_path(self.file_name), self.setup)
+                            else:
+                                exception_heading(f'File {self.registry} not found')
+                        if self.another_task is not None:
+                            self.perform_another_task(task=self.another_task, file_name=self.file_name,
+                                                      sys_app=self.sys_app, child_file=self.child_file)
+                        return True
+                    else:
+                        is_skip_process = True
+                        log_show(f'{self.file_name} not found')
+                if is_skip_process is None:
+                    if self.is_wait_long:
+                        log_show(const.wait_msg)
+                        time.sleep(const.wait_long)
+                    else:
+                        time.sleep(const.wait_long / 4)
+                if self.wait_input or is_skip_process:
+                    input(const.wait_msg_input)
+        except Exception as err:
+            exception_heading(f'Error: {err}', wait_input=True)
+
+    def portable(self):
+        if os.path.exists(get_temp_path(self.file_name)):
+            if len(os.listdir(get_temp_path(self.file_name))) > 0:
+                log_show(f'Opening from existing {self.file_name}')
+                self.run_program(file_name=os.path.join(get_temp_path(self.file_name), self.setup), args=self.args,
+                                 is_portable=True)
+                log_show(const.wait_msg)
+                time.sleep(const.wait_long)
+            else:
+                find_files(file_name=self.file_name, file_ext=self.ext)
+                log_show(f'Opening {self.file_name}')
+                self.run_program(file_name=os.path.join(get_temp_path(self.file_name), self.setup), args=self.args,
+                                 is_portable=True)
+                log_show(const.wait_msg)
+                time.sleep(const.wait_long)
+        else:
+            find_files(file_name=self.file_name, file_ext=self.ext)
+            log_show(f'Opening {self.file_name}')
+            self.run_program(file_name=os.path.join(get_temp_path(self.file_name), self.setup), args=self.args,
+                             is_portable=True)
+            log_show(const.wait_msg)
+            time.sleep(const.wait_long)
+
+    @staticmethod
+    def update_install():
         db_ids = []
         new_update = False
-        time.sleep(const.wait_short)
-        log_show("Connected to database")
+        connect, cursor = connect_db()
 
         try:
             log_show('Checking new softwares...')
@@ -627,7 +645,7 @@ class InstallUpdate:
                 for ids, names in cursor.execute('SELECT id, name FROM softwares'):
                     db_ids.append(ids)
             for software in const.softwares_list:
-                date = datetime.datetime.now().strftime("%d %b %Y %I:%M:%S %p")
+                date = get_date_time()
                 key_id = software.get('id')
                 key_name = software.get('name')
                 if key_id not in db_ids:
@@ -638,9 +656,12 @@ class InstallUpdate:
                 time.sleep(const.wait_short)
                 if get_len_db == 0:
                     for record in cursor.execute('SELECT * FROM softwares WHERE "id" = \"%s\"' % key_id):
-                        if not record[1] == key_name:
+                        # db_id = record[0]
+                        db_name = record[1]
+                        db_date = record[2]
+                        if not db_name == key_name:
                             new_update = True
-                            log_show(f'"{record[1]}" was last updated on "{record[2]}"')
+                            log_show(f'"{db_name}" was last updated on "{db_date}"')
                             log_show(f'Now updated latest version of "{key_name}" in the database...')
                             if key_id == 'android_studio':
                                 developer.android_studio(is_wait_long=False)
@@ -685,12 +706,9 @@ class InstallUpdate:
             cursor.close()
             connect.close()
 
-    def test(self):
-        log_show('Connecting to database...')
-        connect = sqlite3.connect(self.db)
-        cursor = connect.cursor()
-        time.sleep(const.wait_short)
-        log_show("Connected to database")
+    @staticmethod
+    def update_test():
+        connect, cursor = connect_db()
 
         try:
             log_show('Testing...')
