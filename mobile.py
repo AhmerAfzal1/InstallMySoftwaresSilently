@@ -1,4 +1,3 @@
-import sqlite3
 import sys
 import time
 
@@ -35,23 +34,9 @@ def fone_paw(is_wait_long=True):
 
 def samsung_usb(is_wait_long=True):
     software = func.Softwares(file_name=const.samsung_usb, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
-    software.install()
-    if is_wait_long:
-        connect, cursor = func.connect_db()
-        try:
-            date = func.get_date_time()
-            key_id = 'samsung_usb'
-            key_name = const.samsung_usb
-            func.log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
-        except sqlite3.Error as error:
-            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            cursor.close()
-            connect.close()
+    is_installed = software.install()
+    if is_wait_long and is_installed:
+        func.Softwares.update_record('samsung_usb', const.samsung_usb)
 
 
 def smart_switch(is_wait_long=True):

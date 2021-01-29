@@ -1,4 +1,3 @@
-import sqlite3
 import sys
 import time
 
@@ -31,23 +30,9 @@ def better_rename(is_wait_long=True):
 def c_cleaner(is_wait_long=True):
     software = func.Softwares(file_name=const.c_cleaner, setup='Setup.exe', args=r'/S /IB /TM',
                               is_wait_long=is_wait_long)
-    software.install()
-    if is_wait_long:
-        connect, cursor = func.connect_db()
-        try:
-            date = func.get_date_time()
-            key_id = 'c_cleaner'
-            key_name = const.c_cleaner
-            func.log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
-        except sqlite3.Error as error:
-            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            cursor.close()
-            connect.close()
+    is_installed = software.install()
+    if is_wait_long and is_installed:
+        func.Softwares.update_record('c_cleaner', const.c_cleaner)
 
 
 def cpu_z():
@@ -83,23 +68,9 @@ def occt_checking_tool():
 
 def power_iso(is_wait_long=True):
     software = func.Softwares(file_name=const.power_iso, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
-    software.install()
-    if is_wait_long:
-        connect, cursor = func.connect_db()
-        try:
-            date = func.get_date_time()
-            key_id = 'power_iso'
-            key_name = const.power_iso
-            func.log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
-        except sqlite3.Error as error:
-            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            cursor.close()
-            connect.close()
+    is_installed = software.install()
+    if is_wait_long and is_installed:
+        func.Softwares.update_record('power_iso', const.power_iso)
 
 
 def print_conductor(is_wait_long=True):
@@ -139,43 +110,15 @@ def vs_redistributable(is_wait_long=True):
     func.Softwares(file_name=const.vs_redistributable, setup='Setup-2019.exe', args=r'/INSTALL /QUIET /NORESTART',
                    is_wait_long=is_wait_long).install()
     if is_wait_long:
-        connect, cursor = func.connect_db()
-        try:
-            date = func.get_date_time()
-            key_id = 'vc_redist'
-            key_name = const.vs_redistributable
-            func.log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
-        except sqlite3.Error as error:
-            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            cursor.close()
-            connect.close()
+        func.Softwares.update_record('vc_redist', const.vs_redistributable)
 
 
 def winrar(is_wait_long=True):
     software = func.Softwares(dir_name=const.winrar, setup='Setup.exe', args=r'/S /IEN',
                               another_task=func.AnOtherTask.WINRAR_KEY, is_wait_long=is_wait_long)
-    software.install()
-    if is_wait_long:
-        connect, cursor = func.connect_db()
-        try:
-            date = func.get_date_time()
-            key_id = 'winrar'
-            key_name = const.winrar
-            func.log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
-        except sqlite3.Error as error:
-            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            cursor.close()
-            connect.close()
+    is_installed = software.install()
+    if is_wait_long and is_installed:
+        func.Softwares.update_record('winrar', const.winrar)
 
 
 def wise_duplicate(is_wait_long=True):

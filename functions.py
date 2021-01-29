@@ -103,8 +103,6 @@ def find_files(dir_name=None, file_name=None, file_ext=None, pwd=None):
                             extract_archive(root=root, file_name=file_with_ext, pwd=pwd)
                             time.sleep(const.wait_short)
                             return True
-                        else:
-                            return False
         else:
             exception_heading(f'Extension for {file_name + file_ext} is unsupported format, please use zip archive')
     except Exception as err:
@@ -351,8 +349,9 @@ class Functions:
             setx_jre = ''
             java_home = 'JAVA_HOME'
             java_jre = 'JAVA_JRE'
-            output = re.findall(r'[\d.]+', file_name)
-            new_output = re.findall(r'[\d]+', output[0])
+            compile_jdk = re.compile(r'[\d.]+', re.IGNORECASE)
+            output = re.findall(compile_jdk, file_name)
+            new_output = re.findall(compile_jdk, output[0])
             try:
                 if int(new_output[0]) == int(JavaVersion.JAVA_8.value):
                     setx_jdk_08 = os.path.join(*[os.environ['ProgramFiles'], 'Java', f'jdk1.8.0_{output[1]}'])
@@ -654,7 +653,7 @@ class Softwares(Functions):
                     cursor.execute('INSERT INTO softwares VALUES (\"%s\", \"%s\", \"%s\")'
                                    % (key_id, key_name, date))
                 time.sleep(const.wait_short)
-                if get_len_db == 0:
+                if not get_len_db == 0:
                     for record in cursor.execute('SELECT * FROM softwares WHERE "id" = \"%s\"' % key_id):
                         # db_id = record[0]
                         db_name = record[1]
@@ -662,7 +661,6 @@ class Softwares(Functions):
                         if not db_name == key_name:
                             new_update = True
                             log_show(f'"{db_name}" was last updated on "{db_date}"')
-                            log_show(f'Now updated latest version of "{key_name}" in the database...')
                             if key_id == 'android_studio':
                                 developer.android_studio(is_wait_long=False)
                             elif key_id == 'c_cleaner':
@@ -695,6 +693,8 @@ class Softwares(Functions):
                                 utilities.vs_redistributable(is_wait_long=False)
                             cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
                                            '"id" = \"%s\"' % (key_name, date, key_id))
+                            log_show(f'Updated latest version of "{key_name}" in the database')
+                            time.sleep(const.wait_short)
                     connect.commit()
         except sqlite3.Error as error:
             exception_heading(f'Error while working with SQLite {error}', wait_input=True)
@@ -707,6 +707,22 @@ class Softwares(Functions):
             connect.close()
 
     @staticmethod
+    def update_record(key_id, key_name):
+        connect, cursor = connect_db()
+        try:
+            date = get_date_time()
+            log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
+
+    @staticmethod
     def update_test():
         connect, cursor = connect_db()
 
@@ -715,10 +731,11 @@ class Softwares(Functions):
             cursor.execute('SELECT * FROM softwares')
             for rec in cursor.fetchall():
                 log_show(rec)
-            # for ids, names, date in SoftwaresDB.cursor.execute('SELECT id, name, datetime FROM softwares'):
+            # for ids, names, date in cursor.execute('SELECT id, name, datetime FROM softwares'):
             #     log_show(f'ID: {ids}')
             #     log_show(f'NAME: {names}')
             #     log_show(f'DATE: {date}')
+            input(const.wait_msg_input)
         except sqlite3.Error as error:
             exception_heading(f'Error while working with SQLite {error}', wait_input=True)
         finally:

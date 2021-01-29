@@ -17,7 +17,7 @@ copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.4.0'
+version = '1.4.1'
 
 # For Functions
 db_name = product + '.db'

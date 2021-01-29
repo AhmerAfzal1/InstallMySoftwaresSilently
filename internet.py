@@ -1,4 +1,3 @@
-import sqlite3
 import sys
 import time
 
@@ -16,23 +15,9 @@ def chrome(is_wait_long=True):
 
 def firefox(is_wait_long=True):
     software = func.Softwares(file_name=const.firefox, setup='Setup.exe', args=r'-ms', is_wait_long=is_wait_long)
-    software.install()
-    if is_wait_long:
-        connect, cursor = func.connect_db()
-        try:
-            date = func.get_date_time()
-            key_id = 'firefox'
-            key_name = const.firefox
-            func.log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
-        except sqlite3.Error as error:
-            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            cursor.close()
-            connect.close()
+    is_installed = software.install()
+    if is_wait_long and is_installed:
+        func.Softwares.update_record('firefox', const.firefox)
 
 
 def fdm(is_wait_long=True):
@@ -45,23 +30,9 @@ def idm(is_wait_long=True):
     time.sleep(const.wait_short)
     software = func.Softwares(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
                               another_task=func.AnOtherTask.IDM, is_wait_long=is_wait_long)
-    software.install()
-    if is_wait_long:
-        connect, cursor = func.connect_db()
-        try:
-            date = func.get_date_time()
-            key_id = 'idm'
-            key_name = const.idm
-            func.log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
-        except sqlite3.Error as error:
-            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            cursor.close()
-            connect.close()
+    is_installed = software.install()
+    if is_wait_long and is_installed:
+        func.Softwares.update_record('idm', const.idm)
 
 
 def net_balancer(is_wait_long=True):

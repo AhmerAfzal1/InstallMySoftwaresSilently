@@ -1,4 +1,3 @@
-import sqlite3
 import sys
 import time
 
@@ -19,23 +18,9 @@ def helium_music(is_wait_long=True):
 
 def k_lite(is_wait_long=True):
     software = func.Softwares(file_name=const.k_lite, setup='Setup.exe', args=r'/verysilent', is_wait_long=is_wait_long)
-    software.install()
-    if is_wait_long:
-        connect, cursor = func.connect_db()
-        try:
-            date = func.get_date_time()
-            key_id = 'k_lite'
-            key_name = const.k_lite
-            func.log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
-        except sqlite3.Error as error:
-            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            cursor.close()
-            connect.close()
+    is_installed = software.install()
+    if is_wait_long and is_installed:
+        func.Softwares.update_record('k_lite', const.k_lite)
 
 
 def mp3_tag(is_wait_long=True):
