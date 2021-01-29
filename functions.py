@@ -511,10 +511,15 @@ class Softwares(Functions):
         try:
             if not db_file:
                 log_show('Creating a new database...')
-                cursor.execute('''CREATE TABLE IF NOT EXISTS softwares (
-                                    id TEXT PRIMARY KEY NOT NULL, 
-                                    name TEXT NOT NULL,
-                                    datetime timestamp)''')
+                cursor.execute('''
+                CREATE TABLE IF NOT EXISTS softwares
+                (
+                SoftwareId TEXT PRIMARY KEY NOT NULL,
+                SoftwareName TEXT NOT NULL,
+                CreationDate timestamp NOT NULL,
+                UpdateDate timestamp NOT NULL,
+                Status TEXT NOT NULL
+                );''')
                 time.sleep(const.wait_short)
                 log_show('A new empty database has been created')
         except sqlite3.Error as error:
@@ -640,7 +645,7 @@ class Softwares(Functions):
             log_show('Checking new softwares...')
             get_len_db = cursor.execute('SELECT COUNT(*) FROM softwares').fetchone()[0]
             if not get_len_db == 0:
-                for ids, names in cursor.execute('SELECT id, name FROM softwares'):
+                for ids in cursor.execute('SELECT SoftwareId FROM softwares'):
                     db_ids.append(ids)
             for software in const.softwares_list:
                 date = get_date_time()
@@ -649,11 +654,11 @@ class Softwares(Functions):
                 if key_id not in db_ids:
                     new_update = True
                     log_show(f'New software "{key_name}" is being added to the database...')
-                    cursor.execute('INSERT INTO softwares VALUES (\"%s\", \"%s\", \"%s\")'
-                                   % (key_id, key_name, date))
+                    cursor.execute('INSERT INTO softwares VALUES (\"%s\", \"%s\", \"%s\", \"%s\", "Newly Added")'
+                                   % (key_id, key_name, date, date))
                 time.sleep(const.wait_short)
                 if not get_len_db == 0:
-                    for record in cursor.execute('SELECT * FROM softwares WHERE "id" = \"%s\"' % key_id):
+                    for record in cursor.execute('SELECT * FROM softwares WHERE "SoftwareId" = \"%s\"' % key_id):
                         # db_id = record[0]
                         db_name = record[1]
                         db_date = record[2]
@@ -690,11 +695,11 @@ class Softwares(Functions):
                                 developer.git(is_wait_long=False)
                             elif key_id == 'vc_redist':
                                 utilities.vs_redistributable(is_wait_long=False)
-                            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                                           '"id" = \"%s\"' % (key_name, date, key_id))
+                            cursor.execute('UPDATE softwares SET "SoftwareName" = \"%s\", "UpdateDate" = \"%s\", '
+                                           '"Status" = "Updated" WHERE id" = \"%s\"' % (key_name, date, key_id))
                             log_show(f'Updated latest version of "{key_name}" in the database')
                             time.sleep(const.wait_short)
-                    connect.commit()
+                connect.commit()
         except sqlite3.Error as error:
             exception_heading(f'Error while working with SQLite {error}', wait_input=True)
         finally:
@@ -711,8 +716,8 @@ class Softwares(Functions):
         try:
             date = get_date_time()
             log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
-                           '"id" = \"%s\"' % (key_name, date, key_id))
+            cursor.execute('UPDATE softwares SET "SoftwareName" = \"%s\", "UpdateDate" = \"%s\", '
+                           '"Status" = "Updated" WHERE id" = \"%s\"' % (key_name, date, key_id))
             connect.commit()
         except sqlite3.Error as error:
             exception_heading(f'Error while working with SQLite {error}', wait_input=True)
@@ -729,10 +734,6 @@ class Softwares(Functions):
             cursor.execute('SELECT * FROM softwares')
             for rec in cursor.fetchall():
                 log_show(rec)
-            # for ids, names, date in cursor.execute('SELECT id, name, datetime FROM softwares'):
-            #     log_show(f'ID: {ids}')
-            #     log_show(f'NAME: {names}')
-            #     log_show(f'DATE: {date}')
             input(const.wait_msg_input)
         except sqlite3.Error as error:
             exception_heading(f'Error while working with SQLite {error}', wait_input=True)
