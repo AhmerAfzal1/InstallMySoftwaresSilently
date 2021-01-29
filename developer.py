@@ -1,4 +1,7 @@
+import re
+import sqlite3
 import sys
+import time
 
 from colorama import init
 
@@ -8,40 +11,144 @@ import main
 
 
 def android_studio(is_wait_long=True):
-    func.InstallSoftware(file_name=const.android_studio, setup='Setup.exe', args=r'/S /Allusers',
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.android_studio, setup='Setup.exe', args=r'/S /Allusers',
+                              is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'android_studio'
+            key_name = const.android_studio
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def git(is_wait_long=True):
     # If not provide *.reg file in variable registry='reg.reg' than optionally use winreg for it
-    func.InstallSoftware(file_name=const.git, setup='Setup.exe',
-                         args=r'/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS '
-                              r'/COMPONENTS="icons,icons\desktop,ext,ext\reg,ext\reg\shellhere,assoc,assoc_sh,'
-                              r'consolefont"',
-                         another_task=func.AnOtherTask.REG_GIT, is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.git, setup='Setup.exe',
+                              args=r'/VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS '
+                                   r'/COMPONENTS="icons,icons\desktop,ext,ext\reg,ext\reg\shellhere,assoc,assoc_sh,'
+                                   r'consolefont"',
+                              another_task=func.AnOtherTask.REG_GIT, is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'git'
+            key_name = const.git
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def java_jdk(file_name, is_wait_long=True):
-    func.InstallSoftware(file_name=file_name, setup='Setup.exe',
-                         args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"', another_task=func.AnOtherTask.JAVA,
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=file_name, setup='Setup.exe',
+                              args=r'/s ADDLOCAL="ToolsFeature,SourceFeature"', another_task=func.AnOtherTask.JAVA,
+                              is_wait_long=is_wait_long)
+    software.install()
+    output = re.findall(r'[\d.]+', file_name)
+    if is_wait_long and output[0] == 8:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'java_jdk_08'
+            key_name = const.java_jdk_08
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def notepad_p_p(is_wait_long=True):
-    func.InstallSoftware(file_name=const.notepad_p_p, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.notepad_p_p, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'notepad_p_p'
+            key_name = const.notepad_p_p
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def pycharm(is_wait_long=True):
-    func.InstallSoftware(file_name=const.pycharm, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.pycharm, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'pycharm'
+            key_name = const.pycharm
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def python(is_wait_long=True):
-    func.InstallSoftware(file_name=const.python, setup='Setup.exe', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.python, setup='Setup.exe', is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'python'
+            key_name = const.python
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def sq_lite(is_wait_long=True):
-    func.InstallSoftware(file_name=const.sq_lite, setup='Setup.exe', args=const.common_arg,
-                         another_task=func.AnOtherTask.SQLITE, is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.sq_lite, setup='Setup.exe', args=const.common_arg,
+                              another_task=func.AnOtherTask.SQLITE, is_wait_long=is_wait_long)
+    software.install()
 
 
 def main_program():

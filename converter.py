@@ -8,8 +8,9 @@ import main
 
 
 def rea_converter(is_wait_long=True):
-    func.InstallSoftware(file_name=const.rea_converter, setup='Setup.exe', args=const.common_arg,
-                         another_task=func.AnOtherTask.REA_CONVERTER, is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.rea_converter, setup='Setup.exe', args=const.common_arg,
+                              another_task=func.AnOtherTask.REA_CONVERTER, is_wait_long=is_wait_long)
+    software.install()
 
 
 def main_program():

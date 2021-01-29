@@ -8,35 +8,44 @@ import main
 
 
 def adobe_acrobat_pro(is_wait_long=True):
-    func.InstallSoftware(file_name=const.adobe_acrobat_pro, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.adobe_acrobat_pro, setup='Setup.exe', args=r'/S',
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def adobe_acrobat_reader(is_wait_long=True):
-    func.InstallSoftware(file_name=const.adobe_acrobat_reader, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.adobe_acrobat_reader, setup='Setup.exe', args=r'/S',
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def adobe_photoshop(is_wait_long=True):
-    func.InstallSoftware(file_name=const.adobe_photoshop, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.adobe_photoshop, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
 
 
 def adobe_premiere(is_wait_long=True):
-    func.InstallSoftware(file_name=const.adobe_premiere, setup='Setup.exe', args=r'-S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.adobe_premiere, setup='Setup.exe', args=r'-S', is_wait_long=is_wait_long)
+    software.install()
 
 
 def adobe_xd(is_wait_long=True):
-    func.InstallSoftware(file_name=const.adobe_xd, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.adobe_xd, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
 
 
 def corel_draw(is_wait_long=True):
-    func.InstallSoftware(file_name=const.corel_draw, setup='Setup.exe',
-                         args=r'-y -nr -gm2 & "%SYSTEMDRIVE%\Temp\CORELDRAW\SETUP.exe" /S & RD /S /Q '
-                              r'"%SYSTEMDRIVE%\Temp\CORELDRAW"', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.corel_draw, setup='Setup.exe',
+                              args=r'-y -nr -gm2 & "%SYSTEMDRIVE%\Temp\CORELDRAW\SETUP.exe" /S & RD /S /Q '
+                                   r'"%SYSTEMDRIVE%\Temp\CORELDRAW"', is_wait_long=is_wait_long)
+    software.install()
 
 
 def ms_office(is_wait_long=True):
-    func.InstallSoftware(file_name=const.ms_office, setup=r'Office\helper.exe',
-                         args=r'/S /INSTALL /PROX64 /WORD /EXCEL /POWERPOINT /PUBLISHER /LANG=EN-US /KMS',
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.ms_office, setup=r'Office\helper.exe',
+                              args=r'/S /INSTALL /PROX64 /WORD /EXCEL /POWERPOINT /PUBLISHER /LANG=EN-US /KMS',
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def main_program():

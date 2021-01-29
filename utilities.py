@@ -1,3 +1,4 @@
+import sqlite3
 import sys
 import time
 
@@ -9,97 +10,178 @@ import main
 
 
 def aomei_partition(is_wait_long=True):
-    func.InstallSoftware(file_name=const.aomei_partition, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.aomei_partition, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
 
 
 def auslogics_duplicate(is_wait_long=True):
-    func.InstallSoftware(file_name=const.auslogics_duplicate, setup='Setup.exe', args=const.common_arg,
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.auslogics_duplicate, setup='Setup.exe', args=const.common_arg,
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def better_rename(is_wait_long=True):
-    func.InstallSoftware(file_name=const.better_rename, setup='Setup.exe', args=const.common_arg,
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.better_rename, setup='Setup.exe', args=const.common_arg,
+                              is_wait_long=is_wait_long)
+    software.install()
     time.sleep(const.wait_short * 2)
-    func.Portable(file_name=const.better_rename, setup='Serial.txt')
+    func.Softwares(file_name=const.better_rename, setup='Serial.txt').portable()
 
 
 def c_cleaner(is_wait_long=True):
-    func.InstallSoftware(file_name=const.c_cleaner, setup='Setup.exe', args=r'/S /IB /TM', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.c_cleaner, setup='Setup.exe', args=r'/S /IB /TM',
+                              is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'c_cleaner'
+            key_name = const.c_cleaner
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def cpu_z():
-    func.Portable(file_name=const.cpu_z, setup='cpuz_x64.exe')
+    software = func.Softwares(file_name=const.cpu_z, setup='cpuz_x64.exe')
+    software.portable()
 
 
 def dism_p_p():
-    func.Portable(file_name=const.dism_p_p, setup='Dism++x64.exe')
+    software = func.Softwares(file_name=const.dism_p_p, setup='Dism++x64.exe')
+    software.portable()
 
 
 def eng_to_urdu_dic(is_wait_long=True):
-    func.InstallSoftware(file_name=const.eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui',
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.eng_to_urdu_dic, setup='Setup.exe', args=r'/exenoui',
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def fonts(is_wait_long=True):
-    func.InstallSoftware(file_name=const.fonts, setup='Setup.exe', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.fonts, setup='Setup.exe', is_wait_long=is_wait_long)
+    software.install()
 
 
 def hw_info():
-    func.Portable(file_name=const.hw_info, setup='HWiNFO64.exe')
+    software = func.Softwares(file_name=const.hw_info, setup='HWiNFO64.exe')
+    software.portable()
 
 
 def occt_checking_tool():
-    func.Portable(file_name=const.occt_checking_tool, setup='OCCT.exe')
+    software = func.Softwares(file_name=const.occt_checking_tool, setup='OCCT.exe')
+    software.portable()
 
 
 def power_iso(is_wait_long=True):
-    func.InstallSoftware(file_name=const.power_iso, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.power_iso, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'power_iso'
+            key_name = const.power_iso
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def print_conductor(is_wait_long=True):
-    func.InstallSoftware(file_name=const.print_conductor, setup='Setup.exe', args=const.common_arg,
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.print_conductor, setup='Setup.exe', args=const.common_arg,
+                              is_wait_long=is_wait_long)
+    software.install()
     time.sleep(const.wait_short)
-    func.Portable(file_name=const.print_conductor, setup='Keygen.exe')
+    func.Softwares(file_name=const.print_conductor, setup='Keygen.exe').portable()
 
 
 def rufus():
-    func.Portable(file_name=const.rufus, setup='Rufus.exe')
+    software = func.Softwares(file_name=const.rufus, setup='Rufus.exe')
+    software.portable()
 
 
 def seven_zip(is_wait_long=True):
-    func.InstallSoftware(file_name=const.seven_zip, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.seven_zip, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
 
 
 def vs_redistributable(is_wait_long=True):
-    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2005.exe', args=r'/Q',
-                         is_wait_long=is_wait_long)
+    func.Softwares(file_name=const.vs_redistributable, setup='Setup-2005.exe', args=r'/Q',
+                   is_wait_long=is_wait_long).install()
     time.sleep(const.wait_short)
-    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2008.exe', args=r'/Q',
-                         is_wait_long=is_wait_long)
+    func.Softwares(file_name=const.vs_redistributable, setup='Setup-2008.exe', args=r'/Q',
+                   is_wait_long=is_wait_long).install()
     time.sleep(const.wait_short)
-    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2010.exe', args=r'/Q /NORESTART',
-                         is_wait_long=is_wait_long)
+    func.Softwares(file_name=const.vs_redistributable, setup='Setup-2010.exe', args=r'/Q /NORESTART',
+                   is_wait_long=is_wait_long).install()
     time.sleep(const.wait_short)
-    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2012.exe', args=r'/INSTALL /QUIET /NORESTART',
-                         is_wait_long=is_wait_long)
+    func.Softwares(file_name=const.vs_redistributable, setup='Setup-2012.exe', args=r'/INSTALL /QUIET /NORESTART',
+                   is_wait_long=is_wait_long).install()
     time.sleep(const.wait_short)
-    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2013.exe', args=r'/INSTALL /QUIET /NORESTART',
-                         is_wait_long=is_wait_long)
+    func.Softwares(file_name=const.vs_redistributable, setup='Setup-2013.exe', args=r'/INSTALL /QUIET /NORESTART',
+                   is_wait_long=is_wait_long).install()
     time.sleep(const.wait_short)
-    func.InstallSoftware(file_name=const.vs_redistributable, setup='Setup-2019.exe', args=r'/INSTALL /QUIET /NORESTART',
-                         is_wait_long=is_wait_long)
+    func.Softwares(file_name=const.vs_redistributable, setup='Setup-2019.exe', args=r'/INSTALL /QUIET /NORESTART',
+                   is_wait_long=is_wait_long).install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'vc_redist'
+            key_name = const.vs_redistributable
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def winrar(is_wait_long=True):
-    func.InstallSoftware(dir_name=const.winrar, setup='Setup.exe', args=r'/S /IEN',
-                         another_task=func.AnOtherTask.WINRAR_KEY, is_wait_long=is_wait_long)
+    software = func.Softwares(dir_name=const.winrar, setup='Setup.exe', args=r'/S /IEN',
+                              another_task=func.AnOtherTask.WINRAR_KEY, is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'winrar'
+            key_name = const.winrar
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def wise_duplicate(is_wait_long=True):
-    func.InstallSoftware(file_name=const.wise_duplicate, setup='Setup.exe', args=const.common_arg,
-                         another_task=func.AnOtherTask.WISE_DUPLICATE, is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.wise_duplicate, setup='Setup.exe', args=const.common_arg,
+                              another_task=func.AnOtherTask.WISE_DUPLICATE, is_wait_long=is_wait_long)
+    software.install()
 
 
 def main_program():

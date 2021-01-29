@@ -17,11 +17,12 @@ copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.3.9'
+version = '1.4.0'
 
 # For Functions
+db_name = product + '.db'
 encode_utf_8 = 'utf-8'
-wait_long = 5
+wait_long = 6
 wait_msg = f'Wait for {wait_long} seconds to go back automatically'
 wait_msg_input = '\n Please press Enter to continue'
 wait_short = 0.5

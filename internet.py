@@ -1,3 +1,4 @@
+import sqlite3
 import sys
 import time
 
@@ -9,37 +10,76 @@ import main
 
 
 def chrome(is_wait_long=True):
-    func.InstallSoftware(file_name=const.chrome, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.chrome, setup='Setup.exe', args=r'/S', is_wait_long=is_wait_long)
+    software.install()
 
 
 def firefox(is_wait_long=True):
-    func.InstallSoftware(file_name=const.firefox, setup='Setup.exe', args=r'-ms', is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.firefox, setup='Setup.exe', args=r'-ms', is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'firefox'
+            key_name = const.firefox
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def fdm(is_wait_long=True):
-    func.InstallSoftware(file_name=const.fdm, setup='Setup.exe', args=const.common_arg, is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.fdm, setup='Setup.exe', args=const.common_arg, is_wait_long=is_wait_long)
+    software.install()
 
 
 def idm(is_wait_long=True):
     func.task_kill('IDMan.exe')
     time.sleep(const.wait_short)
-    func.InstallSoftware(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
-                         another_task=func.AnOtherTask.IDM, is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
+                              another_task=func.AnOtherTask.IDM, is_wait_long=is_wait_long)
+    software.install()
+    if is_wait_long:
+        connect, cursor = func.connect_db()
+        try:
+            date = func.get_date_time()
+            key_id = 'idm'
+            key_name = const.idm
+            func.log_show(f'Updating latest version of "{key_name}" in the database...')
+            cursor.execute('UPDATE softwares SET "name" = \"%s\", "datetime"= \"%s\" WHERE '
+                           '"id" = \"%s\"' % (key_name, date, key_id))
+            connect.commit()
+        except sqlite3.Error as error:
+            func.exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+        finally:
+            time.sleep(const.wait_long / 2)
+            cursor.close()
+            connect.close()
 
 
 def net_balancer(is_wait_long=True):
-    func.InstallSoftware(file_name=const.net_balancer, setup='Setup.exe', args=const.common_arg,
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.net_balancer, setup='Setup.exe', args=const.common_arg,
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def net_limiter(is_wait_long=True):
-    func.InstallSoftware(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES',
-                         another_task=func.AnOtherTask.NETSETMAN, is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.net_limiter, setup='Setup.exe', args=r'/EXENOUI /EXENOUPDATES',
+                              another_task=func.AnOtherTask.NETSETMAN, is_wait_long=is_wait_long)
+    software.install()
 
 
 def net_set_man(is_wait_long=True):
-    func.InstallSoftware(file_name=const.net_set_man, setup='Setup.exe', args=const.common_arg,
-                         is_wait_long=is_wait_long)
+    software = func.Softwares(file_name=const.net_set_man, setup='Setup.exe', args=const.common_arg,
+                              is_wait_long=is_wait_long)
+    software.install()
 
 
 def main_program():
