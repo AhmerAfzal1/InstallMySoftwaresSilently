@@ -47,7 +47,7 @@ def connect_db(show_log=True):
     cursor = connect.cursor()
     if show_log:
         time.sleep(const.wait_short)
-        log_show("Connected to database")
+        log_show('Connected to database')
     return connect, cursor
 
 
@@ -110,7 +110,7 @@ def find_files(dir_name=None, file_name=None, file_ext=None, pwd=None):
 
 
 def get_date_time():
-    return datetime.datetime.now().strftime("%d %b %Y %I:%M:%S %p")
+    return datetime.datetime.now().strftime('%d %b %Y %I:%M:%S %p')
 
 
 def get_temp_drivers_path(file_name, drivers_dir, sub_drivers_dir=None):
@@ -636,10 +636,9 @@ class Softwares(Functions):
         db_ids = []
         new_update = False
         connect, cursor = connect_db()
-
         try:
             log_show('Checking new softwares...')
-            get_len_db = cursor.execute("SELECT COUNT(*) FROM softwares").fetchone()[0]
+            get_len_db = cursor.execute('SELECT COUNT(*) FROM softwares').fetchone()[0]
             if not get_len_db == 0:
                 for ids, names in cursor.execute('SELECT id, name FROM softwares'):
                     db_ids.append(ids)
@@ -725,7 +724,6 @@ class Softwares(Functions):
     @staticmethod
     def update_test():
         connect, cursor = connect_db()
-
         try:
             log_show('Testing...')
             cursor.execute('SELECT * FROM softwares')
