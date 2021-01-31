@@ -17,9 +17,12 @@ copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.4.1'
+version = '1.4.2'
 
 # For Functions
+db_msg_newly = 'Newly Added'
+db_msg_update_avail = 'Update Available'
+db_msg_updated = 'Updated'
 db_name = product + '.db'
 encode_utf_8 = 'utf-8'
 wait_long = 6
@@ -107,20 +110,20 @@ wise_duplicate = 'Wise Duplicate Finder Pro 1.3.8.52'
 
 # Very common arg and essential softwares list for update newer softwares
 common_arg = r'/VERYSILENT /NORESTART /NOCANCEL /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS'
-softwares_list = [
-    {'id': 'android_studio', 'name': android_studio},
-    {'id': 'c_cleaner', 'name': c_cleaner},
-    {'id': 'firefox', 'name': firefox},
-    {'id': 'idm', 'name': idm},
-    {'id': 'java_jdk_08', 'name': java_jdk_08},
-    {'id': 'k_lite', 'name': k_lite},
-    {'id': 'notepad_p_p', 'name': notepad_p_p},
-    {'id': 'os_build', 'name': os_build},
-    {'id': 'power_iso', 'name': power_iso},
-    {'id': 'pycharm', 'name': pycharm},
-    {'id': 'python', 'name': python},
-    {'id': 'samsung_usb', 'name': samsung_usb},
-    {'id': 'winrar', 'name': winrar},
-    {'id': 'git', 'name': git},
-    {'id': 'vc_redist', 'name': vs_redistributable}
-]
+softwares_list = {
+    'android_studio': android_studio,
+    'c_cleaner': c_cleaner,
+    'firefox': firefox,
+    'idm': idm,
+    'java_jdk_08': java_jdk_08,
+    'k_lite': k_lite,
+    'notepad_p_p': notepad_p_p,
+    'os_build': os_build,
+    'power_iso': power_iso,
+    'pycharm': pycharm,
+    'python': python,
+    'samsung_usb': samsung_usb,
+    'winrar': winrar,
+    'git': git,
+    'vc_redist': vs_redistributable
+}

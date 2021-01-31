@@ -60,7 +60,11 @@ def copying_files(src, dst):
             else:
                 return False
     except PermissionError as err:
-        exception_heading(f'You haven\'t permission: {err}')
+        err_type, err_object, err_traceback = sys.exc_info()
+        file_name = err_traceback.tb_frame.f_code.co_filename
+        line_number = err_traceback.tb_lineno
+        exception_heading(f'You haven\'t permission \n Syntax is: {err} \n Exception type: {err_type}'
+                          f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
 
 
 def extract_archive(root, file_name, pwd=None):
@@ -72,7 +76,11 @@ def extract_archive(root, file_name, pwd=None):
             zip_file.setpassword(pwd=bytes(pwd, encoding=const.encode_utf_8))
         zip_file.extractall(path=temp)
     except zipfile.error as err_zip:
-        exception_heading(f'Error while unzipping: {err_zip}')
+        err_type, err_object, err_traceback = sys.exc_info()
+        file_name = err_traceback.tb_frame.f_code.co_filename
+        line_number = err_traceback.tb_lineno
+        exception_heading(f'Error while unzipping \n Syntax is: {err_zip} \n Exception type: {err_type}'
+                          f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
     finally:
         zip_file.close()
         end_unzip = time.time()
@@ -106,7 +114,11 @@ def find_files(dir_name=None, file_name=None, file_ext=None, pwd=None):
         else:
             exception_heading(f'Extension for {file_name + file_ext} is unsupported format, please use zip archive')
     except Exception as err:
-        exception_heading(err)
+        err_type, err_object, err_traceback = sys.exc_info()
+        file_name = err_traceback.tb_frame.f_code.co_filename
+        line_number = err_traceback.tb_lineno
+        exception_heading(f'Error while finding files \n Syntax is: {err} \n Exception type: {err_type}'
+                          f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
 
 
 def get_date_time():
@@ -486,6 +498,8 @@ class Functions:
 
 
 class Softwares(Functions):
+    db_file = glob.glob(os.path.join(*[current_db_dir, const.db_name]))
+
     def __init__(self, another_task=None, args=None, child_file=None, dir_name=None, driver_dir=None, ext='.zip',
                  file_name=None, is_wait_long=None, pwd=None, registry=None, setup=None, sub_dri_dir=None, sys_app=None,
                  wait_input=False, wait=0):
@@ -504,29 +518,6 @@ class Softwares(Functions):
         self.sys_app = sys_app
         self.wait = wait
         self.wait_input = wait_input
-
-        db_file = glob.glob(os.path.join(*[current_db_dir, const.db_name]))
-        connect, cursor = connect_db(show_log=False)
-
-        try:
-            if not db_file:
-                log_show('Creating a new database...')
-                cursor.execute('''
-                CREATE TABLE IF NOT EXISTS softwares
-                (
-                SoftwareId TEXT PRIMARY KEY NOT NULL,
-                SoftwareName TEXT NOT NULL,
-                CreationDate timestamp NOT NULL,
-                UpdateDate timestamp NOT NULL,
-                Status TEXT NOT NULL
-                );''')
-                time.sleep(const.wait_short)
-                log_show('A new empty database has been created')
-        except sqlite3.Error as error:
-            exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            cursor.close()
-            connect.close()
 
     def install(self):
         try:
@@ -611,7 +602,11 @@ class Softwares(Functions):
                 if self.wait_input or is_skip_process:
                     input(const.wait_msg_input)
         except Exception as err:
-            exception_heading(f'Error: {err}', wait_input=True)
+            err_type, err_object, err_traceback = sys.exc_info()
+            file_name = err_traceback.tb_frame.f_code.co_filename
+            line_number = err_traceback.tb_lineno
+            exception_heading(f'Error while installing software \n Syntax is: {err} \n Exception type: {err_type}'
+                              f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
 
     def portable(self):
         if os.path.exists(get_temp_path(self.file_name)):
@@ -636,107 +631,183 @@ class Softwares(Functions):
             log_show(const.wait_msg)
             time.sleep(const.wait_long)
 
-    @staticmethod
-    def update_install():
-        db_ids = []
-        new_update = False
-        connect, cursor = connect_db()
-        try:
-            log_show('Checking new softwares...')
-            get_len_db = cursor.execute('SELECT COUNT(*) FROM softwares').fetchone()[0]
-            if not get_len_db == 0:
-                for ids in cursor.execute('SELECT SoftwareId FROM softwares'):
-                    db_ids.append(ids)
-            for software in const.softwares_list:
-                date = get_date_time()
-                key_id = software.get('id')
-                key_name = software.get('name')
-                if key_id not in db_ids:
-                    new_update = True
-                    log_show(f'New software "{key_name}" is being added to the database...')
-                    cursor.execute('INSERT INTO softwares VALUES (\"%s\", \"%s\", \"%s\", \"%s\", "Newly Added")'
-                                   % (key_id, key_name, date, date))
+    def create_db(self):
+        if not self.db_file:
+            connection, cursor = connect_db(show_log=False)
+            try:
+                log_show('Creating a new database...')
+                db_ids = []
+                cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS softwares
+                    (
+                    SoftwareId TEXT PRIMARY KEY NOT NULL,
+                    SoftwareName TEXT NOT NULL,
+                    CreationDate timestamp NOT NULL,
+                    UpdateDate timestamp NOT NULL,
+                    Status TEXT NOT NULL
+                    );''')
+                log_show('A new empty database has been created')
                 time.sleep(const.wait_short)
+                for ids in cursor.execute('SELECT SoftwareId FROM softwares'):
+                    db_ids.append(ids[0])
+                for key_id, key_name in const.softwares_list.items():
+                    date = get_date_time()
+                    if key_id not in db_ids:
+                        log_show(f'New software "{key_name}" is being added to the database...')
+                        cursor.execute('INSERT INTO softwares VALUES (\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")'
+                                       % (key_id, key_name, date, date, const.db_msg_newly))
+                        time.sleep(const.wait_short / 4)
+                connection.commit()
+                return True
+            except sqlite3.Error as error:
+                err_type, err_object, err_traceback = sys.exc_info()
+                file_name = err_traceback.tb_frame.f_code.co_filename
+                line_number = err_traceback.tb_lineno
+                exception_heading(
+                    f'Error while working with SQLite \n Syntax is: {error} \n Exception type: {err_type}'
+                    f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
+            finally:
+                cursor.close()
+                connection.close()
+
+        if self.db_file:
+            connection, cursor = connect_db(show_log=False)
+            try:
+                db_ids = []
+                log_show('Gathering softwares information...')
+                get_len_db = cursor.execute('SELECT COUNT(*) FROM softwares').fetchone()[0]
                 if not get_len_db == 0:
-                    for record in cursor.execute('SELECT * FROM softwares WHERE "SoftwareId" = \"%s\"' % key_id):
-                        # db_id = record[0]
-                        db_name = record[1]
-                        db_date = record[2]
-                        if not db_name == key_name:
-                            new_update = True
-                            log_show(f'"{db_name}" was last updated on "{db_date}"')
-                            if key_id == 'android_studio':
-                                developer.android_studio(is_wait_long=False)
-                            elif key_id == 'c_cleaner':
-                                utilities.c_cleaner(is_wait_long=False)
-                            elif key_id == 'firefox':
-                                internet.firefox(is_wait_long=False)
-                            elif key_id == 'idm':
-                                internet.idm(is_wait_long=False)
-                            elif key_id == 'java_jdk_08':
-                                developer.java_jdk(const.java_jdk_08, is_wait_long=False)
-                            elif key_id == 'k_lite':
-                                multimedia.k_lite(is_wait_long=False)
-                            elif key_id == 'notepad_p_p':
-                                developer.notepad_p_p(is_wait_long=False)
-                            elif key_id == 'os_build':
-                                main.os_build(is_wait_long=False)
-                            elif key_id == 'power_iso':
-                                utilities.power_iso(is_wait_long=False)
-                            elif key_id == 'pycharm':
-                                developer.pycharm(is_wait_long=False)
-                            elif key_id == 'python':
-                                developer.python(is_wait_long=False)
-                            elif key_id == 'samsung_usb':
-                                mobile.samsung_usb(is_wait_long=False)
-                            elif key_id == 'winrar':
-                                utilities.winrar(is_wait_long=False)
-                            elif key_id == 'git':
-                                developer.git(is_wait_long=False)
-                            elif key_id == 'vc_redist':
-                                utilities.vs_redistributable(is_wait_long=False)
-                            cursor.execute('UPDATE softwares SET "SoftwareName" = \"%s\", "UpdateDate" = \"%s\", '
-                                           '"Status" = "Updated" WHERE id" = \"%s\"' % (key_name, date, key_id))
-                            log_show(f'Updated latest version of "{key_name}" in the database')
-                            time.sleep(const.wait_short)
-                connect.commit()
-        except sqlite3.Error as error:
-            exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            time.sleep(const.wait_long / 2)
-            if not new_update:
-                log_show(f'There are no new software updates')
-                time.sleep(const.wait_long)
-            cursor.close()
-            connect.close()
+                    for ids in cursor.execute('SELECT SoftwareId FROM softwares'):
+                        db_ids.append(ids[0])
+                for key_id, key_name in const.softwares_list.items():
+                    date = get_date_time()
+                    if key_id not in db_ids:
+                        log_show(f'New software "{key_name}" is being added to the database...')
+                        cursor.execute('INSERT INTO softwares VALUES (\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")'
+                                       % (key_id, key_name, date, date, const.db_msg_newly))
+                        time.sleep(const.wait_short / 4)
+                    if not get_len_db == 0:
+                        for record in cursor.execute('SELECT * FROM softwares WHERE "SoftwareId"=\"%s\"' % key_id):
+                            db_name = record[1]
+                            if not db_name == key_name:
+                                cursor.execute('UPDATE softwares SET "SoftwareName"=\"%s\", "Status"=\"%s\" WHERE '
+                                               '"SoftwareId"=\"%s\" ' % (key_name, const.db_msg_update_avail, key_id))
+                                time.sleep(const.wait_short / 4)
+                connection.commit()
+                return False
+            except sqlite3.Error as error:
+                err_type, err_object, err_traceback = sys.exc_info()
+                file_name = err_traceback.tb_frame.f_code.co_filename
+                line_number = err_traceback.tb_lineno
+                exception_heading(f'Error while working with SQLite \n Syntax is: {error} \n Exception type: {err_type}'
+                                  f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
+            finally:
+                cursor.close()
+                connection.close()
+
+    def update_install(self):
+        is_newly_created_db = self.create_db()
+        if not is_newly_created_db:
+            connection, cursor = connect_db(show_log=True)
+            new_update = False
+            time.sleep(const.wait_short / 4)
+            try:
+                log_show('Checking new update(s) for software(s)...')
+                for record in cursor.execute('SELECT * FROM softwares WHERE "Status"=\"%s\"'
+                                             % const.db_msg_update_avail).fetchall():
+                    db_id = record[0]
+                    db_name = record[1]
+                    db_date = record[3]
+                    new_software_name = const.softwares_list[db_id]
+                    date = get_date_time()
+                    new_update = True
+                    log_show(f'"{db_name}" was last updated on "{db_date}"')
+                    if db_id == 'android_studio':
+                        developer.android_studio(is_wait_long=False)
+                    elif db_id == 'c_cleaner':
+                        utilities.c_cleaner(is_wait_long=False)
+                    elif db_id == 'firefox':
+                        log_show('firefox')
+                        # internet.firefox(is_wait_long=False)
+                    elif db_id == 'idm':
+                        internet.idm(is_wait_long=False)
+                    elif db_id == 'java_jdk_08':
+                        developer.java_jdk(const.java_jdk_08, is_wait_long=False)
+                    elif db_id == 'k_lite':
+                        multimedia.k_lite(is_wait_long=False)
+                    elif db_id == 'notepad_p_p':
+                        developer.notepad_p_p(is_wait_long=False)
+                    elif db_id == 'os_build':
+                        main.os_build(is_wait_long=False)
+                    elif db_id == 'power_iso':
+                        utilities.power_iso(is_wait_long=False)
+                    elif db_id == 'pycharm':
+                        log_show('pycharm')
+                        # developer.pycharm(is_wait_long=False)
+                    elif db_id == 'python':
+                        developer.python(is_wait_long=False)
+                    elif db_id == 'samsung_usb':
+                        mobile.samsung_usb(is_wait_long=False)
+                    elif db_id == 'winrar':
+                        utilities.winrar(is_wait_long=False)
+                    elif db_id == 'git':
+                        developer.git(is_wait_long=False)
+                    elif db_id == 'vc_redist':
+                        utilities.vs_redistributable(is_wait_long=False)
+                    cursor.execute('UPDATE softwares SET "SoftwareName"=\"%s\", "UpdateDate"=\"%s\", "Status"=\"%s\" '
+                                   'WHERE "SoftwareId"=\"%s\"' % (new_software_name, date, const.db_msg_updated, db_id))
+                    log_show(f'Updated latest version of "{new_software_name}" in the database...')
+                connection.commit()
+            except sqlite3.Error as error:
+                err_type, err_object, err_traceback = sys.exc_info()
+                file_name = err_traceback.tb_frame.f_code.co_filename
+                line_number = err_traceback.tb_lineno
+                exception_heading(f'Error while working with SQLite \n Syntax is: {error} \n Exception type: {err_type}'
+                                  f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
+            finally:
+                time.sleep(const.wait_long / 1.5)
+                if not new_update:
+                    log_show(f'There are no new software updates')
+                    time.sleep(const.wait_long)
+                cursor.close()
+                connection.close()
 
     @staticmethod
     def update_record(key_id, key_name):
-        connect, cursor = connect_db()
+        connection, cursor = connect_db(show_log=True)
         try:
             date = get_date_time()
             log_show(f'Updating latest version of "{key_name}" in the database...')
-            cursor.execute('UPDATE softwares SET "SoftwareName" = \"%s\", "UpdateDate" = \"%s\", '
-                           '"Status" = "Updated" WHERE id" = \"%s\"' % (key_name, date, key_id))
-            connect.commit()
+            cursor.execute('UPDATE softwares SET "SoftwareName"=\"%s\", "UpdateDate"=\"%s\", "Status"=\"%s\" WHERE '
+                           'id"=\"%s\"' % (key_name, date, const.db_msg_updated, key_id))
+            connection.commit()
         except sqlite3.Error as error:
-            exception_heading(f'Error while working with SQLite {error}', wait_input=True)
+            err_type, err_object, err_traceback = sys.exc_info()
+            file_name = err_traceback.tb_frame.f_code.co_filename
+            line_number = err_traceback.tb_lineno
+            exception_heading(f'Error while working with SQLite \n Syntax is: {error} \n Exception type: {err_type}'
+                              f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
         finally:
-            time.sleep(const.wait_long / 2)
+            time.sleep(const.wait_long / 1.5)
             cursor.close()
-            connect.close()
+            connection.close()
 
-    @staticmethod
-    def update_test():
-        connect, cursor = connect_db()
-        try:
-            log_show('Testing...')
-            cursor.execute('SELECT * FROM softwares')
-            for rec in cursor.fetchall():
-                log_show(rec)
-            input(const.wait_msg_input)
-        except sqlite3.Error as error:
-            exception_heading(f'Error while working with SQLite {error}', wait_input=True)
-        finally:
-            cursor.close()
-            connect.close()
+    def update_test(self):
+        is_newly_created_db = self.create_db()
+        if not is_newly_created_db:
+            connection, cursor = connect_db(show_log=True)
+            try:
+                log_show('Testing...')
+                for record in cursor.execute('SELECT * FROM softwares WHERE "Status"=\"%s\"'
+                                             % const.db_msg_update_avail).fetchall():
+                    log_show(record[0] + ', ' + record[1] + ', ' + record[4])
+                input(const.wait_msg_input)
+            except sqlite3.Error as error:
+                err_type, err_object, err_traceback = sys.exc_info()
+                file_name = err_traceback.tb_frame.f_code.co_filename
+                line_number = err_traceback.tb_lineno
+                exception_heading(f'Error while working with SQLite \n Syntax is: {error} \n Exception type: {err_type}'
+                                  f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
+            finally:
+                cursor.close()
+                connection.close()
