@@ -727,8 +727,7 @@ class Softwares(Functions):
                     elif db_id == 'c_cleaner':
                         utilities.c_cleaner(is_wait_long=False)
                     elif db_id == 'firefox':
-                        log_show('firefox')
-                        # internet.firefox(is_wait_long=False)
+                        internet.firefox(is_wait_long=False)
                     elif db_id == 'idm':
                         internet.idm(is_wait_long=False)
                     elif db_id == 'java_jdk_08':
@@ -742,8 +741,7 @@ class Softwares(Functions):
                     elif db_id == 'power_iso':
                         utilities.power_iso(is_wait_long=False)
                     elif db_id == 'pycharm':
-                        log_show('pycharm')
-                        # developer.pycharm(is_wait_long=False)
+                        developer.pycharm(is_wait_long=False)
                     elif db_id == 'python':
                         developer.python(is_wait_long=False)
                     elif db_id == 'samsung_usb':

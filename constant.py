@@ -17,7 +17,7 @@ copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.4.2'
+version = '1.4.3'
 
 # For Functions
 db_msg_newly = 'Newly Added'
@@ -42,13 +42,13 @@ git = 'Git 2.30.0'
 java_jdk_08 = 'Java JDK 8 Update 281'
 java_jdk_15 = 'Java JDK 15.0.2'
 notepad_p_p = 'Notepad++ 7.9.2'
-pycharm = 'PyCharm Community 2020.3.2'
+pycharm = 'PyCharm Community 2020.3.3'
 python = 'Python 3.9.1'
 sq_lite = 'SQLite Expert Professional 5.4.2.503'
 
 # For Internet
 chrome = 'Google Chrome 87.0.4280.88'
-firefox = 'Firefox 84.0.1'
+firefox = 'Mozilla Firefox 85.0'
 fdm = 'Free Download Manager 6.13.1 Build 3483'
 idm = 'Internet Download Manager 6.38 Build 16'
 net_balancer = 'NetBalancer 9.12.9'
@@ -76,7 +76,7 @@ sms_contacts_recover = 'Coolmuster Android SMS Contacts Recovery 4.5.43'
 # For Multimedia
 helium_music = 'Helium Music Manager 14.9 Build 16658'
 k_lite = 'K-Lite Mega Codec Pack 15.9.5'
-mp3_tag = 'Mp3Tag 3.04A'
+mp3_tag = 'Mp3Tag 3.05'
 zortam_mp3 = 'Zortam Mp3 Media Studio Pro 28.05'
 
 # For PDF
