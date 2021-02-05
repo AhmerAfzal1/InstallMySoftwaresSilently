@@ -31,7 +31,7 @@ wait_msg_input = '\n Please press Enter to continue'
 wait_short = 0.5
 
 # For Main
-os_build = 'KB4598242 (OS Builds 19042.746)'
+os_build = 'KB4598291 (OS Builds 19042.789)'
 
 # For Converter
 rea_converter = 'ReaConverter Pro 7.620'
