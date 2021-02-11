@@ -257,6 +257,10 @@ def main_heading_softwares(num, string):
           f'{Fore.LIGHTGREEN_EX}{string}{Style.RESET_ALL} {Fore.LIGHTYELLOW_EX}Softwares{Style.RESET_ALL}')
 
 
+def main_heading_log_view(num):
+    print(f'{Fore.CYAN}\t[{num}] Log View From Database{Style.RESET_ALL} ')
+
+
 def sub_heading(string):
     center_text(f'{Fore.LIGHTGREEN_EX}Categorized List of {string} Softwares{Style.RESET_ALL}')
     print('\n')
@@ -276,8 +280,10 @@ def sub_heading_softwares(num, string, option_string=None):
               f'{Fore.LIGHTGREEN_EX}{string} ({option_string}){Style.RESET_ALL}')
 
 
-def under_progress_heading(string):
+def under_progress_heading(string, wait_input=False):
     print(f'\n{Fore.CYAN} {string}{Style.RESET_ALL}')
+    if wait_input:
+        input(const.wait_msg_input)
 
 
 class AnOtherTask(enum.Enum):
@@ -520,81 +526,124 @@ class Softwares(Functions):
         self.wait_input = wait_input
 
     def install(self):
+        if not self.db_file:
+            self.create_db()
+        connection, cursor = connect_db(show_log=False)
+        date_time = get_date_time()
+        logs = ''
         try:
             start = time.time()
             is_exist_file = None
             is_found_file = None
             is_skip_process = None
             if self.dir_name is not None:  # For find directory
-                log_show(f'Searching directory {self.dir_name}...')
+                log_search_dir = f'Searching directory {self.dir_name}...'
+                logs += '\n' + log_search_dir
+                log_show(log_search_dir)
                 found_dir = find_files(dir_name=self.dir_name, file_ext=self.ext)
                 end = time.time()
-                log_show(f'Found directory {self.dir_name} in ', f'{get_time(start, end)}')
+                log_found_dir = f'Found directory {self.dir_name} in '
+                log_found_time = f'{get_time(start, end)}'
+                logs += '\n' + log_found_dir + log_found_time
+                log_show(log_found_dir, log_found_time)
                 time.sleep(const.wait_short)
                 if len(os.listdir(found_dir)):
-                    log_show(f'Installing from directory {found_dir}...')
+                    log_install_dir = f'Installing from directory {found_dir}...'
+                    logs += '\n' + log_install_dir
+                    log_show(log_install_dir)
                     time.sleep(const.wait_short)
                     self.run_program(file_name=os.path.join(*[found_dir, self.setup]), args=self.args,
                                      is_portable=False)
                     if self.another_task is not None:
                         self.perform_another_task(task=self.another_task, dir_name=found_dir)
                     end = time.time()
-                    log_show(f'Installed {self.dir_name} successfully in ', f'{get_time(start, end)}')
+                    log_install_success = f'Installed {self.dir_name} successfully in '
+                    log_install_time = f'{get_time(start, end)}'
+                    logs += '\n' + log_install_success + log_install_time
+                    log_show(log_install_success, log_install_time)
                     log_show(const.wait_msg)
+                    logs += '\n' + const.wait_msg
                     time.sleep(const.wait_long)
                 else:
-                    log_show(f'{found_dir} is empty')
+                    log_empty = f'{found_dir} is empty'
+                    logs += '\n' + log_empty
+                    log_show(log_empty)
             else:
                 if self.driver_dir is not None:
-                    log_show(f'Searching {self.file_name}...')
+                    log_searching_driver = f'Searching {self.file_name}...'
+                    logs += '\n' + log_searching_driver
+                    log_show(log_searching_driver)
                     if not os.path.exists(
                             get_temp_drivers_path(self.file_name, self.driver_dir, self.sub_dri_dir)):
                         find_files(dir_name=None, file_name=self.file_name, file_ext=self.ext)
                     if self.sub_dri_dir is not None:
                         if self.sub_dri_dir == os.path.join(*['APPS', 'PROSETDX', 'Winx64']):
-                            log_show(f'Installing {self.driver_dir} Drivers...')
+                            log_install_dri = f'Installing {self.driver_dir} Drivers...'
+                            logs += '\n' + log_install_dri
+                            log_show(log_install_dri)
                         else:
-                            log_show(f'Installing {self.sub_dri_dir} Drivers...')
+                            log_install_sub_dri = f'Installing {self.sub_dri_dir} Drivers...'
+                            logs += '\n' + log_install_sub_dri
+                            log_show(log_install_sub_dri)
                     else:
-                        log_show(f'Installing {self.driver_dir} Drivers...')
+                        log_install_drivers = f'Installing {self.driver_dir} Drivers...'
+                        logs += '\n' + log_install_drivers
+                        log_show(log_install_drivers)
                     time.sleep(const.wait_short)
                     self.run_program(file_name=os.path.join(
                         get_temp_drivers_path(self.file_name, self.driver_dir, sub_drivers_dir=self.sub_dri_dir),
                         self.setup), args=self.args, is_portable=False)
                     end = time.time()
-                    log_show(f'Installed {self.driver_dir} successfully in ', f'{get_time(start, end)}')
+                    log_installed_dri = f'Installed {self.driver_dir} successfully in '
+                    log_installed_dri_time = f'{get_time(start, end)}'
+                    logs += '\n' + log_installed_dri + log_installed_dri_time
+                    log_show(log_installed_dri, log_installed_dri_time)
                 else:
                     if not os.path.exists(get_temp_path(self.file_name)):
-                        log_show(f'Searching file {self.file_name}...')
+                        log_searching_file = f'Searching file {self.file_name}...'
+                        logs += '\n' + log_searching_file
+                        log_show(log_searching_file)
                         is_found_file = find_files(dir_name=None, file_name=self.file_name, file_ext=self.ext,
                                                    pwd=self.pwd)
                     else:
                         is_exist_file = True
                     if is_found_file or is_exist_file:
-                        log_show(f'Installing {self.file_name}...')
+                        log_installing_file = f'Installing {self.file_name}...'
+                        logs += '\n' + log_installing_file
+                        log_show(log_installing_file)
                         self.run_program(file_name=os.path.join(get_temp_path(self.file_name), self.setup),
                                          args=self.args, is_portable=False)
                         time.sleep(const.wait_short)
                         if self.wait >= 1:
                             time.sleep(self.wait)
                         end = time.time()
-                        log_show(f'Installed {self.file_name} successfully in ', f'{get_time(start, end)}')
+                        log_installed_file = f'Installed {self.file_name} successfully in '
+                        log_installed_file_time = f'{get_time(start, end)}'
+                        logs += '\n' + log_installed_file + log_installed_file_time
+                        log_show(log_installed_file, log_installed_file_time)
                         if self.registry is not None:
                             if os.path.isfile(os.path.join(*[get_temp_path(self.file_name), self.registry])):
-                                log_show(f'Installing registry {self.registry}...')
+                                log_reg = f'Installing registry {self.registry}...'
+                                logs += '\n' + log_reg
+                                log_show(log_reg)
                                 time.sleep(const.wait_short)
                                 os.startfile(get_temp_path(self.file_name), self.setup)
                             else:
-                                exception_heading(f'File {self.registry} not found')
+                                log_reg_not_found = f'File {self.registry} not found'
+                                logs += '\n' + log_reg_not_found
+                                exception_heading(log_reg_not_found)
                         if self.another_task is not None:
                             self.perform_another_task(task=self.another_task, file_name=self.file_name,
                                                       sys_app=self.sys_app, child_file=self.child_file)
                         return True
                     else:
                         is_skip_process = True
-                        log_show(f'{self.file_name} not found')
+                        log_file_not_found = f'{self.file_name} not found'
+                        logs += '\n' + log_file_not_found
+                        log_show(log_file_not_found)
                 if is_skip_process is None:
                     if self.is_wait_long:
+                        logs += '\n' + const.wait_msg
                         log_show(const.wait_msg)
                         time.sleep(const.wait_long)
                     else:
@@ -605,8 +654,15 @@ class Softwares(Functions):
             err_type, err_object, err_traceback = sys.exc_info()
             file_name = err_traceback.tb_frame.f_code.co_filename
             line_number = err_traceback.tb_lineno
-            exception_heading(f'Error while installing software \n Syntax is: {err} \n Exception type: {err_type}'
-                              f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
+            log_exception = f'Error while installing software \n Syntax is: {err} \n Exception type: {err_type} \n ' \
+                            f'File name: {file_name} \n Line number: {line_number} '
+            logs += '\n' + log_exception
+            exception_heading(log_exception, wait_input=True)
+        finally:
+            cursor.execute('INSERT INTO Log (DateTime, Logs) VALUES (\"%s\",\"%s\")' % (date_time, logs))
+            connection.commit()
+            cursor.close()
+            connection.close()
 
     def portable(self):
         if os.path.exists(get_temp_path(self.file_name)):
@@ -645,6 +701,13 @@ class Softwares(Functions):
                     CreationDate timestamp NOT NULL,
                     UpdateDate timestamp NOT NULL,
                     Status TEXT NOT NULL
+                    );''')
+                cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS Log
+                    (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+                    DateTime timestamp NOT NULL,
+                    Logs TEXT
                     );''')
                 log_show('A new empty database has been created')
                 time.sleep(const.wait_short)
@@ -789,6 +852,31 @@ class Softwares(Functions):
             time.sleep(const.wait_long / 1.5)
             cursor.close()
             connection.close()
+
+    def get_logs(self):
+        is_newly_created_db = self.create_db()
+        if not is_newly_created_db:
+            connection, cursor = connect_db(show_log=True)
+            try:
+                for ids, date_time in cursor.execute('SELECT * FROM Log').fetchall():
+                    log_show(f'{ids} {date_time}')
+                    choice = input_heading()
+                    if choice == 0:
+                        exception_heading(const.heading_zero)
+                        input()
+                        clear()
+                        continue
+                    if choice == ids:
+                        print(cursor.execute('SELECT Logs FROM Log WHERE "ID"=\"%s\"' % ids).fetchone())
+            except sqlite3.Error as error:
+                err_type, err_object, err_traceback = sys.exc_info()
+                file_name = err_traceback.tb_frame.f_code.co_filename
+                line_number = err_traceback.tb_lineno
+                exception_heading(f'Error while working with SQLite \n Syntax is: {error} \n Exception type: {err_type}'
+                                  f'\n File name: {file_name} \n Line number: {line_number}', wait_input=True)
+            finally:
+                cursor.close()
+                connection.close()
 
     def update_test(self):
         is_newly_created_db = self.create_db()

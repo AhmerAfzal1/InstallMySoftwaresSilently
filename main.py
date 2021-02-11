@@ -68,7 +68,8 @@ def main():
             func.main_heading_softwares('08', const.heading_pdf)
             func.main_heading_softwares('09', const.heading_utilities)
             func.main_heading_softwares('10', 'Recommended Newer Updated')
-            exit_code = func.exit_heading('11')
+            func.main_heading_log_view('11')
+            exit_code = func.exit_heading('12')
 
             choice = func.input_heading()
 
@@ -148,6 +149,11 @@ def main():
 
             elif choice == 10:
                 func.Softwares().update_install()
+                func.clear()
+                continue
+
+            elif choice == 11:
+                func.Softwares().get_logs()
                 func.clear()
                 continue
 
