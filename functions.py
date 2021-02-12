@@ -530,7 +530,7 @@ class Softwares(Functions):
             self.create_db()
         connection, cursor = connect_db(show_log=False)
         date_time = get_date_time()
-        logs = ''
+        logs = '----------------- INSTALLATION -----------------'
         try:
             start = time.time()
             is_exist_file = None
@@ -840,7 +840,7 @@ class Softwares(Functions):
             date = get_date_time()
             log_show(f'Updating latest version of "{key_name}" in the database...')
             cursor.execute('UPDATE softwares SET "SoftwareName"=\"%s\", "UpdateDate"=\"%s\", "Status"=\"%s\" WHERE '
-                           'id"=\"%s\"' % (key_name, date, const.db_msg_updated, key_id))
+                           '"SoftwareId"=\"%s\"' % (key_name, date, const.db_msg_updated, key_id))
             connection.commit()
         except sqlite3.Error as error:
             err_type, err_object, err_traceback = sys.exc_info()

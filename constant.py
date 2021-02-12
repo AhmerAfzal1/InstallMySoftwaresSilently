@@ -17,7 +17,7 @@ copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.4.4'
+version = '1.4.5'
 
 # For Functions
 db_msg_newly = 'Newly Added'
