@@ -858,16 +858,19 @@ class Softwares(Functions):
         if not is_newly_created_db:
             connection, cursor = connect_db(show_log=True)
             try:
-                for ids, date_time in cursor.execute('SELECT * FROM Log').fetchall():
-                    log_show(f'{ids} {date_time}')
-                    choice = input_heading()
-                    if choice == 0:
-                        exception_heading(const.heading_zero)
-                        input()
-                        clear()
-                        continue
-                    if choice == ids:
-                        print(cursor.execute('SELECT Logs FROM Log WHERE "ID"=\"%s\"' % ids).fetchone())
+                _id = None
+                for logs in cursor.execute('SELECT * FROM Log').fetchall():
+                    _id = logs[0]
+                    data = logs[1]
+                    log_show(f'\t[{_id}] {data}')
+                choice = input_heading()
+                if choice == 0:
+                    exception_heading(const.heading_zero)
+                    input(const.wait_msg_input)
+                    clear()
+                else:
+                    log_show(cursor.execute('SELECT Logs FROM Log WHERE "ID"=\"%s\"' % _id).fetchone())
+                    input(const.wait_msg_input)
             except sqlite3.Error as error:
                 err_type, err_object, err_traceback = sys.exc_info()
                 file_name = err_traceback.tb_frame.f_code.co_filename
