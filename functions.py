@@ -151,6 +151,12 @@ def get_time(start, end):
         return f'{mins:0.0f} Minutes and {secs:0.2f} Seconds'
 
 
+def get_var_name(var_name):
+    for name in globals():
+        if eval(name) == var_name:
+            return name
+
+
 def read_reg(computer_name=None, root_key=None, sub_key=None, name_key=None):
     try:
         _connect = reg.ConnectRegistry(computer_name, root_key)
@@ -863,13 +869,14 @@ class Softwares(Functions):
                     _id = logs[0]
                     data = logs[1]
                     log_show(f'\t[{_id}] {data}')
-                choice = input_heading()
+                choice = int(input_heading())
                 if choice == 0:
                     exception_heading(const.heading_zero)
                     input(const.wait_msg_input)
                     clear()
                 else:
-                    log_show(cursor.execute('SELECT Logs FROM Log WHERE "ID"=\"%s\"' % _id).fetchone())
+                    log_string = cursor.execute('SELECT Logs FROM Log WHERE "ID"=\"%s\"' % choice).fetchone()
+                    log_show(log_string[0])
                     input(const.wait_msg_input)
             except sqlite3.Error as error:
                 err_type, err_object, err_traceback = sys.exc_info()
