@@ -824,7 +824,7 @@ class Softwares(Functions):
                     cursor.execute('UPDATE softwares SET "SoftwareName"=\"%s\", "UpdateDate"=\"%s\", "Status"=\"%s\" '
                                    'WHERE "SoftwareId"=\"%s\"' % (new_software_name, date, const.db_msg_updated, db_id))
                     log_show(f'Updated latest version of "{new_software_name}" in the database...')
-                connection.commit()
+                    connection.commit()
             except sqlite3.Error as error:
                 err_type, err_object, err_traceback = sys.exc_info()
                 file_name = err_traceback.tb_frame.f_code.co_filename

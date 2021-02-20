@@ -28,7 +28,7 @@ def fdm(is_wait_long=True):
 def idm(is_wait_long=True):
     func.task_kill('IDMan.exe')
     time.sleep(const.wait_short)
-    software = func.Softwares(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=10,
+    software = func.Softwares(file_name=const.idm, setup='Setup.exe', args=r'/skipdlgs', wait=20,
                               another_task=func.AnOtherTask.IDM, is_wait_long=is_wait_long)
     is_installed = software.install()
     if is_wait_long and is_installed:
