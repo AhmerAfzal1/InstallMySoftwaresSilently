@@ -865,9 +865,9 @@ class Softwares(Functions):
             connection, cursor = connect_db(show_log=True)
             try:
                 _id = None
-                for logs in cursor.execute('SELECT * FROM Log').fetchall():
-                    _id = logs[0]
-                    data = logs[1]
+                for log in cursor.execute('SELECT * FROM Log').fetchall():
+                    _id = log[0]
+                    data = log[1]
                     log_show(f'\t[{_id}] {data}')
                 choice = int(input_heading())
                 if choice == 0:

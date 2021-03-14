@@ -17,7 +17,7 @@ copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.4.8'
+version = '1.4.9'
 
 # For Functions
 db_msg_newly = 'Newly Added'
@@ -43,7 +43,7 @@ java_jdk_08 = 'Java JDK 8 Update 281'
 java_jdk_15 = 'Java JDK 15.0.2'
 notepad_p_p = 'Notepad++ 7.9.3'
 pycharm = 'PyCharm Community 2020.3.3'
-python = 'Python 3.9.1'
+python = 'Python 3.9.2'
 sq_lite = 'SQLite Expert Professional 5.4.2.503'
 
 # For Internet
