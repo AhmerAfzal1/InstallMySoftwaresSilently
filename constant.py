@@ -17,7 +17,7 @@ copyright_ = 'Copyright (c) 2016 - 2021, ' + company
 desription = 'Ahmer\'s Auto Silently Installation Program'
 email = 'ahmerafzal@yahoo.com'
 product = 'InstallMySofts'
-version = '1.4.9'
+version = '1.5.0'
 
 # For Functions
 db_msg_newly = 'Newly Added'
@@ -31,18 +31,18 @@ wait_msg_input = '\n Please press Enter to continue'
 wait_short = 0.5
 
 # For Main
-os_build = 'KB4601319 (OS Builds 19042.804)'
+os_build = 'KB5000802 (OS Builds 19042.867)'
 
 # For Converter
 rea_converter = 'ReaConverter Pro 7.620'
 
 # For Developer
-android_studio = 'Android Studio 4.1.2 (201.7042882)'
+android_studio = 'Android Studio 4.1.3 (201.7199119)'
 git = 'Git 2.30.1'
 java_jdk_08 = 'Java JDK 8 Update 281'
 java_jdk_15 = 'Java JDK 15.0.2'
-notepad_p_p = 'Notepad++ 7.9.3'
-pycharm = 'PyCharm Community 2020.3.3'
+notepad_p_p = 'Notepad++ 7.9.5'
+pycharm = 'PyCharm Community 2020.3.4'
 python = 'Python 3.9.2'
 sq_lite = 'SQLite Expert Professional 5.4.2.503'
 
@@ -50,7 +50,7 @@ sq_lite = 'SQLite Expert Professional 5.4.2.503'
 chrome = 'Google Chrome 88.0.4324.96'
 firefox = 'Mozilla Firefox 85.0.2'
 fdm = 'Free Download Manager 6.13.1 Build 3483'
-idm = 'Internet Download Manager 6.38 Build 17'
+idm = 'Internet Download Manager 6.38 Build 18'
 net_balancer = 'NetBalancer 9.12.9'
 net_limiter = 'NetLimiter 4.0.67'
 net_set_man = 'NetSetMan Pro 4.7.2'
@@ -93,7 +93,7 @@ tri_sun_pdf_to_jpg = 'TriSun PDF To JPG 18.0 Build 76'
 aomei_partition = 'AOMEI Partition Assistant 9.1.0'
 auslogics_duplicate = 'Auslogics Duplicate File Finder 9.0.0.2'
 better_rename = 'Better File Rename 6.18'
-c_cleaner = 'CCleaner 5.76.8269'
+c_cleaner = 'CCleaner 5.77.8521'
 cpu_z = 'CPU-Z 1.94.8'
 dism_p_p = 'Dism++ 10.1.1001.10'
 eng_to_urdu_dic = 'Cleantouch English to Urdu Dictionary 7.0'
